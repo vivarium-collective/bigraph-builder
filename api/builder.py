@@ -1,4 +1,6 @@
 from process_bigraph import Composite
+from bigraph_schema.registry import type_schema_keys
+from api import pf
 
 
 class Node:
@@ -24,15 +26,14 @@ class Node:
                 raise AttributeError(f"{key} is not a valid attribute or schema key.")
 
     def __repr__(self):
-        return f"Node({self._data})"
+        return pf(self._data)
 
 
-class Tree:
+class Builder:
     def __init__(self, schema_keys=None, tree_dict=None):
-        # Ensure that '_value' is always a part of the schema
-        self.schema_keys = {'_value'}
+        self._schema_keys = type_schema_keys
         if schema_keys:
-            self.schema_keys.update(f'_{key}' for key in schema_keys if not key.startswith('_'))
+            self._schema_keys.update(f'_{key}' for key in schema_keys)
         self.tree_dict = tree_dict if tree_dict is not None else {}
 
     def __getitem__(self, keys):
@@ -43,7 +44,7 @@ class Tree:
         for key in keys:
             current_dict = current_dict.setdefault(key, {})
 
-        return Node(current_dict, self.schema_keys)
+        return Node(current_dict, self._schema_keys)
 
     def __setitem__(self, keys, value):
         if not isinstance(keys, tuple):
@@ -57,14 +58,13 @@ class Tree:
         current_dict[keys[-1]] = {'_value': value}
 
     def __repr__(self):
-        return f"Tree({self.tree_dict})"
-
+        return pf(self.tree_dict)
 
 
 def test_tree():
 
     # Example usage:
-    tree = Tree(schema_keys=['apply', 'parameters'])
+    tree = Builder(schema_keys=['apply', 'parameters'])
 
     # add a branch with a value
     tree['a', 'b'] = 2.0
@@ -78,7 +78,7 @@ def test_tree():
 
 
     # test with preloaded dict
-    tree2 = Tree(tree_dict={'path': {'to': {'leaf': {'_value': 1.0}}}}, schema_keys=['apply', 'parameters'])
+    tree2 = Builder(tree_dict={'path': {'to': {'leaf': {'_value': 1.0}}}}, schema_keys=['apply', 'parameters'])
 
     x=0
 
