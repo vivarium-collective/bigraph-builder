@@ -8,6 +8,7 @@ Python API.
 
 from bigraph_schema.type_system import TypeSystem
 from process_bigraph.composite import Composite
+from bigraph_viz import plot_bigraph
 import pprint
 
 pretty = pprint.PrettyPrinter(indent=2)
@@ -72,6 +73,17 @@ class Builder(Node):
     def make_composite(self):
         return Composite({'state': self.tree_dict})
 
+    def check(self):
+        self.make_composite()  # this should check consistency
+
+    def infer(self):
+        composite = self.make_composite()  # Composite makes the inference upon init
+        self.tree_dict = composite.state
+        return self.tree_dict
+
+    def plot_graph(self, **kwargs):
+        return plot_bigraph(self.tree_dict, **kwargs)
+
 
 def test_builder():
     # Testing the Builder class
@@ -93,15 +105,15 @@ def test_builder():
 
     # print(b.state)  # this should be the state hierarchy
     print(b.processes)  # This should be the process registry
-    print(b['path', 'b2', 'c'].type)  # access schema keys
-
-    b['path', 'to', 'p1'].connect(port_id='', target=['path', '1'])  # connect port, with checking
+    # print(b['path', 'b2', 'c'].type)  # access schema keys
+    #
+    # b['path', 'to', 'p1'].connect(port_id='', target=['path', '1'])  # connect port, with checking
 
     b.check()  # check if everything is connected
     b.infer()  # fill in missing content
-    b.graph()  # bigraph-viz
+    b.plot_graph()  # bigraph-viz
 
-
+    b
 
 
 def test_builder_demo():
@@ -128,5 +140,5 @@ def test_builder_demo():
 
 
 if __name__ == '__main__':
-    # test_builder()
+    test_builder()
     test_builder_demo()
