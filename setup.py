@@ -9,20 +9,17 @@ with open("README.md", "r") as readme:
     long_description = readme.read()
 
 setup(
-    name="vivarium-bigraph",
+    name="bigraph-builder",
     version=VERSION,
     author="Eran Agmon",
     author_email="agmon.eran@gmail.com",
     description="",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/vivarium-collective/vivarium-bigraph",
+    url="https://github.com/vivarium-collective/bigraph-builder",
     packages=find_packages(),
     classifiers=[
-        "Development Status :: 3 - Alpha",
-        "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
+        "License :: OSI Approved :: Apache 2 License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -31,6 +28,7 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         # List your package dependencies here
-        "process-bigraph"
+        "process-bigraph",
+        "bigraph-viz"
     ],
 )

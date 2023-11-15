@@ -1,145 +1,144 @@
-from process_bigraph import Composite
-from bigraph_schema.registry import type_schema_keys
-from api import pf
-import json
-import os
-import uuid
+"""
+Vivarium Builder
+================
+
+API for building process bigraphs, integrating bigraph-schema, process-bigraph, and bigraph-viz under an intuitive
+Python API.
+"""
+
+from bigraph_schema.type_system import TypeSystem
+from process_bigraph.composite import Composite
+from bigraph_viz import plot_bigraph
+import pprint
+
+pretty = pprint.PrettyPrinter(indent=2)
 
 
-def make_process_config(
-        type=None,
-        address=None,
-        config=None,
-        wires=None
-):
-    return {
-        '_type': type,
-        'address': address,
-        'config': config,
-        'wires': wires or {},
-    }
+def pf(x):
+    return pretty.pformat(x)
 
 
-class Node:
-    """
-    Provides attribute-style access to the data within a tree
-    """
-
-    def __init__(self, data, schema_keys, path, builder):
-        self._data = data
-        self._schema_keys = schema_keys
-        self._path = path  # the current path
-        self._builder = builder  # the builder instance
-
-    def __getattr__(self, item):
-        schema_key = f'_{item}'
-        if schema_key in self._schema_keys:
-            return self._data.get(schema_key)
-        raise AttributeError(f"{item} is not a valid attribute or schema key.")
-
-    def __setattr__(self, key, value):
-        if key in ['_data', '_schema_keys', '_path', '_builder']:
-            super().__setattr__(key, value)
-        else:
-            schema_key = f'_{key}'
-            if schema_key in self._schema_keys:
-                self._data[schema_key] = value
-            else:
-                raise AttributeError(f"{key} is not a valid attribute or schema key.")
-
-    def __repr__(self):
-        return f"Node({self._data})"
-
+class Node(dict):
     def add_process(
             self,
             process_id,
-            type=None,
+            process_type=None,
             address=None,
             config=None,
-            wires=None
+            inputs=None,
+            outputs=None,
     ):
-        # Add the process with the given ID and attributes
-        self._data[process_id] = make_process_config(type, address, config, wires)
+        self[process_id] = {
+            '_type': process_type or 'process',
+            'address': address or '',
+            'config': config or {},
+            'wires': {
+                'inputs': inputs or {},
+                'outputs': outputs or {},
+            },
+        }
 
-        # Update the builder's tree_dict
-        self._builder.update_tree(self._path, self._data)
 
+class Builder(Node):
 
-class Builder:
-    schema_keys = {'_value'}
-
-    def __init__(self, schema_keys=None, bigraph_dict=None):
-        if schema_keys:
-            self.schema_keys.update(f'_{key}' for key in schema_keys if not key.startswith('_'))
-        self._bigraph = bigraph_dict or {}
-
-    def __repr__(self):
-        return f"{self._bigraph}"
-
-    def __getitem__(self, keys):
-        if not isinstance(keys, tuple):
-            keys = (keys,)
-
-        current_dict = self._bigraph
-        for key in keys:
-            current_dict = current_dict.setdefault(key, {})
-
-        return Node(current_dict, self.schema_keys, keys, self)
+    def __init__(self, tree_dict=None):
+        super().__init__()
+        self.tree_dict = tree_dict or {}
+        self.processes = {}  # TODO retrieve this from tree_dict?
 
     def __setitem__(self, keys, value):
-        if not isinstance(keys, tuple):
-            keys = (keys,)
+        # Convert single key to tuple
+        keys = (keys,) if isinstance(keys, str) else keys
 
-        current_dict = self._bigraph
-        for key in keys[:-1]:
-            current_dict = current_dict.setdefault(key, {})
+        # Navigate through the keys, creating nested dictionaries as needed
+        d = self.tree_dict
+        for key in keys[:-1]:  # iterate over keys to create the nested structure
+            if key not in d:
+                d[key] = Node()
+            d = d[key]
+        d[keys[-1]] = value  # set the value at the final level
 
-        # Assign the value to the '_value' key
-        current_dict[keys[-1]] = {'_value': value}
+    def __getitem__(self, keys):
+        # Convert single key to tuple
+        keys = (keys,) if isinstance(keys, str) else keys
 
-    def add_process(
-            self,
-            process_id,
-            type=None,
-            address=None,
-            config=None,
-            wires=None
-    ):
-        # Add the process with the given ID and attributes
-        self._bigraph[process_id] = make_process_config(type, address, config, wires)
+        d = self.tree_dict
+        for key in keys:
+            d = d[key]  # move deeper into the dictionary
+        return d
 
-    def update_tree(self, path, data):
-        # Navigate to the correct location in the tree and update the data
-        current_dict = self._bigraph
-        for key in path[:-1]:
-            current_dict = current_dict.setdefault(key, {})
-        current_dict[path[-1]] = data
+    def __repr__(self):
+        return f"{pf(self.tree_dict)}"
 
+    def make_composite(self):
+        return Composite({'state': self.tree_dict})
 
+    def check(self):
+        self.make_composite()  # this should check consistency
 
-def test_tree():
+    def infer(self):
+        composite = self.make_composite()  # Composite makes the inference upon init
+        self.tree_dict = composite.state
+        return self.tree_dict
 
-    # Example usage:
-    tree = Builder(schema_keys=['apply', 'parameters'])
-
-    # add a branch with a value
-    tree['a', 'b'] = 2.0
-    tree['a', 'b2', 'c'] = 12.0
-
-    # access and print the 'apply' attribute
-    print(tree['a', 'b'].apply)  # Output: None
-    tree['a', 'b'].apply = 'sum'
-    print(tree['a', 'b'].apply)  # Output: 'sum'
-    print(tree['a', 'b'].value)  # Output: 2.0
+    def plot_graph(self, **kwargs):
+        return plot_bigraph(self.tree_dict, **kwargs)
 
 
-    # test with preloaded dict
-    tree2 = Builder(tree_dict={'path': {'to': {'leaf': {'_value': 1.0}}}}, schema_keys=['apply', 'parameters'])
+def test_builder():
+    # Testing the Builder class
+    b = Builder()
+    b['path', 'to', 'node'] = 1.0
+    print(b.tree_dict)
 
-    tree2
+    # Accessing the value
+    value = b['path', 'to', 'node']
+    print(value)
+
+    b['path', 'b2', 'c'] = 12.0
+    print(b)
+
+    b.add_process(process_id='process1')
+    b['path', 'to'].add_process(process_id='p1', process_type='example_type')
+    print(b['path'])
+
+
+    # print(b.state)  # this should be the state hierarchy
+    print(b.processes)  # This should be the process registry
+    # print(b['path', 'b2', 'c'].type)  # access schema keys
+    #
+    # b['path', 'to', 'p1'].connect(port_id='', target=['path', '1'])  # connect port, with checking
+
+    b.check()  # check if everything is connected
+    b.infer()  # fill in missing content
+    b.plot_graph()  # bigraph-viz
+
+    b
+
+
+def test_builder_demo():
+
+    sed_schema = {
+        'models': {},
+        'algorithms': {},
+        'visualizations': {},
+        'tasks': {},
+    }
+    a = Builder(sed_schema)
+
+    # or
+    b = Builder()
+    b['models'] = {}
+    b['algorithms'] = {}
+    b['visualizations'] = {}
+    b['tasks'] = {}
+
+    b.add_process(process_id='p1', address='', config={}, inputs={}, outputs={})
+
 
 
 
 
 if __name__ == '__main__':
-    test_tree()
+    test_builder()
+    test_builder_demo()
