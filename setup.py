@@ -19,7 +19,7 @@ setup(
     url="https://github.com/vivarium-collective/bigraph-builder",
     packages=find_packages(),
     classifiers=[
-        "License :: OSI Approved :: Apache 2 License",
+        "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
