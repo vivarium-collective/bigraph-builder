@@ -1,5 +1,5 @@
 """
-Vivarium Builder
+Bigraph Builder
 ================
 
 API for building process bigraphs, integrating bigraph-schema, process-bigraph, and bigraph-viz under an intuitive
@@ -19,17 +19,29 @@ def pf(x):
 
 
 class Node(dict):
+
+    def __init__(self, id=None, value=None, type=None):
+        super().__init__()
+        dict_value = {
+                '_value': value,
+                '_type': type,
+            }
+        if id:
+            self[id] = dict_value
+        else:
+            pass
+
     def add_process(
             self,
-            process_id,
-            process_type=None,
+            id,
+            type=None,
             address=None,
             config=None,
             inputs=None,
             outputs=None,
     ):
-        self[process_id] = {
-            '_type': process_type or 'process',
+        self[id] = {
+            '_type': type or 'process',
             'address': address or '',
             'config': config or {},
             'wires': {
@@ -41,17 +53,29 @@ class Node(dict):
 
 class Builder(Node):
 
-    def __init__(self, tree_dict=None):
+    def __init__(self, nodes=None, tree=None):
         super().__init__()
-        self.tree_dict = tree_dict or {}
+        self.tree = tree or {}
+        if nodes:
+            for node_id, spec in nodes.items():
+                path = spec.get('path')
+                value = spec.get('value')
+                type = spec.get('type')
+                self[path] = Node(
+                    id=node_id,
+                    value=value,
+                    type=type
+                )
+
         self.processes = {}  # TODO retrieve this from tree_dict?
+        self.types = {}  # TODO -- schemas need to go in here.
 
     def __setitem__(self, keys, value):
         # Convert single key to tuple
         keys = (keys,) if isinstance(keys, str) else keys
 
         # Navigate through the keys, creating nested dictionaries as needed
-        d = self.tree_dict
+        d = self.tree
         for key in keys[:-1]:  # iterate over keys to create the nested structure
             if key not in d:
                 d[key] = Node()
@@ -62,34 +86,55 @@ class Builder(Node):
         # Convert single key to tuple
         keys = (keys,) if isinstance(keys, str) else keys
 
-        d = self.tree_dict
+        d = self.tree
         for key in keys:
             d = d[key]  # move deeper into the dictionary
         return d
 
     def __repr__(self):
-        return f"{pf(self.tree_dict)}"
+        return f"{pf(self.tree)}"
 
     def make_composite(self):
-        return Composite({'state': self.tree_dict})
+        return Composite({'state': self.tree})
 
     def check(self):
         self.make_composite()  # this should check consistency
 
     def infer(self):
         composite = self.make_composite()  # Composite makes the inference upon init
-        self.tree_dict = composite.state
-        return self.tree_dict
+        self.tree = composite.state
+        return self.tree
 
     def plot_graph(self, **kwargs):
-        return plot_bigraph(self.tree_dict, **kwargs)
+        return plot_bigraph(self.tree, **kwargs)
 
 
 def test_builder():
+    nodes = {
+        'a': {
+            'value': 1.0,
+            'type': 'conc',
+            'path': ['path', 'to']
+        }
+    }
+
+    a = Builder(
+        nodes=nodes,
+        tree={},
+    )
+
+
+
+
+
+
+
+
+
     # Testing the Builder class
     b = Builder()
     b['path', 'to', 'node'] = 1.0
-    print(b.tree_dict)
+    print(b.tree)
 
     # Accessing the value
     value = b['path', 'to', 'node']
