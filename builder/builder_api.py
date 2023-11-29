@@ -53,7 +53,7 @@ class Node(dict):
 
 class Builder(Node):
 
-    def __init__(self, nodes=None, tree=None):
+    def __init__(self, tree=None, nodes=None):
         super().__init__()
         self.tree = tree or {}
         if nodes:
@@ -143,8 +143,8 @@ def test_builder():
     b['path', 'b2', 'c'] = 12.0
     print(b)
 
-    b.add_process(process_id='process1')
-    b['path', 'to'].add_process(process_id='p1', process_type='example_type')
+    b.add_process(id='process1')
+    b['path', 'to'].add_process(id='p1', type='example_type')
     print(b['path'])
 
 
@@ -169,7 +169,7 @@ def test_builder_demo():
         'visualizations': {},
         'tasks': {},
     }
-    a = Builder(sed_schema)
+    a = Builder(tree=sed_schema)
 
     # or
     b = Builder()
@@ -178,7 +178,7 @@ def test_builder_demo():
     b['visualizations'] = {}
     b['tasks'] = {}
 
-    b.add_process(process_id='p1', address='', config={}, inputs={}, outputs={})
+    b.add_process(id='p1', address='', config={}, inputs={}, outputs={})
 
 
 
