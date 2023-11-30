@@ -6,8 +6,7 @@ API for building process bigraphs, integrating bigraph-schema, process-bigraph, 
 Python API.
 """
 
-from bigraph_schema.type_system import TypeSystem
-from process_bigraph.composite import Composite
+from process_bigraph import Process, Composite, process_registry, types
 from bigraph_viz import plot_bigraph
 import pprint
 
@@ -22,10 +21,18 @@ class Node(dict):
 
     def __init__(self, id=None, value=None, type=None):
         super().__init__()
+
+        # TODO -- should the type constrain the value? We should check the type
+        # TODO -- can we do better than importing types from process_bigraph? local_types?
+        type_schema = types.access(type)
+
         dict_value = {
                 '_value': value,
                 '_type': type,
             }
+
+
+
         if id:
             self[id] = dict_value
         else:
@@ -34,15 +41,20 @@ class Node(dict):
     def add_process(
             self,
             id,
-            type=None,
+            type='process',
             address=None,
             config=None,
             inputs=None,
             outputs=None,
     ):
+        assert types.access(type), f'type "{type}" is not found in the types registry'
+
+        # TODO -- assert that the process is in the process registry?
+
+        address = address or f'local:{type}'
         self[id] = {
             '_type': type or 'process',
-            'address': address or '',
+            'address': address,
             'config': config or {},
             'wires': {
                 'inputs': inputs or {},
@@ -61,6 +73,8 @@ class Builder(Node):
                 path = spec.get('path')
                 value = spec.get('value')
                 type = spec.get('type')
+
+                # TODO -- check the type here? or in Node?
                 self[path] = Node(
                     id=node_id,
                     value=value,
@@ -110,6 +124,8 @@ class Builder(Node):
 
 
 def test_builder():
+    nodes = Node().add_process('a')
+
     nodes = {
         'a': {
             'value': 1.0,
@@ -122,12 +138,6 @@ def test_builder():
         nodes=nodes,
         tree={},
     )
-
-
-
-
-
-
 
 
 
@@ -178,7 +188,7 @@ def test_builder_demo():
     b['visualizations'] = {}
     b['tasks'] = {}
 
-    b.add_process(id='p1', address='', config={}, inputs={}, outputs={})
+    # b.add_process(id='p1', address=':', config={}, inputs={}, outputs={})
 
 
 
