@@ -25,13 +25,10 @@ class Node(dict):
         # TODO -- should the type constrain the value? We should check the type
         # TODO -- can we do better than importing types from process_bigraph? local_types?
         type_schema = types.access(type)
-
         dict_value = {
                 '_value': value,
                 '_type': type,
             }
-
-
 
         if id:
             self[id] = dict_value
@@ -154,7 +151,7 @@ def test_builder():
     print(b)
 
     b.add_process(id='process1')
-    b['path', 'to'].add_process(id='p1', type='example_type')
+    b['path', 'to'].add_process(id='p1', type='example_type', address='')
     print(b['path'])
 
 
@@ -169,6 +166,30 @@ def test_builder():
     b.plot_graph()  # bigraph-viz
 
     b
+
+def build_gillespie():
+
+    gillespie = Builder()
+    gillespie.add_process(type='event', protocol='local', rate_param=1.0, wires={})  # protocol local should be default. kwargs could fill the config
+    gillespie.add_process(type='interval')
+
+    print(gillespie['event'].ports())
+    gillespie['event'].connect(port='DNA', target=['DNA_store'])
+    gillespie['DNA_store'] = {'C': 2.0}  # this should check the type
+
+    gillespie.compile()  # this fills and checks, this should also connect ports to stores with the same name, at the same level
+    gillespie.plot()
+    composite_data = gillespie.composite()  # get the document
+    gillespie.write(filename='gillespie1')  # save the document
+
+    gillespie.run()
+
+    results = gillespie.get_results()
+
+
+
+
+
 
 
 def test_builder_demo():
