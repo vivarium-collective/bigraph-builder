@@ -5,6 +5,7 @@ Bigraph Builder
 API for building process bigraphs, integrating bigraph-schema, process-bigraph, and bigraph-viz under an intuitive
 Python API.
 """
+import os
 import json
 import pprint
 import warnings
@@ -69,7 +70,7 @@ class Builder(dict):
 
     def add_process(
             self,
-            name='process',
+            name='',
             protocol='local',
             config=None,
             inputs=None,
@@ -109,7 +110,10 @@ class Builder(dict):
         return dict({'state': self.tree})
 
     def write(self, filename, outdir='out'):
-        filepath = f"{outdir}/{filename}"
+        if not os.path.exists(outdir):
+            os.makedirs(outdir)
+
+        filepath = f"{outdir}/{filename}.json"
         document = self.document()
 
         # Writing the dictionary to a JSON file
@@ -128,8 +132,12 @@ class Builder(dict):
             self.compile()
         self.compiled_composite.run(interval)
 
-    def plot(self, **kwargs):
-        return plot_bigraph(self.tree, **kwargs)
+    def plot(self, filename='bigraph', out_dir='out', **kwargs):
+        return plot_bigraph(
+            self.tree,
+            out_dir=out_dir,
+            filename=filename,
+            **kwargs)
 
     def get_results(self, query=None):
         return self.compiled_composite.gather_results(query)
@@ -144,15 +152,15 @@ def build_gillespie():
     print(gillespie['event_process'].ports())
     gillespie['event_process'].connect(target=['DNA_store'], port='DNA')
     gillespie['DNA_store'] = {'C': 2.0}  # this should check the type
-    gillespie['event_process', 'DNA'].connect(['DNA_store'])  # TODO this should be an output from event_process
-    gillespie['DNA_store'].connect(['event_process', 'DNA'])  # This is an input to event_process
+    # gillespie['event_process', 'DNA'].connect(['DNA_store'])  # TODO this should be an output from event_process
+    # gillespie['DNA_store'].connect(['event_process', 'DNA'])  # This is an input to event_process
 
     gillespie.compile()  # this fills and checks, this should also connect ports to stores with the same name, at the same level
 
     gillespie.plot()  # create bigraph plot
     composite_data = gillespie.document()  # get the document
     gillespie.write(filename='gillespie1')  # save the document
-    gillespie.run()  # run simulation
+    gillespie.run(10)  # run simulation
     results = gillespie.get_results()
 
 
