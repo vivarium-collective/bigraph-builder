@@ -5,10 +5,12 @@ Bigraph Builder
 API for building process bigraphs, integrating bigraph-schema, process-bigraph, and bigraph-viz under an intuitive
 Python API.
 """
+import json
+import pprint
 
 from process_bigraph import Process, Composite, process_registry, types
 from bigraph_viz import plot_bigraph
-import pprint
+
 
 pretty = pprint.PrettyPrinter(indent=2)
 
@@ -87,6 +89,16 @@ class Builder(dict):
     def document(self):
         return dict({'state': self.tree})
 
+    def write(self, filename, outdir='out'):
+        filepath = f"{outdir}/{filename}"
+        document = self.document()
+
+        # Writing the dictionary to a JSON file
+        with open(filepath, 'w') as json_file:
+            json.dump(document, json_file, indent=4)
+
+        print(f"File '{filename}' successfully written in '{outdir}' directory.")
+
     def compile(self):
         document = self.document()
         self.compiled_composite = Composite(document)
@@ -99,7 +111,6 @@ class Builder(dict):
 
     def plot(self, **kwargs):
         return plot_bigraph(self.tree, **kwargs)
-
 
 
 def build_gillespie():
