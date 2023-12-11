@@ -7,6 +7,7 @@ Python API.
 """
 import json
 import pprint
+import warnings
 
 from process_bigraph import Process, Composite, process_registry, types
 from bigraph_viz import plot_bigraph
@@ -20,12 +21,16 @@ def pf(x):
 
 EDGE_KEYS = ['process', 'step', 'edge']
 
+
 class Builder(dict):
 
     def __init__(self, tree=None):
         super().__init__()
         self.tree = tree or {}  # TODO -- does this need to be a builder at every level?
         self.compiled_composite = None
+
+    def __repr__(self):
+        return f"{pf(self.tree)}"
 
     def __setitem__(self, keys, value):
         # Convert single key to tuple
@@ -46,18 +51,21 @@ class Builder(dict):
         keys = (keys,) if isinstance(keys, str) else keys
 
         d = self.tree
-        for key in keys:
+        for i, key in enumerate(keys):
             if key not in d:
                 d[key] = Builder()
-            d = d[key]  # move deeper into the dictionary
 
-        # if d['_type'] in EDGE_KEYS:
-        #     pass  # TODO -- look in the outputs of the process
+            # TODO: reach through a port
+            if i < len(keys) - 1 and d.get('_type') in EDGE_KEYS:
+                # The current item is a process, and there's another key after this
+                next_key = keys[i + 1]
+                # Check if next_key is a valid port
+                if 'ports' not in d or next_key not in d['ports']:
+                    raise ValueError(f"Port '{next_key}' not found in process '{key}'.")
+
+            d = d[key]
 
         return d
-
-    def __repr__(self):
-        return f"{pf(self.tree)}"
 
     def add_process(
             self,
@@ -81,15 +89,19 @@ class Builder(dict):
         self.compiled_composite = None
 
     def ports(self):
-        assert self.tree['_type'] in EDGE_KEYS
-        assert self.compiled_composite, f'ports requires compile'
+        if self.tree['_type'] not in EDGE_KEYS:
+            warnings.warn(f"Expected '_type' to be in {EDGE_KEYS}, found '{self.tree['_type']}' instead.",
+                          RuntimeWarning)
 
-    def connect(self, port_id, target_path):
-        assert self['_type'] in ['process', 'step', 'edge']
-        if port_id in self['inputs']:
-            self['inputs'][port_id] = target_path
-        if port_id in self['outputs']:
-            self['outputs'][port_id] = target_path
+        if not self.compiled_composite:
+            warnings.warn("ports requires compile", RuntimeWarning)
+
+    def connect(self, target, port=None):
+        assert self.tree['_type'] in EDGE_KEYS, f"Invalid type for connect: {self.tree}, needs to be in {EDGE_KEYS}"
+        if port in self.tree['inputs']:
+            self.tree['inputs'][port] = target
+        if port in self.tree['outputs']:
+            self.tree['outputs'][port] = target
 
         self.compiled_composite = None
 
@@ -130,7 +142,7 @@ def build_gillespie():
     gillespie['interval_process'].add_process(type='interval')
 
     print(gillespie['event_process'].ports())
-    gillespie['event_process'].connect(port='DNA', target=['DNA_store'])
+    gillespie['event_process'].connect(target=['DNA_store'], port='DNA')
     gillespie['DNA_store'] = {'C': 2.0}  # this should check the type
     gillespie['event_process', 'DNA'].connect(['DNA_store'])  # TODO this should be an output from event_process
     gillespie['DNA_store'].connect(['event_process', 'DNA'])  # This is an input to event_process
