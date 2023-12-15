@@ -11,6 +11,7 @@ import pprint
 import warnings
 
 from process_bigraph import Process, Composite, process_registry, types
+import process_bigraph.experiments.minimal_gillespie
 from bigraph_viz import plot_bigraph
 
 
@@ -20,14 +21,27 @@ pretty = pprint.PrettyPrinter(indent=2)
 def pf(x):
     return pretty.pformat(x)
 
+
 EDGE_KEYS = ['process', 'step', 'edge']
 
 
-class Builder(dict):
+def generate_builder_tree(tree):
+    tree = tree or {}
+    builder_tree = {}
+    for k, i in tree.items():
+        if isinstance(i, dict):
+            builder_tree[k] = Builder(i)
+        else:
+            builder_tree[k] = i  # leaves
+    return builder_tree
 
-    def __init__(self, tree=None):
+
+class Builder:
+
+    def __init__(self, tree=None, schema=None):
         super().__init__()
-        self.tree = tree or {}  # TODO -- does this need to be a builder at every level?
+        self.tree = generate_builder_tree(tree)
+        self.schema = schema or {}  # TODO -- need to track schema
         self.compiled_composite = None
 
     def __repr__(self):
@@ -35,38 +49,44 @@ class Builder(dict):
 
     def __setitem__(self, keys, value):
         # Convert single key to tuple
-        keys = (keys,) if isinstance(keys, str) else keys
+        keys = (keys,) if isinstance(keys, (str, int)) else keys
 
-        # Navigate through the keys, creating nested dictionaries as needed
-        d = self.tree
-        for key in keys[:-1]:  # iterate over keys to create the nested structure
-            if key not in d:
-                d[key] = Builder()
-            d = d[key]
-        d[keys[-1]] = value  # set the value at the final level
+        first_key = keys[0]
+        if first_key not in self.tree:
+            self.tree[first_key] = Builder()
+
+        remaining = keys[1:]
+        if len(remaining) > 0:
+            self.tree[first_key].__setitem__(remaining, value)
+        else:
+            self.tree[first_key] = value
 
         self.compiled_composite = None
 
     def __getitem__(self, keys):
         # Convert single key to tuple
-        keys = (keys,) if isinstance(keys, str) else keys
+        keys = (keys,) if isinstance(keys, (str, int)) else keys
 
-        d = self.tree
-        for i, key in enumerate(keys):
-            if key not in d:
-                d[key] = Builder()
+        first_key = keys[0]
+        if first_key not in self.tree:
+            self.tree[first_key] = Builder()
 
-            # TODO: reach through a port
-            if i < len(keys) - 1 and d.get('_type') in EDGE_KEYS:
-                # The current item is a process, and there's another key after this
-                next_key = keys[i + 1]
-                # Check if next_key is a valid port
-                if 'ports' not in d or next_key not in d['ports']:
-                    raise ValueError(f"Port '{next_key}' not found in process '{key}'.")
+        remaining = keys[1:]
+        if len(remaining) > 0:
+            return self.tree[first_key].__getitem__(remaining)
+        else:
+            return self.tree[first_key]
 
-            d = d[key]
-
-        return d
+        #     # TODO: reach through a port
+        #     if i < len(keys) - 1 and d.get('_type') in EDGE_KEYS:
+        #         # The current item is a process, and there's another key after this
+        #         next_key = keys[i + 1]
+        #         # Check if next_key is a valid port
+        #         if 'ports' not in d or next_key not in d['ports']:
+        #             raise ValueError(f"Port '{next_key}' not found in process '{key}'.")
+        #     d = d[key]
+        #
+        # return d
 
     def add_process(
             self,
@@ -79,13 +99,20 @@ class Builder(dict):
     ):
         config = config or {}
         config.update(kwargs)
-        self.tree = {
-            '_type': 'process',
-            'address': f'{protocol}:{name}',
-            'config': config,
-            'inputs': inputs or {},
-            'outputs': outputs or {},
-        }
+        edge_type = 'process'
+        state = {
+                # '_type': edge_type,
+                'address': f'{protocol}:{name}',
+                'config': config,
+                'inputs': inputs or {},
+                'outputs': outputs or {},
+            }
+
+        deserialized_state = types.deserialize(schema={'_type': edge_type}, encoded=state)
+
+        self.tree = Builder(tree=deserialized_state)
+        self.schema = deserialized_state['instance'].schema()
+        self.schema['_type'] = edge_type
 
         self.compiled_composite = None
 
@@ -95,19 +122,25 @@ class Builder(dict):
                           RuntimeWarning)
 
         if not self.compiled_composite:
-            warnings.warn("ports requires compile", RuntimeWarning)
+            self.compile()
+            # warnings.warn("ports requires compile", RuntimeWarning)
 
-    def connect(self, target, port=None):
-        assert self.tree['_type'] in EDGE_KEYS, f"Invalid type for connect: {self.tree}, needs to be in {EDGE_KEYS}"
-        if port in self.tree['inputs']:
+        # TODO get the ports
+
+    def connect(self, port=None, target=None):
+        assert self.schema['_type'] in EDGE_KEYS, f"Invalid type for connect: {self.schema}, needs to be in {EDGE_KEYS}"
+
+        if port in self.schema['inputs']:
             self.tree['inputs'][port] = target
-        if port in self.tree['outputs']:
+        if port in self.schema['outputs']:
             self.tree['outputs'][port] = target
 
         self.compiled_composite = None
 
     def document(self):
-        return dict({'state': self.tree})
+        return dict({
+            'state': self.tree,
+            'schema': self.schema})
 
     def write(self, filename, outdir='out'):
         if not os.path.exists(outdir):
@@ -146,10 +179,16 @@ class Builder(dict):
 def build_gillespie():
 
     gillespie = Builder()
-    gillespie['event_process'].add_process(type='event', protocol='local', rate_param=1.0, wires={})  # protocol local should be default. kwargs could fill the config
-    gillespie['interval_process'].add_process(type='interval')
+    gillespie['event_process'].add_process(
+        name='!process_bigraph.experiments.minimal_gillespie.GillespieEvent',
+        protocol='local',
+        rate_param=1.0,
+        # inputs={},
+        # outputs={},
+    )  # protocol local should be default. kwargs could fill the config
+    gillespie['interval_process'].add_process(name='!process_bigraph.experiments.minimal_gillespie.GillespieInterval')
 
-    print(gillespie['event_process'].ports())
+    # print(gillespie['event_process'].ports())
     gillespie['event_process'].connect(target=['DNA_store'], port='DNA')
     gillespie['DNA_store'] = {'C': 2.0}  # this should check the type
     # gillespie['event_process', 'DNA'].connect(['DNA_store'])  # TODO this should be an output from event_process
@@ -162,6 +201,10 @@ def build_gillespie():
     gillespie.write(filename='gillespie1')  # save the document
     gillespie.run(10)  # run simulation
     results = gillespie.get_results()
+
+    # This needs to work
+    node = gillespie['path', 'to']
+    node.add_process()
 
 
 if __name__ == '__main__':
