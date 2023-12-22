@@ -100,18 +100,19 @@ class Builder:
         config = config or {}
         config.update(kwargs)
         edge_type = 'process'
-        state = {
-                # '_type': edge_type,
+        initial_state = {
+                '_type': edge_type,
                 'address': f'{protocol}:{name}',
                 'config': config,
                 'inputs': inputs or {},
                 'outputs': outputs or {},
             }
 
-        deserialized_state = types.deserialize(schema={'_type': edge_type}, encoded=state)
+        initial_schema = {'_type': edge_type}
+        schema, state = types.complete(initial_schema, initial_state)
 
-        self.tree = Builder(tree=deserialized_state)
-        self.schema = deserialized_state['instance'].schema()
+        self.tree = Builder(tree=state)
+        self.schema = schema['instance'].schema()
         self.schema['_type'] = edge_type
 
         self.compiled_composite = None
