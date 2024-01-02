@@ -36,6 +36,16 @@ def generate_builder_tree(tree):
     return builder_tree
 
 
+def generate_dict_from_builder_tree(builder_tree):
+    tree = {}
+    for k, i in builder_tree.items():
+        if isinstance(i, Builder):
+            tree[k] = generate_dict_from_builder_tree(i.tree)
+        else:
+            tree[k] = i  # leaves
+    return tree
+
+
 class Builder:
 
     def __init__(self, tree=None, schema=None):
@@ -45,7 +55,7 @@ class Builder:
         self.compiled_composite = None
 
     def __repr__(self):
-        return f"{pf(self.tree)}"
+        return f"B{pf(self.tree)}"
 
     def __setitem__(self, keys, value):
         # Convert single key to tuple
@@ -59,7 +69,7 @@ class Builder:
         if len(remaining) > 0:
             self.tree[first_key].__setitem__(remaining, value)
         else:
-            self.tree[first_key] = value
+            self.tree[first_key] = Builder(tree=value)
 
         self.compiled_composite = None
 
@@ -111,10 +121,8 @@ class Builder:
         initial_schema = {'_type': edge_type}
         schema, state = types.complete(initial_schema, initial_state)
 
-        self.tree = Builder(tree=state)
-        self.schema = schema['instance'].schema()
-        self.schema['_type'] = edge_type
-
+        self.tree = generate_builder_tree(state)
+        self.schema = schema
         self.compiled_composite = None
 
     def ports(self):
@@ -139,9 +147,11 @@ class Builder:
         self.compiled_composite = None
 
     def document(self):
-        return dict({
-            'state': self.tree,
-            'schema': self.schema})
+        doc = types.serialize(
+            self.schema,
+            generate_dict_from_builder_tree(self.tree))
+
+        return doc
 
     def write(self, filename, outdir='out'):
         if not os.path.exists(outdir):
@@ -157,9 +167,12 @@ class Builder:
         print(f"File '{filename}' successfully written in '{outdir}' directory.")
 
     def compile(self):
-        document = self.document()
-        self.compiled_composite = Composite(document)
-        return self.compiled_composite
+        self.schema, tree = types.complete(
+            self.schema,
+            generate_dict_from_builder_tree(self.tree)
+        )
+        self.tree = generate_builder_tree(tree)
+        self.compiled_composite = Composite({'state': tree, 'composition': self.schema})
 
     def run(self, interval):
         if not self.compiled_composite:
@@ -182,15 +195,16 @@ def build_gillespie():
     gillespie = Builder()
     gillespie['event_process'].add_process(
         name='!process_bigraph.experiments.minimal_gillespie.GillespieEvent',
-        protocol='local',
-        rate_param=1.0,
+        kdeg=1.0,
         # inputs={},
         # outputs={},
     )  # protocol local should be default. kwargs could fill the config
-    gillespie['interval_process'].add_process(name='!process_bigraph.experiments.minimal_gillespie.GillespieInterval')
+    gillespie['interval_process'].add_process(
+        name='!process_bigraph.experiments.minimal_gillespie.GillespieInterval'
+    )
 
     # print(gillespie['event_process'].ports())
-    gillespie['event_process'].connect(target=['DNA_store'], port='DNA')
+    gillespie['event_process'].connect(port='DNA', target=['DNA_store'])
     gillespie['DNA_store'] = {'C': 2.0}  # this should check the type
     # gillespie['event_process', 'DNA'].connect(['DNA_store'])  # TODO this should be an output from event_process
     # gillespie['DNA_store'].connect(['event_process', 'DNA'])  # This is an input to event_process
@@ -198,14 +212,14 @@ def build_gillespie():
     gillespie.compile()  # this fills and checks, this should also connect ports to stores with the same name, at the same level
 
     gillespie.plot()  # create bigraph plot
-    composite_data = gillespie.document()  # get the document
+    doc = gillespie.document()  # get the document
     gillespie.write(filename='gillespie1')  # save the document
     gillespie.run(10)  # run simulation
     results = gillespie.get_results()
 
     # This needs to work
     node = gillespie['path', 'to']
-    node.add_process()
+    # node.add_process()
 
 
 if __name__ == '__main__':
