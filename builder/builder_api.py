@@ -11,7 +11,7 @@ import pprint
 import warnings
 
 from process_bigraph import Process, Composite, process_registry, types
-import process_bigraph.experiments.minimal_gillespie
+from process_bigraph.experiments.minimal_gillespie import GillespieEvent, GillespieInterval
 from bigraph_viz import plot_bigraph
 
 
@@ -24,11 +24,15 @@ def pf(x):
 
 EDGE_KEYS = ['process', 'step', 'edge']
 
+# register processes
+process_registry.register('GillespieEvent', GillespieEvent)
+process_registry.register('GillespieInterval', GillespieInterval)
 
-def generate_builder_tree(tree):
-    tree = tree or {}
+
+def builder_tree_from_dict(d):
+    d = d or {}
     builder_tree = {}
-    for k, i in tree.items():
+    for k, i in d.items():
         if isinstance(i, dict):
             builder_tree[k] = Builder(i)
         else:
@@ -36,11 +40,11 @@ def generate_builder_tree(tree):
     return builder_tree
 
 
-def generate_dict_from_builder_tree(builder_tree):
+def dict_from_builder_tree(builder_tree):
     tree = {}
     for k, i in builder_tree.items():
         if isinstance(i, Builder):
-            tree[k] = generate_dict_from_builder_tree(i.tree)
+            tree[k] = dict_from_builder_tree(i.tree)
         else:
             tree[k] = i  # leaves
     return tree
@@ -50,12 +54,12 @@ class Builder:
 
     def __init__(self, tree=None, schema=None):
         super().__init__()
-        self.tree = generate_builder_tree(tree)
+        self.tree = builder_tree_from_dict(tree)
         self.schema = schema or {}  # TODO -- need to track schema
         self.compiled_composite = None
 
     def __repr__(self):
-        return f"B{pf(self.tree)}"
+        return f"Builder:{pf(self.tree)}"
 
     def __setitem__(self, keys, value):
         # Convert single key to tuple
@@ -100,8 +104,9 @@ class Builder:
 
     def add_process(
             self,
-            name='',
+            name=None,
             protocol='local',
+            process=None,
             config=None,
             inputs=None,
             outputs=None,
@@ -110,9 +115,24 @@ class Builder:
         config = config or {}
         config.update(kwargs)
         edge_type = 'process'
+
+        # register processes
+        if protocol == 'local':
+            if not process_registry.access(name):
+                assert process, f"Process '{name}' not found in registry, and no process provided."
+                process_registry.register(name, process)
+
+        # get the address
+        address = None
+        if protocol == 'path':
+            address = f'local:!{name}'
+        else:
+            address = f'{protocol}:{name}'
+
+        # make the schema
         initial_state = {
                 '_type': edge_type,
-                'address': f'{protocol}:{name}',
+                'address': address,
                 'config': config,
                 'inputs': inputs or {},
                 'outputs': outputs or {},
@@ -121,7 +141,7 @@ class Builder:
         initial_schema = {'_type': edge_type}
         schema, state = types.complete(initial_schema, initial_state)
 
-        self.tree = generate_builder_tree(state)
+        self.tree = builder_tree_from_dict(state)
         self.schema = schema
         self.compiled_composite = None
 
@@ -149,8 +169,7 @@ class Builder:
     def document(self):
         doc = types.serialize(
             self.schema,
-            generate_dict_from_builder_tree(self.tree))
-
+            dict_from_builder_tree(self.tree))
         return doc
 
     def write(self, filename, outdir='out'):
@@ -169,9 +188,9 @@ class Builder:
     def compile(self):
         self.schema, tree = types.complete(
             self.schema,
-            generate_dict_from_builder_tree(self.tree)
+            dict_from_builder_tree(self.tree)
         )
-        self.tree = generate_builder_tree(tree)
+        self.tree = builder_tree_from_dict(tree)
         self.compiled_composite = Composite({'state': tree, 'composition': self.schema})
 
     def run(self, interval):
@@ -194,20 +213,17 @@ def build_gillespie():
 
     gillespie = Builder()
     gillespie['event_process'].add_process(
-        name='!process_bigraph.experiments.minimal_gillespie.GillespieEvent',
-        kdeg=1.0,
-        # inputs={},
-        # outputs={},
-    )  # protocol local should be default. kwargs could fill the config
+        name='GillespieEvent',
+        kdeg=1.0,  # kwargs fill parameters in the config
+    )
     gillespie['interval_process'].add_process(
-        name='!process_bigraph.experiments.minimal_gillespie.GillespieInterval'
+        name='process_bigraph.experiments.minimal_gillespie.GillespieInterval',
+        protocol='path',
     )
 
     # print(gillespie['event_process'].ports())
     gillespie['event_process'].connect(port='DNA', target=['DNA_store'])
     gillespie['DNA_store'] = {'C': 2.0}  # this should check the type
-    # gillespie['event_process', 'DNA'].connect(['DNA_store'])  # TODO this should be an output from event_process
-    # gillespie['DNA_store'].connect(['event_process', 'DNA'])  # This is an input to event_process
 
     gillespie.compile()  # this fills and checks, this should also connect ports to stores with the same name, at the same level
 
