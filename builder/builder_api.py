@@ -10,7 +10,7 @@ import json
 import pprint
 import warnings
 
-from process_bigraph import Process, Composite, process_registry, types
+from process_bigraph import Process, Composite, process_registry, types, register_process
 from process_bigraph.experiments.minimal_gillespie import GillespieEvent, GillespieInterval
 from bigraph_viz import plot_bigraph
 
@@ -222,9 +222,13 @@ def build_gillespie():
     )
 
     # print(gillespie['event_process'].ports())
+    # TODO -- ports should connect more automatically and check types
     gillespie['event_process'].connect(port='DNA', target=['DNA_store'])
-    gillespie['DNA_store'] = {'C': 2.0}  # this should check the type
-
+    gillespie['event_process'].connect(port='mRNA', target=['mRNA_store'])
+    gillespie['interval_process'].connect(port='DNA', target=['DNA_store'])
+    gillespie['interval_process'].connect(port='mRNA', target=['mRNA_store'])
+    gillespie['DNA_store'] = {'C': 2.0}  # TODO this should check the type
+    gillespie['mRNA_store'] = {'C': 0.0}
     gillespie.compile()  # this fills and checks, this should also connect ports to stores with the same name, at the same level
 
     gillespie.plot()  # create bigraph plot
@@ -236,6 +240,34 @@ def build_gillespie():
     # This needs to work
     node = gillespie['path', 'to']
     # node.add_process()
+
+
+def test_builder():
+    # make a process
+    @register_process('toy')
+    class Toy(Process):
+        config_schema = {
+            'A': {'_default': 1.0},
+            'B': {'_default': 2.0},
+        }
+
+        def __init__(self, config):
+            super().__init__(config)
+
+        def schema(self):
+            return {
+                'inputs': {
+                    'A': 'float',
+                    'B': 'float'},
+                'outputs': {
+                    'C': 'float'}
+            }
+
+        def update(self, state, interval):
+            update = {
+                'C': state['A'] + state['B']
+            }
+            return update
 
 
 if __name__ == '__main__':
