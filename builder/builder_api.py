@@ -10,7 +10,8 @@ import json
 import pprint
 import warnings
 
-from process_bigraph import Process, Composite, process_registry, types, register_process
+from process_bigraph import Process, Composite, types, register_process
+from process_bigraph import process_registry as PROCESS_REGISTRY
 from process_bigraph.experiments.minimal_gillespie import GillespieEvent, GillespieInterval
 from bigraph_viz import plot_bigraph
 
@@ -23,10 +24,6 @@ def pf(x):
 
 
 EDGE_KEYS = ['process', 'step', 'edge']
-
-# register processes
-process_registry.register('GillespieEvent', GillespieEvent)
-process_registry.register('GillespieInterval', GillespieInterval)
 
 
 def builder_tree_from_dict(d):
@@ -52,14 +49,15 @@ def dict_from_builder_tree(builder_tree):
 
 class Builder:
 
-    def __init__(self, tree=None, schema=None):
+    def __init__(self, tree=None, schema=None, process_registry=None):
         super().__init__()
         self.tree = builder_tree_from_dict(tree)
         self.schema = schema or {}  # TODO -- need to track schema
         self.compiled_composite = None
+        self.process_registry = process_registry or PROCESS_REGISTRY
 
     def __repr__(self):
-        return f"Builder:{pf(self.tree)}"
+        return f"Builder({pf(self.tree)})"
 
     def __setitem__(self, keys, value):
         # Convert single key to tuple
@@ -72,8 +70,10 @@ class Builder:
         remaining = keys[1:]
         if len(remaining) > 0:
             self.tree[first_key].__setitem__(remaining, value)
-        else:
+        elif isinstance(value, dict):
             self.tree[first_key] = Builder(tree=value)
+        else:
+            self.tree[first_key] = value
 
         self.compiled_composite = None
 
@@ -102,6 +102,9 @@ class Builder:
         #
         # return d
 
+    def process_list(self):
+        return self.process_registry.list()
+
     def add_process(
             self,
             name=None,
@@ -118,9 +121,9 @@ class Builder:
 
         # register processes
         if protocol == 'local':
-            if not process_registry.access(name):
+            if not self.process_registry.access(name):
                 assert process, f"Process '{name}' not found in registry, and no process provided."
-                process_registry.register(name, process)
+                self.process_registry.register(name, process)
 
         # get the address
         address = None
@@ -159,9 +162,9 @@ class Builder:
     def connect(self, port=None, target=None):
         assert self.schema['_type'] in EDGE_KEYS, f"Invalid type for connect: {self.schema}, needs to be in {EDGE_KEYS}"
 
-        if port in self.schema['inputs']:
+        if port in self.schema['_inputs']:
             self.tree['inputs'][port] = target
-        if port in self.schema['outputs']:
+        if port in self.schema['_outputs']:
             self.tree['outputs'][port] = target
 
         self.compiled_composite = None
@@ -200,9 +203,10 @@ class Builder:
 
     def plot(self, filename='bigraph', out_dir='out', **kwargs):
         return plot_bigraph(
-            self.tree,
+            dict_from_builder_tree(self.tree),
             out_dir=out_dir,
             filename=filename,
+            show_process_schema=False,
             **kwargs)
 
     def get_results(self, query=None):
@@ -210,11 +214,15 @@ class Builder:
 
 
 def build_gillespie():
+    # register processes
+    PROCESS_REGISTRY.register('GillespieEvent', GillespieEvent)
+    PROCESS_REGISTRY.register('GillespieInterval', GillespieInterval)
 
-    gillespie = Builder()
+    gillespie = Builder(process_registry=PROCESS_REGISTRY)
     gillespie['event_process'].add_process(
         name='GillespieEvent',
         kdeg=1.0,  # kwargs fill parameters in the config
+
     )
     gillespie['interval_process'].add_process(
         name='process_bigraph.experiments.minimal_gillespie.GillespieInterval',
@@ -227,11 +235,11 @@ def build_gillespie():
     gillespie['event_process'].connect(port='mRNA', target=['mRNA_store'])
     gillespie['interval_process'].connect(port='DNA', target=['DNA_store'])
     gillespie['interval_process'].connect(port='mRNA', target=['mRNA_store'])
-    gillespie['DNA_store'] = {'C': 2.0}  # TODO this should check the type
-    gillespie['mRNA_store'] = {'C': 0.0}
+    gillespie['DNA_store'] = {'C': 2.0, 'G': 1.0}  # TODO this should check the type
+    gillespie['mRNA_store'] = {'C': 0.0, 'G': 0.0}
     gillespie.compile()  # this fills and checks, this should also connect ports to stores with the same name, at the same level
 
-    gillespie.plot()  # create bigraph plot
+    gillespie.plot(filename='gillespie_bigraph')  # create bigraph plot
     doc = gillespie.document()  # get the document
     gillespie.write(filename='gillespie1')  # save the document
     gillespie.run(10)  # run simulation
