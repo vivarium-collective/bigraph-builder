@@ -47,6 +47,27 @@ def dict_from_builder_tree(builder_tree):
     return tree
 
 
+def get_process_ports(value, schema):
+    ports = {}
+    if value.get('_type') in EDGE_KEYS:
+        ports['_inputs'] = schema.get('_inputs', {})
+        ports['_outputs'] = schema.get('_outputs', {})
+    return ports
+
+
+def fill_process_ports(tree, schema):
+    new_tree = tree.copy()
+    for key, value in tree.items():
+        if value.get('_type') in EDGE_KEYS:
+            if '_ports' not in new_tree[key]:
+                new_tree[key]['_ports'] = {}
+            new_tree[key]['_ports'].update(schema[key].get('_inputs', {}))
+            new_tree[key]['_ports'].update(schema[key].get('_outputs', {}))
+        elif isinstance(value, dict) and key in schema:
+            new_tree[key] = fill_process_ports(value, schema[key])
+    return new_tree
+
+
 class Builder:
 
     def __init__(self, tree=None, schema=None, process_registry=None):
@@ -75,6 +96,7 @@ class Builder:
         else:
             self.tree[first_key] = value
 
+        # reset compiled composite
         self.compiled_composite = None
 
     def __getitem__(self, keys):
@@ -90,17 +112,6 @@ class Builder:
             return self.tree[first_key].__getitem__(remaining)
         else:
             return self.tree[first_key]
-
-        #     # TODO: reach through a port
-        #     if i < len(keys) - 1 and d.get('_type') in EDGE_KEYS:
-        #         # The current item is a process, and there's another key after this
-        #         next_key = keys[i + 1]
-        #         # Check if next_key is a valid port
-        #         if 'ports' not in d or next_key not in d['ports']:
-        #             raise ValueError(f"Port '{next_key}' not found in process '{key}'.")
-        #     d = d[key]
-        #
-        # return d
 
     def process_registry_list(self):
         return self.process_registry.list()
@@ -149,27 +160,19 @@ class Builder:
 
         self.tree = builder_tree_from_dict(state)
         self.schema = schema
+
+        # reset compiled composite
         self.compiled_composite = None
 
-    def ports(self):
-        if self.tree['_type'] not in EDGE_KEYS:
-            warnings.warn(f"Expected '_type' to be in {EDGE_KEYS}, found '{self.tree['_type']}' instead.",
-                          RuntimeWarning)
-
-        if not self.compiled_composite:
-            self.compile()
-            # warnings.warn("ports requires compile", RuntimeWarning)
-
-        # TODO get the ports
-
     def connect(self, port=None, target=None):
-        assert self.schema['_type'] in EDGE_KEYS, f"Invalid type for connect: {self.schema}, needs to be in {EDGE_KEYS}"
+        assert self.schema.get('_type') in EDGE_KEYS, f"Invalid type for connect: {self.schema}, needs to be in {EDGE_KEYS}"
 
         if port in self.schema['_inputs']:
             self.tree['inputs'][port] = target
         if port in self.schema['_outputs']:
             self.tree['outputs'][port] = target
 
+        # reset compiled composite
         self.compiled_composite = None
 
     def document(self):
@@ -204,12 +207,28 @@ class Builder:
             self.compile()
         self.compiled_composite.run(interval)
 
+    def ports(self):
+        self.compile()
+        tree_dict = dict_from_builder_tree(self.tree)
+        tree_type = tree_dict.get('_type')
+        if not tree_type:
+            warnings.warn(f"no type provided.")
+        elif tree_type not in EDGE_KEYS:
+            warnings.warn(f"Expected '_type' to be in {EDGE_KEYS}, found '{tree_type}' instead.")
+        elif tree_type:
+            return get_process_ports(tree_dict, self.schema)
+
     def plot(self, filename=None, out_dir=None, **kwargs):
         if filename and not out_dir:
             out_dir = 'out'
+        if not self.compiled_composite:
+            self.compile()
+
+        tree_dict = dict_from_builder_tree(self.tree)
+        tree_dict = fill_process_ports(tree_dict, self.schema)
 
         return plot_bigraph(
-            dict_from_builder_tree(self.tree),
+            tree_dict,
             out_dir=out_dir,
             filename=filename,
             show_process_schema=False,
@@ -280,6 +299,15 @@ def test1():
 
     b['toy'].add_process(name='toy')
 
+    # b.tree
+    ports = b['toy'].ports()
+    print(ports)
+
+    b.compile()
+    ports = b['toy'].ports()
+    print(ports)
+
+    b.plot()
 
 
 if __name__ == '__main__':
