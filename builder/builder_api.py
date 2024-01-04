@@ -102,8 +102,11 @@ class Builder:
         #
         # return d
 
-    def process_list(self):
+    def process_registry_list(self):
         return self.process_registry.list()
+
+    def register_process(self, name, process, force=False):
+        self.process_registry.register(name, process, force=force)
 
     def add_process(
             self,
@@ -201,7 +204,10 @@ class Builder:
             self.compile()
         self.compiled_composite.run(interval)
 
-    def plot(self, filename='bigraph', out_dir='out', **kwargs):
+    def plot(self, filename=None, out_dir=None, **kwargs):
+        if filename and not out_dir:
+            out_dir = 'out'
+
         return plot_bigraph(
             dict_from_builder_tree(self.tree),
             out_dir=out_dir,
@@ -250,33 +256,32 @@ def build_gillespie():
     # node.add_process()
 
 
-def test_builder():
-    # make a process
-    @register_process('toy')
+def test1():
+    b = Builder()
+
     class Toy(Process):
         config_schema = {
-            'A': {'_default': 1.0},
-            'B': {'_default': 2.0},
-        }
-
+            'A': 'float',
+            'B': 'float'}
         def __init__(self, config):
             super().__init__(config)
-
         def schema(self):
             return {
                 'inputs': {
                     'A': 'float',
                     'B': 'float'},
                 'outputs': {
-                    'C': 'float'}
-            }
-
+                    'C': 'float'}}
         def update(self, state, interval):
-            update = {
-                'C': state['A'] + state['B']
-            }
-            return update
+            return {'C': state['A'] + state['B']}
+
+    b.register_process('toy', Toy)
+    print(b.process_registry_list())
+
+    b['toy'].add_process(name='toy')
+
 
 
 if __name__ == '__main__':
-    build_gillespie()
+    # build_gillespie()
+    test1()
