@@ -61,8 +61,16 @@ def fill_process_ports(tree, schema):
         if value.get('_type') in EDGE_KEYS:
             if '_ports' not in new_tree[key]:
                 new_tree[key]['_ports'] = {}
-            new_tree[key]['_ports'].update(schema[key].get('_inputs', {}))
-            new_tree[key]['_ports'].update(schema[key].get('_outputs', {}))
+            input_ports = schema[key].get('_inputs', {})
+            output_ports = schema[key].get('_outputs', {})
+
+            for port, v in input_ports.items():
+                if port not in new_tree[key]['inputs']:
+                    new_tree[key]['_ports'][port] = v
+            for port, v in output_ports.items():
+                if port not in new_tree[key]['outputs']:
+                    new_tree[key]['_ports'][port] = v
+
         elif isinstance(value, dict) and key in schema:
             new_tree[key] = fill_process_ports(value, schema[key])
     return new_tree
@@ -165,8 +173,10 @@ class Builder:
         self.compiled_composite = None
 
     def connect(self, port=None, target=None):
-        assert self.schema.get('_type') in EDGE_KEYS, f"Invalid type for connect: {self.schema}, needs to be in {EDGE_KEYS}"
+        if not self.compiled_composite:
+            self.compile()
 
+        assert self.schema.get('_type') in EDGE_KEYS, f"Invalid type for connect: {self.schema}, needs to be in {EDGE_KEYS}"
         if port in self.schema['_inputs']:
             self.tree['inputs'][port] = target
         if port in self.schema['_outputs']:
@@ -302,12 +312,13 @@ def test1():
     # b.tree
     ports = b['toy'].ports()
     print(ports)
+    # b.plot(filename='toy[1]')
 
-    b.compile()
-    ports = b['toy'].ports()
-    print(ports)
-
-    b.plot()
+    b['toy'].connect(port='A', target='A_store')
+    b['A_store'] = 2.3
+    b['toy'].connect(port='B', target='B_store')
+    b.plot(filename='toy[2]')
+    # b.write(filename='toy[2]', outdir='out')
 
 
 if __name__ == '__main__':
