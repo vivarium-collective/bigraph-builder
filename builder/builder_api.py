@@ -10,10 +10,13 @@ import json
 import pprint
 import warnings
 
-from process_bigraph import Process, Composite, types, register_process
+from process_bigraph import Process, Composite, types
 from process_bigraph import process_registry as PROCESS_REGISTRY
 from process_bigraph.experiments.minimal_gillespie import GillespieEvent, GillespieInterval
 from bigraph_viz import plot_bigraph
+
+
+# PROCESS_REGISTRY = types.process_registry
 
 
 pretty = pprint.PrettyPrinter(indent=2)
@@ -78,12 +81,20 @@ def fill_process_ports(tree, schema):
 
 class Builder:
 
-    def __init__(self, tree=None, schema=None, process_registry=None):
+    def __init__(self, tree=None, schema=None, process_registry=None, parent=None):
         super().__init__()
         self.tree = builder_tree_from_dict(tree)
         self.schema = schema or {}  # TODO -- need to track schema
         self.compiled_composite = None
-        self.process_registry = process_registry or PROCESS_REGISTRY
+        self.process_registry = process_registry or PROCESS_REGISTRY  # THis should maybe be the types.process_registry
+        self.parent = parent
+
+    def top(self):
+        # recursively get the top parent
+        if self.parent:
+            return self.parent.top()
+        else:
+            return self
 
     def __repr__(self):
         return f"Builder({pf(self.tree)})"
@@ -113,7 +124,7 @@ class Builder:
 
         first_key = keys[0]
         if first_key not in self.tree:
-            self.tree[first_key] = Builder()
+            self.tree[first_key] = Builder(parent=self)
 
         remaining = keys[1:]
         if len(remaining) > 0:
@@ -170,12 +181,9 @@ class Builder:
         self.schema = schema
 
         # reset compiled composite
-        self.compiled_composite = None
+        self.compile()
 
     def connect(self, port=None, target=None):
-        if not self.compiled_composite:
-            self.compile()
-
         assert self.schema.get('_type') in EDGE_KEYS, f"Invalid type for connect: {self.schema}, needs to be in {EDGE_KEYS}"
         if port in self.schema['_inputs']:
             self.tree['inputs'][port] = target
@@ -183,7 +191,7 @@ class Builder:
             self.tree['outputs'][port] = target
 
         # reset compiled composite
-        self.compiled_composite = None
+        self.compile()
 
     def document(self):
         doc = types.serialize(
@@ -205,12 +213,14 @@ class Builder:
         print(f"File '{filename}' successfully written in '{outdir}' directory.")
 
     def compile(self):
-        self.schema, tree = types.complete(
-            self.schema,
-            dict_from_builder_tree(self.tree)
+        top = self.top()
+
+        top.schema, tree = types.complete(
+            top.schema,
+            dict_from_builder_tree(top.tree)
         )
-        self.tree = builder_tree_from_dict(tree)
-        self.compiled_composite = Composite({'state': tree, 'composition': self.schema})
+        top.tree = builder_tree_from_dict(tree)
+        top.compiled_composite = Composite({'state': tree, 'composition': top.schema})
 
     def run(self, interval):
         if not self.compiled_composite:
@@ -218,7 +228,7 @@ class Builder:
         self.compiled_composite.run(interval)
 
     def ports(self):
-        self.compile()
+        # self.compile()
         tree_dict = dict_from_builder_tree(self.tree)
         tree_type = tree_dict.get('_type')
         if not tree_type:
@@ -247,6 +257,22 @@ class Builder:
     def get_results(self, query=None):
         return self.compiled_composite.gather_results(query)
 
+    def add_emitter(self, emitter='ram-emitter', protocol='local', emit_keys=None):
+        emitter_schema = {
+            'emitter': {
+                '_type': 'step',
+                'address': f'{protocol}:{emitter}',
+                'config': {
+                    'ports': {
+                        'inputs': emit_keys or 'tree[any]'   # TODO -- these should be filled in automatically, but also turn off paths
+                    }
+                },
+                'wires': {
+                    'inputs': emit_keys or 'tree[any]'  # TODO -- these should be filled in automatically
+                }
+            }
+        }
+
 
 def build_gillespie():
     # register processes
@@ -257,7 +283,6 @@ def build_gillespie():
     gillespie['event_process'].add_process(
         name='GillespieEvent',
         kdeg=1.0,  # kwargs fill parameters in the config
-
     )
     gillespie['interval_process'].add_process(
         name='process_bigraph.experiments.minimal_gillespie.GillespieInterval',
@@ -282,7 +307,7 @@ def build_gillespie():
 
     # This needs to work
     node = gillespie['path', 'to']
-    # node.add_process()
+    node.add_process()
 
 
 def test1():
@@ -314,9 +339,9 @@ def test1():
     print(ports)
     # b.plot(filename='toy[1]')
 
-    b['toy'].connect(port='A', target='A_store')
+    b['toy'].connect(port='A', target=['A_store'])
     b['A_store'] = 2.3
-    b['toy'].connect(port='B', target='B_store')
+    b['toy'].connect(port='B', target=['B_store'])
     b.plot(filename='toy[2]')
     # b.write(filename='toy[2]', outdir='out')
 
