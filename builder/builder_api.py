@@ -61,33 +61,36 @@ def get_process_ports(value, schema):
 def fill_process_ports(tree, schema):
     new_tree = tree.copy()
     for key, value in tree.items():
-        if value.get('_type') in EDGE_KEYS:
-            if '_ports' not in new_tree[key]:
-                new_tree[key]['_ports'] = {}
-            input_ports = schema[key].get('_inputs', {})
-            output_ports = schema[key].get('_outputs', {})
+        if isinstance(value, dict):
+            if value.get('_type') in EDGE_KEYS:
+                if '_ports' not in new_tree[key]:
+                    new_tree[key]['_ports'] = {}
+                input_ports = schema[key].get('_inputs', {})
+                output_ports = schema[key].get('_outputs', {})
 
-            for port, v in input_ports.items():
-                if port not in new_tree[key]['inputs']:
-                    new_tree[key]['_ports'][port] = v
-            for port, v in output_ports.items():
-                if port not in new_tree[key]['outputs']:
-                    new_tree[key]['_ports'][port] = v
+                for port, v in input_ports.items():
+                    if port not in new_tree[key]['inputs']:
+                        new_tree[key]['_ports'][port] = v
+                for port, v in output_ports.items():
+                    if port not in new_tree[key]['outputs']:
+                        new_tree[key]['_ports'][port] = v
 
-        elif isinstance(value, dict) and key in schema:
-            new_tree[key] = fill_process_ports(value, schema[key])
+            elif key in schema:
+                new_tree[key] = fill_process_ports(value, schema[key])
+
     return new_tree
 
 
 class Builder:
 
-    def __init__(self, tree=None, schema=None, process_registry=None, parent=None):
+    def __init__(self, tree=None, schema=None, parent=None, process_registry=None):
         super().__init__()
         self.tree = builder_tree_from_dict(tree)
         self.schema = schema or {}  # TODO -- need to track schema
-        self.compiled_composite = None
         self.process_registry = process_registry or PROCESS_REGISTRY  # THis should maybe be the types.process_registry
         self.parent = parent
+
+        self.compiled_composite = None
 
     def top(self):
         # recursively get the top parent
@@ -213,14 +216,33 @@ class Builder:
         print(f"File '{filename}' successfully written in '{outdir}' directory.")
 
     def compile(self):
-        top = self.top()
+        # compile the top-level Builder
+        if self.parent:
+            return self.parent.compile()
+        else:
+            self.schema, tree = types.complete(
+                self.schema,
+                dict_from_builder_tree(self.tree)
+            )
+            self.compiled_composite = Composite({'state': tree, 'composition': self.schema})
 
-        top.schema, tree = types.complete(
-            top.schema,
-            dict_from_builder_tree(top.tree)
-        )
-        top.tree = builder_tree_from_dict(tree)
-        top.compiled_composite = Composite({'state': tree, 'composition': top.schema})
+            # reset the builder tree
+            self.update_tree(self.compiled_composite.composition, self.compiled_composite.state)
+
+            return self.compiled_composite
+
+    def update_tree(self, schema, state):
+        self.schema = schema
+        state = state or {}
+        for k, i in state.items():
+            if isinstance(i, dict):
+                sub_schema = schema.get(k, {})
+                self.tree[k].update_tree(sub_schema, i)
+            else:
+                self.tree[k] = i  # leaves
+
+    def composite(self):
+        return self.top().compiled_composite
 
     def run(self, interval):
         if not self.compiled_composite:
