@@ -7,23 +7,12 @@ Python API.
 """
 import os
 import json
-import pprint
+from pprint import pformat as pf
 import warnings
 
-from process_bigraph import Process, Composite, types
-from process_bigraph import process_registry as PROCESS_REGISTRY
-from process_bigraph.experiments.minimal_gillespie import GillespieEvent, GillespieInterval
+from bigraph_schema.type_system import Edge
+from process_bigraph import Process, Step, Composite, ProcessTypes
 from bigraph_viz import plot_bigraph
-
-
-# PROCESS_REGISTRY = types.process_registry
-
-
-pretty = pprint.PrettyPrinter(indent=2)
-
-
-def pf(x):
-    return pretty.pformat(x)
 
 
 EDGE_KEYS = ['process', 'step', 'edge']
@@ -83,14 +72,20 @@ def fill_process_ports(tree, schema):
 
 class Builder:
 
-    def __init__(self, tree=None, schema=None, parent=None, process_registry=None):
+    def __init__(self, tree=None, schema=None, parent=None, core=None):
         super().__init__()
         self.tree = builder_tree_from_dict(tree)
         self.schema = schema or {}  # TODO -- need to track schema
-        self.process_registry = process_registry or PROCESS_REGISTRY  # THis should maybe be the types.process_registry
+        self.core = core or ProcessTypes()
         self.parent = parent
 
         self.compiled_composite = None
+
+        # TODO -- add an emitter by default so results are automatic
+
+    def register_process(self, process_name, process):
+        # self.core
+        pass
 
     def top(self):
         # recursively get the top parent
@@ -135,17 +130,26 @@ class Builder:
         else:
             return self.tree[first_key]
 
-    def process_registry_list(self):
-        return self.process_registry.list()
+    def list_types(self):
+        return self.core.type_registry.list()
 
-    def register_process(self, name, process, force=False):
-        self.process_registry.register(name, process, force=force)
+    def list_processes(self):
+        types = self.core.process_registry.list()
+        processes = [types for type in types if type.get('_type') in EDGE_KEYS]
+        return processes
+
+    def register(self, name, process, force=False):
+        if not self.core.access(name) and isinstance(process, Edge):
+            # TODO -- if process object is passed in, it has to be made into a schema and registered
+            process_schema = {}
+            warnings.warn(f"PROCESS SCHEMA INVALID.")
+            self.core.register(name, process_schema, force=force)
+        else:
+            warnings.warn(f"PROCESS '{process}' FAILED TO REGISTER.")
 
     def add_process(
             self,
             name=None,
-            protocol='local',
-            process=None,
             config=None,
             inputs=None,
             outputs=None,
@@ -155,18 +159,19 @@ class Builder:
         config.update(kwargs)
         edge_type = 'process'
 
-        # register processes
-        if protocol == 'local':
-            if not self.process_registry.access(name):
-                assert process, f"Process '{name}' not found in registry, and no process provided."
-                self.process_registry.register(name, process)
-
-        # get the address
-        address = None
-        if protocol == 'path':
-            address = f'local:!{name}'
-        else:
-            address = f'{protocol}:{name}'
+        # # register processes
+        # if protocol == 'local':
+        #     if not self.core.access(name):
+        #         assert process, f"Process '{name}' not found in registry, and no process provided."
+        #         self.core.register(name, process)
+        #
+        # # get the address
+        # address = None
+        # if protocol == 'path':
+        #     address = f'local:!{name}'
+        # else:
+        #     address = f'{protocol}:{name}'
+        address = self.core.address_registry(name)
 
         # make the schema
         initial_state = {
@@ -178,7 +183,7 @@ class Builder:
             }
 
         initial_schema = {'_type': edge_type}
-        schema, state = types.complete(initial_schema, initial_state)
+        schema, state = self.core.complete(initial_schema, initial_state)
 
         self.tree = builder_tree_from_dict(state)
         self.schema = schema
@@ -197,7 +202,7 @@ class Builder:
         self.compile()
 
     def document(self):
-        doc = types.serialize(
+        doc = self.core.serialize(
             self.schema,
             dict_from_builder_tree(self.tree))
         return doc
@@ -220,7 +225,7 @@ class Builder:
         if self.parent:
             return self.parent.compile()
         else:
-            self.schema, tree = types.complete(
+            self.schema, tree = self.core.complete(
                 self.schema,
                 dict_from_builder_tree(self.tree)
             )
@@ -279,52 +284,78 @@ class Builder:
     def get_results(self, query=None):
         return self.compiled_composite.gather_results(query)
 
-    def add_emitter(self, emitter='ram-emitter', protocol='local', emit_keys=None):
+    def emitter(self, name='ram-emitter', emit_keys=None):
+
+        address = self.core.address_registry(name)
         emitter_schema = {
             'emitter': {
                 '_type': 'step',
-                'address': f'{protocol}:{emitter}',
+                'address': address,
                 'config': {
-                    'ports': {
-                        'inputs': emit_keys or 'tree[any]'   # TODO -- these should be filled in automatically, but also turn off paths
-                    }
+                    'emit': emit_keys or 'schema'   # TODO -- need more robust way to describe what gets emitted
                 },
-                'wires': {
-                    'inputs': emit_keys or 'tree[any]'  # TODO -- these should be filled in automatically
-                }
+                'inputs': emit_keys or 'tree[any]'  # TODO -- these should be filled in automatically
             }
         }
 
 
 def build_gillespie():
-    # register processes
-    PROCESS_REGISTRY.register('GillespieEvent', GillespieEvent)
-    PROCESS_REGISTRY.register('GillespieInterval', GillespieInterval)
+    from process_bigraph.experiments.minimal_gillespie import GillespieEvent  #, GillespieInterval
 
-    gillespie = Builder(process_registry=PROCESS_REGISTRY)
+    gillespie = Builder()
+
+    # first, what processes do we want and where do they come from
+    gillespie.register_process(
+        'GillespieEvent', GillespieEvent)
+    gillespie.register_process(
+        'GillespieInterval',
+        address='local:!process_bigraph.experiments.minimal_gillespie.GillespieInterval')
+    gillespie.register_process(
+        'remote_copasi', address='remote:biosimulators.org/COPASI')
+
+
+    # build the bigraph
+    ## add processes
     gillespie['event_process'].add_process(
         name='GillespieEvent',
         kdeg=1.0,  # kwargs fill parameters in the config
     )
     gillespie['interval_process'].add_process(
-        name='process_bigraph.experiments.minimal_gillespie.GillespieInterval',
-        protocol='path',
+        name='GillespieInterval',
     )
 
-    # print(gillespie['event_process'].ports())
-    # TODO -- ports should connect more automatically and check types
+    ## choose an emitter
+    gillespie.emitter(name='ram-emitter')  # choose the emitter
+    gillespie.emitter(name='csv-emitter', path=['cell1', 'internal'])  # add a second emitter
+
+    ## turn on emits (assume ram-emitter if none provided)
+    gillespie.emit(all=True)  # this should emit all, filtering out processes/steps
+    gillespie.emit(path=['mRNA'])  # this should turn on an emit from this path
+    gillespie['event_process'].emit(port='mRNA')  # this should turn on an emit from this port
+    gillespie['interval_process'].emit(port='interval')
+
+    ## connect the bigraph
     gillespie['event_process'].connect(port='DNA', target=['DNA_store'])
     gillespie['event_process'].connect(port='mRNA', target=['mRNA_store'])
     gillespie['interval_process'].connect(port='DNA', target=['DNA_store'])
     gillespie['interval_process'].connect(port='mRNA', target=['mRNA_store'])
+
+    ## set the states
     gillespie['DNA_store'] = {'C': 2.0, 'G': 1.0}  # TODO this should check the type
     gillespie['mRNA_store'] = {'C': 0.0, 'G': 0.0}
     gillespie.compile()  # this fills and checks, this should also connect ports to stores with the same name, at the same level
 
+    # plot the bigraph
     gillespie.plot(filename='gillespie_bigraph')  # create bigraph plot
-    doc = gillespie.document()  # get the document
-    gillespie.write(filename='gillespie1')  # save the document
-    gillespie.run(10)  # run simulation
+
+    # get the document
+    doc = gillespie.document()
+
+    # save the document
+    gillespie.write(filename='gillespie1')
+
+    # run simulation
+    gillespie.run(10)
     results = gillespie.get_results()
 
     # This needs to work
@@ -351,8 +382,8 @@ def test1():
         def update(self, state, interval):
             return {'C': state['A'] + state['B']}
 
-    b.register_process('toy', Toy)
-    print(b.process_registry_list())
+    b.register('toy', Toy)
+    print(b.list_types())
 
     b['toy'].add_process(name='toy')
 
@@ -364,8 +395,12 @@ def test1():
     b['toy'].connect(port='A', target=['A_store'])
     b['A_store'] = 2.3
     b['toy'].connect(port='B', target=['B_store'])
+
+    # plot the bigraph
     b.plot(filename='toy[2]')
-    # b.write(filename='toy[2]', outdir='out')
+
+    b.write(filename='toy[2]', outdir='out')
+
 
 
 if __name__ == '__main__':
