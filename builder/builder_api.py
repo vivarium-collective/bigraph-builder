@@ -11,11 +11,13 @@ from pprint import pformat as pf
 import warnings
 
 from bigraph_schema.type_system import Edge
-from process_bigraph import Process, Step, Composite, ProcessTypes
+from process_bigraph import (
+    Process, Step, Composite, ProcessTypes, process_registry, register_process
+)  # todo -- process registry in processtypes?
 from bigraph_viz import plot_bigraph
 
 
-EDGE_KEYS = ['process', 'step', 'edge']
+EDGE_KEYS = ['process', 'step', 'edge']  # todo -- replace this with core.check() or similar
 
 
 def builder_tree_from_dict(d):
@@ -83,9 +85,8 @@ class Builder:
 
         # TODO -- add an emitter by default so results are automatic
 
-    def register_process(self, process_name, process):
-        # self.core
-        pass
+    def register_process(self, process_name, address):
+        process_registry.register(process_name, address)
 
     def top(self):
         # recursively get the top parent
@@ -135,7 +136,8 @@ class Builder:
 
     def list_processes(self):
         types = self.core.process_registry.list()
-        processes = [types for type in types if type.get('_type') in EDGE_KEYS]
+        processes = [
+            types for type in types if type.get('_type') in EDGE_KEYS]
         return processes
 
     def register(self, name, process, force=False):
@@ -265,7 +267,7 @@ class Builder:
         elif tree_type:
             return get_process_ports(tree_dict, self.schema)
 
-    def plot(self, filename=None, out_dir=None, **kwargs):
+    def visualize(self, filename=None, out_dir=None, **kwargs):
         if filename and not out_dir:
             out_dir = 'out'
         if not self.compiled_composite:
@@ -309,12 +311,24 @@ def build_gillespie():
         'GillespieEvent', GillespieEvent)
     gillespie.register_process(
         'GillespieInterval',
-        address='local:!process_bigraph.experiments.minimal_gillespie.GillespieInterval')
+        address='!process_bigraph.experiments.minimal_gillespie.GillespieInterval',
+        proctocol='local'
+    )
     gillespie.register_process(
-        'remote_copasi', address='remote:biosimulators.org/COPASI')
+        'remote_copasi', address='biosimulators.COPASI', protocol='ray')
+    gillespie.register_process('lsoda_process',
+                               # address='KISAO:0000088',  # this would use a KISAO protocol
+                               address_config={
+                                   'repository': 'KISAO',  # this tells us how to
+                                   'address': '0000088',
+                                   'location': 'remote',
+                               })
 
 
     # build the bigraph
+    gillespie.add_state({'variables': [0, 1, 2]})  # this should allow us to set variables
+
+
     ## add processes
     gillespie['event_process'].add_process(
         name='GillespieEvent',
@@ -322,31 +336,37 @@ def build_gillespie():
     )
     gillespie['interval_process'].add_process(
         name='GillespieInterval',
+        inputs={'port_id': ['store']}  # we should be able to set the wires directly like this
     )
 
     ## choose an emitter
-    gillespie.emitter(name='ram-emitter')  # choose the emitter
-    gillespie.emitter(name='csv-emitter', path=['cell1', 'internal'])  # add a second emitter
+    gillespie.emitter(name='ram-emitter', path=[])  # choose the emitter, path=[] would be all
+    gillespie.emitter(name='csv-emitter', path=['cell1', 'internal'], emit_tree={})  # add a second emitter
 
     ## turn on emits (assume ram-emitter if none provided)
-    gillespie.emit(all=True)  # this should emit all, filtering out processes/steps
-    gillespie.emit(path=['mRNA'])  # this should turn on an emit from this path
     gillespie['event_process'].emit(port='mRNA')  # this should turn on an emit from this port
     gillespie['interval_process'].emit(port='interval')
 
     ## connect the bigraph
-    gillespie['event_process'].connect(port='DNA', target=['DNA_store'])
-    gillespie['event_process'].connect(port='mRNA', target=['mRNA_store'])
-    gillespie['interval_process'].connect(port='DNA', target=['DNA_store'])
-    gillespie['interval_process'].connect(port='mRNA', target=['mRNA_store'])
+    gillespie['event_process'].connect(input='DNA', target=['DNA_store'])
+    gillespie['event_process'].connect(input='mRNA', target=['mRNA_store'])
+    gillespie['interval_process'].connect(output='DNA', target=['DNA_store'])
+    gillespie['interval_process'].connect(output='mRNA', target=['mRNA_store'])
 
-    ## set the states
+    ## set some states
     gillespie['DNA_store'] = {'C': 2.0, 'G': 1.0}  # TODO this should check the type
     gillespie['mRNA_store'] = {'C': 0.0, 'G': 0.0}
+
+    # TODO: move states from one location to another.
+    # TODO: add custom types
+    # TODO: add reactions, apply reactions to bigraph
+    # TODO: update model subcomponents -- via config?
+
+    # compile
     gillespie.compile()  # this fills and checks, this should also connect ports to stores with the same name, at the same level
 
     # plot the bigraph
-    gillespie.plot(filename='gillespie_bigraph')  # create bigraph plot
+    gillespie.visualize(filename='gillespie_bigraph')  # create bigraph plot
 
     # get the document
     doc = gillespie.document()
@@ -366,6 +386,7 @@ def build_gillespie():
 def test1():
     b = Builder()
 
+    @register_process('toy')
     class Toy(Process):
         config_schema = {
             'A': 'float',
@@ -397,12 +418,12 @@ def test1():
     b['toy'].connect(port='B', target=['B_store'])
 
     # plot the bigraph
-    b.plot(filename='toy[2]')
+    b.visualize(filename='toy[2]')
 
     b.write(filename='toy[2]', outdir='out')
 
 
 
 if __name__ == '__main__':
-    # build_gillespie()
-    test1()
+    build_gillespie()
+    # test1()
