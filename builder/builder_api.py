@@ -11,7 +11,7 @@ import json
 from pprint import pformat as pf
 import warnings
 
-from process_bigraph import Process, Step, Composite, ProcessTypes
+from process_bigraph import Process, Step, Edge, Composite, ProcessTypes
 from bigraph_schema.protocols import local_lookup_module
 from bigraph_viz import plot_bigraph
 
@@ -84,31 +84,39 @@ class Builder:
 
         # TODO -- add an emitter by default so results are automatic
 
-    def register_process(self, process_name, address):
-        assert isinstance(process_name, str), f'process name must be a string: {process_name}'
-        # Check if address is a class object
-        if inspect.isclass(address):
-            self.core.process_registry.register(process_name, address)
-        # Check if address is a string
-        elif isinstance(address, str):
-            try:
-                # separate out the protocol from the address
-                protocol, addr = address.split(':', 1)
-                assert protocol == 'local', 'BigraphBuilder only supports local protocol in the current version'
+    def register_process(self, process_name, address=None):
+        assert isinstance(process_name, str), f'Process name must be a string: {process_name}'
 
-                # TODO -- check protocol registry?
-                if addr[0] == '!':
-                    process_class = local_lookup_module(addr[1:])
-                    # Now you have the protocol and address separated, you can process them as needed
-                    self.core.process_registry.register(process_name, process_class)
-                else:
-                    Exception('only support local addresses')
+        if address is None:  # use as a decorator
+            def decorator(cls):
+                if not issubclass(cls, Edge):
+                    raise TypeError(f"The class {cls.__name__} must be a subclass of Edge")
+                self.core.process_registry.register(process_name, cls)
+                return cls
+            return decorator
 
-            except ValueError:
-                Exception(f"Address '{address}' does not contain a protocol. Registration failed.")
         else:
-            # Handle other types if necessary
-            Exception(f"Unsupported address type for {process_name}. Registration failed.")
+            # Check if address is a class object
+            if issubclass(address, Edge):
+                self.core.process_registry.register(process_name, address)
+
+            # Check if address is a string
+            elif isinstance(address, str):
+                try:
+                    protocol, addr = address.split(':', 1)
+                    if protocol != 'local':
+                        raise ValueError('BigraphBuilder only supports the local protocol in the current version')
+
+                    if addr.startswith('!'):
+                        process_class = local_lookup_module(addr[1:])
+                        self.core.process_registry.register(process_name, process_class)
+                    else:
+                        raise ValueError('Only local addresses starting with "!" are supported')
+                except ValueError as e:
+                    # Handle cases where the string does not conform to "protocol:address"
+                    raise ValueError(f"Error parsing address '{address}': {e}")
+            else:
+                raise TypeError(f"Unsupported address type for {process_name}: {type(address)}. Registration failed.")
 
     def top(self):
         # recursively get the top parent
@@ -389,7 +397,7 @@ def build_gillespie():
 def test1():
     b = Builder()
 
-    # @register_process('toy')
+    @b.register_process('toy')
     class Toy(Process):
         config_schema = {
             'A': 'float',
@@ -406,27 +414,27 @@ def test1():
         def update(self, state, interval):
             return {'C': state['A'] + state['B']}
 
-    b.register('toy', Toy)
-    print(b.list_types())
-
-    b['toy'].add_process(name='toy')
-
-    # b.tree
-    ports = b['toy'].ports()
-    print(ports)
-    # b.plot(filename='toy[1]')
-
-    b['toy'].connect(port='A', target=['A_store'])
-    b['A_store'] = 2.3
-    b['toy'].connect(port='B', target=['B_store'])
-
-    # plot the bigraph
-    b.visualize(filename='toy[2]')
-
-    b.write(filename='toy[2]', outdir='out')
+    # b.register('toy', Toy)
+    # print(b.list_types())
+    #
+    # b['toy'].add_process(name='toy')
+    #
+    # # b.tree
+    # ports = b['toy'].ports()
+    # print(ports)
+    # # b.plot(filename='toy[1]')
+    #
+    # b['toy'].connect(port='A', target=['A_store'])
+    # b['A_store'] = 2.3
+    # b['toy'].connect(port='B', target=['B_store'])
+    #
+    # # plot the bigraph
+    # b.visualize(filename='toy[2]')
+    #
+    # b.write(filename='toy[2]', outdir='out')
 
 
 
 if __name__ == '__main__':
-    build_gillespie()
-    # test1()
+    # build_gillespie()
+    test1()
