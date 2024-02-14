@@ -11,7 +11,6 @@ import json
 from pprint import pformat as pf
 import warnings
 
-from bigraph_schema.type_system import Edge
 from process_bigraph import Process, Step, Composite, ProcessTypes
 from bigraph_schema.protocols import local_lookup_module
 from bigraph_viz import plot_bigraph
@@ -92,8 +91,8 @@ class Builder:
             self.core.process_registry.register(process_name, address)
         # Check if address is a string
         elif isinstance(address, str):
-            # separate out the protocol from the address
             try:
+                # separate out the protocol from the address
                 protocol, addr = address.split(':', 1)
                 assert protocol == 'local', 'BigraphBuilder only supports local protocol in the current version'
 
@@ -106,7 +105,6 @@ class Builder:
                     Exception('only support local addresses')
 
             except ValueError:
-                # Handle cases where the string does not conform to "protocol:address"
                 Exception(f"Address '{address}' does not contain a protocol. Registration failed.")
         else:
             # Handle other types if necessary
@@ -128,13 +126,13 @@ class Builder:
 
         first_key = keys[0]
         if first_key not in self.tree:
-            self.tree[first_key] = Builder(core=self.core)
+            self.tree[first_key] = Builder(core=self.core, schema=self.schema.get(first_key, {}))
 
         remaining = keys[1:]
         if len(remaining) > 0:
             self.tree[first_key].__setitem__(remaining, value)
         elif isinstance(value, dict):
-            self.tree[first_key] = Builder(tree=value, core=self.core)
+            self.tree[first_key] = Builder(tree=value, core=self.core, schema=self.schema.get(first_key, {}))
         else:
             self.tree[first_key] = value
 
@@ -147,7 +145,7 @@ class Builder:
 
         first_key = keys[0]
         if first_key not in self.tree:
-            self.tree[first_key] = Builder(parent=self, core=self.core)
+            self.tree[first_key] = Builder(parent=self, core=self.core, schema=self.schema.get(first_key, {}))
 
         remaining = keys[1:]
         if len(remaining) > 0:
@@ -159,10 +157,7 @@ class Builder:
         return self.core.type_registry.list()
 
     def list_processes(self):
-        types = self.core.process_registry.list()
-        processes = [
-            types for type in types if type.get('_type') in EDGE_KEYS]
-        return processes
+        print(self.core.process_registry.list())
 
     # def register(self, name, process, force=False):
     #     if not self.core.access(name) and isinstance(process, Edge):
@@ -199,13 +194,13 @@ class Builder:
         schema, state = self.core.complete(initial_schema, initial_state)
 
         self.tree = builder_tree_from_dict(state)
-        self.schema = schema
+        self.schema = schema or {}
 
         # reset compiled composite
         self.compile()
 
     def connect(self, port=None, target=None):
-        assert self.schema.get('_type') in EDGE_KEYS, f"Invalid type for connect: {self.schema}, needs to be in {EDGE_KEYS}"
+        # assert self.schema.get('_type', {}) in EDGE_KEYS, f"Invalid type for connect: {self.schema}, needs to be in {EDGE_KEYS}"
         if port in self.schema['_inputs']:
             self.tree['inputs'][port] = target
         if port in self.schema['_outputs']:
@@ -250,7 +245,7 @@ class Builder:
             return self.compiled_composite
 
     def update_tree(self, schema=None, state=None):
-        self.schema = schema
+        self.schema = schema or self.schema
         state = state or {}
         for k, i in state.items():
             if isinstance(i, dict):
