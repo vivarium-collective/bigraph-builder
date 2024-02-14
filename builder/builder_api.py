@@ -6,14 +6,14 @@ API for building process bigraphs, integrating bigraph-schema, process-bigraph, 
 Python API.
 """
 import os
+import inspect
 import json
 from pprint import pformat as pf
 import warnings
 
 from bigraph_schema.type_system import Edge
-from process_bigraph import (
-    Process, Step, Composite, ProcessTypes, process_registry, register_process
-)  # todo -- process registry in processtypes?
+from process_bigraph import Process, Step, Composite, ProcessTypes
+from bigraph_schema.protocols import local_lookup_module
 from bigraph_viz import plot_bigraph
 
 
@@ -86,7 +86,31 @@ class Builder:
         # TODO -- add an emitter by default so results are automatic
 
     def register_process(self, process_name, address):
-        process_registry.register(process_name, address)
+        assert isinstance(process_name, str), f'process name must be a string: {process_name}'
+        # Check if address is a class object
+        if inspect.isclass(address):
+            self.core.process_registry.register(process_name, address)
+        # Check if address is a string
+        elif isinstance(address, str):
+            # separate out the protocol from the address
+            try:
+                protocol, addr = address.split(':', 1)
+                assert protocol == 'local', 'BigraphBuilder only supports local protocol in the current version'
+
+                # TODO -- check protocol registry?
+                if addr[0] == '!':
+                    process_class = local_lookup_module(addr[1:])
+                    # Now you have the protocol and address separated, you can process them as needed
+                    self.core.process_registry.register(process_name, process_class)
+                else:
+                    Exception('only support local addresses')
+
+            except ValueError:
+                # Handle cases where the string does not conform to "protocol:address"
+                Exception(f"Address '{address}' does not contain a protocol. Registration failed.")
+        else:
+            # Handle other types if necessary
+            Exception(f"Unsupported address type for {process_name}. Registration failed.")
 
     def top(self):
         # recursively get the top parent
@@ -104,13 +128,13 @@ class Builder:
 
         first_key = keys[0]
         if first_key not in self.tree:
-            self.tree[first_key] = Builder()
+            self.tree[first_key] = Builder(core=self.core)
 
         remaining = keys[1:]
         if len(remaining) > 0:
             self.tree[first_key].__setitem__(remaining, value)
         elif isinstance(value, dict):
-            self.tree[first_key] = Builder(tree=value)
+            self.tree[first_key] = Builder(tree=value, core=self.core)
         else:
             self.tree[first_key] = value
 
@@ -123,7 +147,7 @@ class Builder:
 
         first_key = keys[0]
         if first_key not in self.tree:
-            self.tree[first_key] = Builder(parent=self)
+            self.tree[first_key] = Builder(parent=self, core=self.core)
 
         remaining = keys[1:]
         if len(remaining) > 0:
@@ -140,14 +164,14 @@ class Builder:
             types for type in types if type.get('_type') in EDGE_KEYS]
         return processes
 
-    def register(self, name, process, force=False):
-        if not self.core.access(name) and isinstance(process, Edge):
-            # TODO -- if process object is passed in, it has to be made into a schema and registered
-            process_schema = {}
-            warnings.warn(f"PROCESS SCHEMA INVALID.")
-            self.core.register(name, process_schema, force=force)
-        else:
-            warnings.warn(f"PROCESS '{process}' FAILED TO REGISTER.")
+    # def register(self, name, process, force=False):
+    #     if not self.core.access(name) and isinstance(process, Edge):
+    #         # TODO -- if process object is passed in, it has to be made into a schema and registered
+    #         process_schema = {}
+    #         warnings.warn(f"PROCESS SCHEMA INVALID.")
+    #         self.core.register(name, process_schema, force=force)
+    #     else:
+    #         warnings.warn(f"PROCESS '{process}' FAILED TO REGISTER.")
 
     def add_process(
             self,
@@ -160,25 +184,12 @@ class Builder:
         config = config or {}
         config.update(kwargs)
         edge_type = 'process'
-
-        # # register processes
-        # if protocol == 'local':
-        #     if not self.core.access(name):
-        #         assert process, f"Process '{name}' not found in registry, and no process provided."
-        #         self.core.register(name, process)
-        #
-        # # get the address
-        # address = None
-        # if protocol == 'path':
-        #     address = f'local:!{name}'
-        # else:
-        #     address = f'{protocol}:{name}'
-        address = self.core.address_registry(name)
+        # address = self.core.process_registry.access(name)
 
         # make the schema
         initial_state = {
                 '_type': edge_type,
-                'address': address,
+                'address': f'local:{name}',  # TODO -- only support local right now?
                 'config': config,
                 'inputs': inputs or {},
                 'outputs': outputs or {},
@@ -238,7 +249,7 @@ class Builder:
 
             return self.compiled_composite
 
-    def update_tree(self, schema, state):
+    def update_tree(self, schema=None, state=None):
         self.schema = schema
         state = state or {}
         for k, i in state.items():
@@ -311,23 +322,20 @@ def build_gillespie():
         'GillespieEvent', GillespieEvent)
     gillespie.register_process(
         'GillespieInterval',
-        address='!process_bigraph.experiments.minimal_gillespie.GillespieInterval',
-        proctocol='local'
+        address='local:!process_bigraph.experiments.minimal_gillespie.GillespieInterval',
     )
-    gillespie.register_process(
-        'remote_copasi', address='biosimulators.COPASI', protocol='ray')
-    gillespie.register_process('lsoda_process',
-                               # address='KISAO:0000088',  # this would use a KISAO protocol
-                               address_config={
-                                   'repository': 'KISAO',  # this tells us how to
-                                   'address': '0000088',
-                                   'location': 'remote',
-                               })
+    # gillespie.register_process(
+    #     'remote_copasi', address='biosimulators.COPASI', protocol='ray')
+    # gillespie.register_process('lsoda_process',
+    #                            # address='KISAO:0000088',  # this would use a KISAO protocol
+    #                            address_config={
+    #                                'repository': 'KISAO',  # this tells us how to
+    #                                'address': '0000088',
+    #                                'location': 'remote'})
 
 
     # build the bigraph
-    gillespie.add_state({'variables': [0, 1, 2]})  # this should allow us to set variables
-
+    gillespie.update_tree(state={'variables': [0, 1, 2]})  # this should allow us to set variables
 
     ## add processes
     gillespie['event_process'].add_process(
@@ -386,7 +394,7 @@ def build_gillespie():
 def test1():
     b = Builder()
 
-    @register_process('toy')
+    # @register_process('toy')
     class Toy(Process):
         config_schema = {
             'A': 'float',
