@@ -6,7 +6,6 @@ API for building process bigraphs, integrating bigraph-schema, process-bigraph, 
 Python API.
 """
 import os
-import inspect
 import json
 from pprint import pformat as pf
 import warnings
@@ -85,6 +84,9 @@ class Builder:
         # TODO -- add an emitter by default so results are automatic
 
     def register_process(self, process_name, address=None):
+        """
+        Register processes into the local core type system
+        """
         assert isinstance(process_name, str), f'Process name must be a string: {process_name}'
 
         if address is None:  # use as a decorator
@@ -96,25 +98,20 @@ class Builder:
             return decorator
 
         else:
-            # Check if address is a class object
-            if issubclass(address, Edge):
-                self.core.process_registry.register(process_name, address)
-
             # Check if address is a string
-            elif isinstance(address, str):
-                try:
-                    protocol, addr = address.split(':', 1)
-                    if protocol != 'local':
-                        raise ValueError('BigraphBuilder only supports the local protocol in the current version')
+            if isinstance(address, str):
+                protocol, addr = address.split(':', 1)
+                if protocol != 'local':
+                    raise ValueError('BigraphBuilder only supports the local protocol in the current version')
 
-                    if addr.startswith('!'):
-                        process_class = local_lookup_module(addr[1:])
-                        self.core.process_registry.register(process_name, process_class)
-                    else:
-                        raise ValueError('Only local addresses starting with "!" are supported')
-                except ValueError as e:
-                    # Handle cases where the string does not conform to "protocol:address"
-                    raise ValueError(f"Error parsing address '{address}': {e}")
+                if addr.startswith('!'):
+                    process_class = local_lookup_module(addr[1:])
+                    self.core.process_registry.register(process_name, process_class)
+                else:
+                    raise ValueError('Only local addresses starting with "!" are supported')
+            # Check if address is a class object
+            elif issubclass(address, Edge):
+                self.core.process_registry.register(process_name, address)
             else:
                 raise TypeError(f"Unsupported address type for {process_name}: {type(address)}. Registration failed.")
 
@@ -134,7 +131,9 @@ class Builder:
 
         first_key = keys[0]
         if first_key not in self.tree:
-            self.tree[first_key] = Builder(core=self.core, schema=self.schema.get(first_key, {}))
+            self.tree[first_key] = Builder(core=self.core,
+                                           schema=self.schema.get(first_key, {})  # TODO -- is this correct?
+                                           )
 
         remaining = keys[1:]
         if len(remaining) > 0:
@@ -167,15 +166,6 @@ class Builder:
     def list_processes(self):
         print(self.core.process_registry.list())
 
-    # def register(self, name, process, force=False):
-    #     if not self.core.access(name) and isinstance(process, Edge):
-    #         # TODO -- if process object is passed in, it has to be made into a schema and registered
-    #         process_schema = {}
-    #         warnings.warn(f"PROCESS SCHEMA INVALID.")
-    #         self.core.register(name, process_schema, force=force)
-    #     else:
-    #         warnings.warn(f"PROCESS '{process}' FAILED TO REGISTER.")
-
     def add_process(
             self,
             name=None,
@@ -184,10 +174,12 @@ class Builder:
             outputs=None,
             **kwargs
     ):
+        """
+        Add a process to the tree
+        """
         config = config or {}
         config.update(kwargs)
         edge_type = 'process'
-        # address = self.core.process_registry.access(name)
 
         # make the schema
         initial_state = {
@@ -208,7 +200,7 @@ class Builder:
         self.compile()
 
     def connect(self, port=None, target=None):
-        # assert self.schema.get('_type', {}) in EDGE_KEYS, f"Invalid type for connect: {self.schema}, needs to be in {EDGE_KEYS}"
+        assert self.core.check('edge', self.schema)
         if port in self.schema['_inputs']:
             self.tree['inputs'][port] = target
         if port in self.schema['_outputs']:
@@ -436,5 +428,5 @@ def test1():
 
 
 if __name__ == '__main__':
-    # build_gillespie()
-    test1()
+    build_gillespie()
+    # test1()
