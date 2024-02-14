@@ -7509,7 +7509,7 @@ a.anchor-link {
 </style>
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<main><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b385dca6-942d-472c-9963-13b8cb33843c">
+<main><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b385dca6-942d-472c-9963-13b8cb33843c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7518,27 +7518,7 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">builder</span> <span class="kn">import</span> <span class="n">Builder</span><span class="p">,</span> <span class="n">Process</span>
-<span class="kn">from</span> <span class="nn">biosimulator_processes</span> <span class="kn">import</span> <span class="n">process_registry</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ModuleNotFoundError</span>                       Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[1], line 1</span>
-<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">builder</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> Builder, Process
-<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">biosimulator_processes</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> process_registry
-
-<span class="ansi-red-fg">ModuleNotFoundError</span>: No module named 'builder'</pre>
 </div>
 </div>
 </div>
@@ -7551,7 +7531,7 @@ Cell <span class="ansi-green-fg">In[1], line 1</span>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="n">Builder</span><span class="p">(</span><span class="n">process_registry</span><span class="o">=</span><span class="n">process_registry</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="n">Builder</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -7565,7 +7545,7 @@ Cell <span class="ansi-green-fg">In[1], line 1</span>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">process_registry_list</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">list_processes</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -7577,14 +7557,164 @@ Cell <span class="ansi-green-fg">In[1], line 1</span>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>['ram-emitter', 'console-emitter']
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=5bff2ea4-42f9-430e-b1cc-f0581510ec8d">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">process_bigraph.experiments.minimal_gillespie</span> <span class="kn">import</span> <span class="n">GillespieEvent</span> <span class="p">,</span> <span class="n">GillespieInterval</span>
+<span class="n">b</span><span class="o">.</span><span class="n">register_process</span><span class="p">(</span><span class="s1">'GillespieEvent'</span><span class="p">,</span> <span class="n">GillespieEvent</span><span class="p">)</span>
+<span class="n">b</span><span class="o">.</span><span class="n">register_process</span><span class="p">(</span><span class="s1">'GillespieInterval'</span><span class="p">,</span> <span class="n">GillespieInterval</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=40cde984-cfdf-4571-af9c-3a3755e3763c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">list_processes</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>['GillespieEvent', 'ram-emitter', 'GillespieInterval', 'console-emitter']
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=503863ee-0a58-44b3-accc-20e0167b947b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## add processes</span>
+<span class="n">b</span><span class="p">[</span><span class="s1">'event_process'</span><span class="p">]</span><span class="o">.</span><span class="n">add_process</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">'GillespieEvent'</span><span class="p">,</span>
+    <span class="n">kdeg</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># kwargs fill parameters in the config</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Unexpected exception formatting exception. Falling back to standard exception
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[3], line 1</span>
-<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-yellow-bg">b</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">process_registry_list</span>()
+<pre>Traceback (most recent call last):
+  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/interactiveshell.py", line 3550, in run_code
+    exec(code_obj, self.user_global_ns, self.user_ns)
+  File "/var/folders/vy/vr0_ytms6m95qrnk7xnh0bth0000gq/T/ipykernel_53425/3145499072.py", line 2, in &lt;module&gt;
+    b['event_process'].add_process(
+  File "/Users/eranagmon/code/bigraph-builder/builder/builder_api.py", line 201, in add_process
+  File "/Users/eranagmon/code/bigraph-builder/builder/builder_api.py", line 235, in compile
+    else:
+  File "/Users/eranagmon/code/bigraph-builder/builder/builder_api.py", line 241, in compile
+  File "/Users/eranagmon/code/process-bigraph/process_bigraph/composite.py", line 731, in __init__
+    super().__init__(config, core)
+  File "/Users/eranagmon/code/process-bigraph/process_bigraph/composite.py", line 440, in __init__
+    self.config = self.core.fill(
+AttributeError: 'NoneType' object has no attribute 'fill'
 
-<span class="ansi-red-fg">AttributeError</span>: 'Builder' object has no attribute 'process_registry_list'</pre>
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/interactiveshell.py", line 2144, in showtraceback
+    stb = self.InteractiveTB.structured_traceback(
+  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/ultratb.py", line 1435, in structured_traceback
+    return FormattedTB.structured_traceback(
+  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/ultratb.py", line 1326, in structured_traceback
+    return VerboseTB.structured_traceback(
+  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/ultratb.py", line 1173, in structured_traceback
+    formatted_exception = self.format_exception_as_a_whole(etype, evalue, etb, number_of_lines_of_context,
+  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/ultratb.py", line 1088, in format_exception_as_a_whole
+    frames.append(self.format_record(record))
+  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/ultratb.py", line 970, in format_record
+    frame_info.lines, Colors, self.has_colors, lvals
+  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/ultratb.py", line 792, in lines
+    return self._sd.lines
+  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/stack_data/utils.py", line 145, in cached_property_wrapper
+    value = obj.__dict__[self.func.__name__] = self.func(obj)
+  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/stack_data/core.py", line 734, in lines
+    pieces = self.included_pieces
+  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/stack_data/utils.py", line 145, in cached_property_wrapper
+    value = obj.__dict__[self.func.__name__] = self.func(obj)
+  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/stack_data/core.py", line 681, in included_pieces
+    pos = scope_pieces.index(self.executing_piece)
+  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/stack_data/utils.py", line 145, in cached_property_wrapper
+    value = obj.__dict__[self.func.__name__] = self.func(obj)
+  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/stack_data/core.py", line 660, in executing_piece
+    return only(
+  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/executing/executing.py", line 116, in only
+    raise NotOneValueFound('Expected one value, found 0')
+executing.executing.NotOneValueFound: Expected one value, found 0
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2f1f606b-160c-4158-9a54-54dba22f0732">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a93508ae-95d3-4a7f-ae18-54c17e6f409e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span>
+</pre></div>
 </div>
 </div>
 </div>
@@ -7594,7 +7724,7 @@ Cell <span class="ansi-green-fg">In[3], line 1</span>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># b['fba'].add_process(name='cobra')</span>
@@ -7608,7 +7738,7 @@ Cell <span class="ansi-green-fg">In[3], line 1</span>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># b['smoldyn'].add_process(name='smoldyn_process')</span>
@@ -7622,7 +7752,7 @@ Cell <span class="ansi-green-fg">In[3], line 1</span>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Toy</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
@@ -7655,16 +7785,34 @@ Cell <span class="ansi-green-fg">In[3], line 1</span>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=dae8ca8db70c4845">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=dae8ca8db70c4845">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">process_registry_list</span><span class="p">()</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[9], line 1</span>
+<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-yellow-bg">b</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">process_registry_list</span>()
+
+<span class="ansi-red-fg">AttributeError</span>: 'Builder' object has no attribute 'process_registry_list'</pre>
 </div>
 </div>
 </div>
