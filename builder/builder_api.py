@@ -7,12 +7,36 @@ Python API.
 """
 import os
 import json
-from pprint import pformat as pf
 import warnings
 
 from process_bigraph import Process, Step, Edge, Composite, ProcessTypes
 from bigraph_schema.protocols import local_lookup_module
-from bigraph_viz import plot_bigraph
+from bigraph_viz.diagram import plot_bigraph
+
+def custom_pf(d, indent=0):
+    """Custom dictionary formatter to achieve specific indentation styles."""
+    items = []
+    for k, v in d.items():
+        key_str = f"{repr(k)}: "
+        if isinstance(v, dict):
+            if v:  # Check if the dictionary is not empty
+                value_str = custom_pf(v, indent + 3)
+            else:
+                value_str = "{}"
+        else:
+            value_str = repr(v)
+        items.append(f"{' ' * indent}{key_str}{value_str}")
+
+    # Use f-string for final formatting, incorporating items_str
+    items_str = ',\n'.join(items)
+    if indent > 0:
+        return f"{{\n{items_str}\n{' ' * (indent - 4)}}}"
+    else:
+        return f"{{\n{items_str}\n}}"
+
+
+
+# Examp
 
 
 EDGE_KEYS = ['process', 'step', 'edge']  # todo -- replace this with core.check() or similar
@@ -93,7 +117,7 @@ class Builder:
             def decorator(cls):
                 if not issubclass(cls, Edge):
                     raise TypeError(f"The class {cls.__name__} must be a subclass of Edge")
-                self.core.process_registry.register(process_name, cls)
+                self.core.process_registry.register(process_name, cls, force=True)
                 return cls
             return decorator
 
@@ -106,12 +130,12 @@ class Builder:
 
                 if addr.startswith('!'):
                     process_class = local_lookup_module(addr[1:])
-                    self.core.process_registry.register(process_name, process_class)
+                    self.core.process_registry.register(process_name, process_class, force=True)
                 else:
                     raise ValueError('Only local addresses starting with "!" are supported')
             # Check if address is a class object
             elif issubclass(address, Edge):
-                self.core.process_registry.register(process_name, address)
+                self.core.process_registry.register(process_name, address, force=True)
             else:
                 raise TypeError(f"Unsupported address type for {process_name}: {type(address)}. Registration failed.")
 
@@ -123,7 +147,8 @@ class Builder:
             return self
 
     def __repr__(self):
-        return f"Builder({pf(self.tree)})"
+        return custom_pf(dict_from_builder_tree(self.tree))
+        # return f"Builder(\n{pf(self.tree)})"
 
     def __setitem__(self, keys, value):
         # Convert single key to tuple
@@ -237,7 +262,9 @@ class Builder:
                 self.schema,
                 dict_from_builder_tree(self.tree)
             )
-            self.compiled_composite = Composite({'state': tree, 'composition': self.schema})
+            self.compiled_composite = Composite(
+                {'state': tree, 'composition': self.schema},
+                core=self.core)
 
             # reset the builder tree
             self.update_tree(self.compiled_composite.composition, self.compiled_composite.state)
@@ -262,7 +289,7 @@ class Builder:
             self.compile()
         self.compiled_composite.run(interval)
 
-    def ports(self):
+    def ports(self, print_ports=False):
         # self.compile()
         tree_dict = dict_from_builder_tree(self.tree)
         tree_type = tree_dict.get('_type')
@@ -271,7 +298,11 @@ class Builder:
         elif tree_type not in EDGE_KEYS:
             warnings.warn(f"Expected '_type' to be in {EDGE_KEYS}, found '{tree_type}' instead.")
         elif tree_type:
-            return get_process_ports(tree_dict, self.schema)
+            process_ports = get_process_ports(tree_dict, self.schema)
+            if not print_ports:
+                return process_ports
+            else:
+                print(custom_pf(process_ports))
 
     def visualize(self, filename=None, out_dir=None, **kwargs):
         if filename and not out_dir:
@@ -286,7 +317,7 @@ class Builder:
             tree_dict,
             out_dir=out_dir,
             filename=filename,
-            show_process_schema=False,
+            # show_process_schema=False,
             **kwargs)
 
     def get_results(self, query=None):
@@ -308,7 +339,7 @@ class Builder:
 
 
 def build_gillespie():
-    from process_bigraph.experiments.minimal_gillespie import GillespieEvent  #, GillespieInterval
+    from process_bigraph.experiments.minimal_gillespie import GillespieEvent #, GillespieInterval
 
     gillespie = Builder()
 
@@ -339,8 +370,11 @@ def build_gillespie():
     )
     gillespie['interval_process'].add_process(
         name='GillespieInterval',
-        inputs={'port_id': ['store']}  # we should be able to set the wires directly like this
+        # inputs={'port_id': ['store']}  # we should be able to set the wires directly like this
     )
+
+    ## visualize part-way through build
+    gillespie.visualize(filename='bigraph1', out_dir='out')
 
     ## choose an emitter
     gillespie.emitter(name='ram-emitter', path=[])  # choose the emitter, path=[] would be all
