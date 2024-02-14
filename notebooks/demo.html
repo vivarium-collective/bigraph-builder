@@ -7558,7 +7558,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>['ram-emitter', 'console-emitter']
+<pre>['console-emitter', 'ram-emitter']
 </pre>
 </div>
 </div>
@@ -7601,125 +7601,13 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>['GillespieEvent', 'ram-emitter', 'GillespieInterval', 'console-emitter']
+<pre>['console-emitter', 'GillespieEvent', 'GillespieInterval', 'ram-emitter']
 </pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=503863ee-0a58-44b3-accc-20e0167b947b">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## add processes</span>
-<span class="n">b</span><span class="p">[</span><span class="s1">'event_process'</span><span class="p">]</span><span class="o">.</span><span class="n">add_process</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s1">'GillespieEvent'</span><span class="p">,</span>
-    <span class="n">kdeg</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># kwargs fill parameters in the config</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Unexpected exception formatting exception. Falling back to standard exception
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>Traceback (most recent call last):
-  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/interactiveshell.py", line 3550, in run_code
-    exec(code_obj, self.user_global_ns, self.user_ns)
-  File "/var/folders/vy/vr0_ytms6m95qrnk7xnh0bth0000gq/T/ipykernel_53425/3145499072.py", line 2, in &lt;module&gt;
-    b['event_process'].add_process(
-  File "/Users/eranagmon/code/bigraph-builder/builder/builder_api.py", line 201, in add_process
-  File "/Users/eranagmon/code/bigraph-builder/builder/builder_api.py", line 235, in compile
-    else:
-  File "/Users/eranagmon/code/bigraph-builder/builder/builder_api.py", line 241, in compile
-  File "/Users/eranagmon/code/process-bigraph/process_bigraph/composite.py", line 731, in __init__
-    super().__init__(config, core)
-  File "/Users/eranagmon/code/process-bigraph/process_bigraph/composite.py", line 440, in __init__
-    self.config = self.core.fill(
-AttributeError: 'NoneType' object has no attribute 'fill'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/interactiveshell.py", line 2144, in showtraceback
-    stb = self.InteractiveTB.structured_traceback(
-  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/ultratb.py", line 1435, in structured_traceback
-    return FormattedTB.structured_traceback(
-  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/ultratb.py", line 1326, in structured_traceback
-    return VerboseTB.structured_traceback(
-  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/ultratb.py", line 1173, in structured_traceback
-    formatted_exception = self.format_exception_as_a_whole(etype, evalue, etb, number_of_lines_of_context,
-  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/ultratb.py", line 1088, in format_exception_as_a_whole
-    frames.append(self.format_record(record))
-  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/ultratb.py", line 970, in format_record
-    frame_info.lines, Colors, self.has_colors, lvals
-  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/IPython/core/ultratb.py", line 792, in lines
-    return self._sd.lines
-  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/stack_data/utils.py", line 145, in cached_property_wrapper
-    value = obj.__dict__[self.func.__name__] = self.func(obj)
-  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/stack_data/core.py", line 734, in lines
-    pieces = self.included_pieces
-  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/stack_data/utils.py", line 145, in cached_property_wrapper
-    value = obj.__dict__[self.func.__name__] = self.func(obj)
-  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/stack_data/core.py", line 681, in included_pieces
-    pos = scope_pieces.index(self.executing_piece)
-  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/stack_data/utils.py", line 145, in cached_property_wrapper
-    value = obj.__dict__[self.func.__name__] = self.func(obj)
-  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/stack_data/core.py", line 660, in executing_piece
-    return only(
-  File "/Users/eranagmon/code/bigraph-builder/venv/lib/python3.9/site-packages/executing/executing.py", line 116, in only
-    raise NotOneValueFound('Expected one value, found 0')
-executing.executing.NotOneValueFound: Expected one value, found 0
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2f1f606b-160c-4158-9a54-54dba22f0732">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a93508ae-95d3-4a7f-ae18-54c17e6f409e">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a84d340622208914">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=503863ee-0a58-44b3-accc-20e0167b947b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7727,21 +7615,11 @@ executing.executing.NotOneValueFound: Expected one value, found 0
 <div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># b['fba'].add_process(name='cobra')</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=235efcd79c0f13c1">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># b['smoldyn'].add_process(name='smoldyn_process')</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ## add processes</span>
+<span class="c1"># b['event_process'].add_process(</span>
+<span class="c1">#     name='GillespieEvent',</span>
+<span class="c1">#     kdeg=1.0,  # kwargs fill parameters in the config</span>
+<span class="c1"># )</span>
 </pre></div>
 </div>
 </div>
@@ -7752,10 +7630,11 @@ executing.executing.NotOneValueFound: Expected one value, found 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Toy</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nd">@b</span><span class="o">.</span><span class="n">register_process</span><span class="p">(</span><span class="s1">'toy'</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Toy</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
     <span class="n">config_schema</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">'A'</span><span class="p">:</span> <span class="s1">'float'</span><span class="p">,</span>
         <span class="s1">'B'</span><span class="p">:</span> <span class="s1">'float'</span><span class="p">,</span>
@@ -7778,8 +7657,6 @@ executing.executing.NotOneValueFound: Expected one value, found 0
             <span class="s1">'C'</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s1">'A'</span><span class="p">]</span> <span class="o">+</span> <span class="n">state</span><span class="p">[</span><span class="s1">'B'</span><span class="p">]</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">update</span>
-
-<span class="n">b</span><span class="o">.</span><span class="n">register_process</span><span class="p">(</span><span class="s1">'toy'</span><span class="p">,</span> <span class="n">Toy</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7790,10 +7667,65 @@ executing.executing.NotOneValueFound: Expected one value, found 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">list_processes</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>['ram-emitter', 'GillespieEvent', 'console-emitter', 'GillespieInterval', 'toy']
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=1ab07d86-695d-4113-8bbb-66bebc7b22ce">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2694ee21-d3b6-4c5d-9dbf-ea2348c97797">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8b1f49a78de17642">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">process_registry_list</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">[</span><span class="s1">'toy'</span><span class="p">]</span><span class="o">.</span><span class="n">add_process</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'toy'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7808,25 +7740,70 @@ executing.executing.NotOneValueFound: Expected one value, found 0
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
 Cell <span class="ansi-green-fg">In[9], line 1</span>
-<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-yellow-bg">b</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">process_registry_list</span>()
+<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-yellow-bg">b</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">toy</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">add_process</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">name</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">toy</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">)</span>
 
-<span class="ansi-red-fg">AttributeError</span>: 'Builder' object has no attribute 'process_registry_list'</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=8b1f49a78de17642">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">[</span><span class="s1">'toy'</span><span class="p">]</span><span class="o">.</span><span class="n">add_process</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'toy'</span><span class="p">)</span>
-</pre></div>
+File <span class="ansi-green-fg">~/code/bigraph-builder/builder/builder_api.py:202</span>, in <span class="ansi-cyan-fg">Builder.add_process</span><span class="ansi-blue-fg">(self, name, config, inputs, outputs, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    193</span> initial_state <span style="color: rgb(98,98,98)">=</span> {
+<span class="ansi-green-intense-fg ansi-bold">    194</span>         <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">_type</span><span style="color: rgb(175,0,0)">'</span>: edge_type,
+<span class="ansi-green-intense-fg ansi-bold">    195</span>         <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">address</span><span style="color: rgb(175,0,0)">'</span>: <span style="color: rgb(175,0,0)">f</span><span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">local:</span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span>name<span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span style="color: rgb(175,0,0)">'</span>,  <span style="color: rgb(95,135,135)"># TODO -- only support local right now?</span>
+<span class="ansi-green-fg">   (...)</span>
+<span class="ansi-green-intense-fg ansi-bold">    198</span>         <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">outputs</span><span style="color: rgb(175,0,0)">'</span>: outputs <span class="ansi-bold" style="color: rgb(175,0,255)">or</span> {},
+<span class="ansi-green-intense-fg ansi-bold">    199</span>     }
+<span class="ansi-green-intense-fg ansi-bold">    201</span> initial_schema <span style="color: rgb(98,98,98)">=</span> {<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">_type</span><span style="color: rgb(175,0,0)">'</span>: edge_type}
+<span class="ansi-green-fg">--&gt; 202</span> schema, state <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">core</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">complete</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">initial_schema</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">initial_state</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    204</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>tree <span style="color: rgb(98,98,98)">=</span> builder_tree_from_dict(state)
+<span class="ansi-green-intense-fg ansi-bold">    205</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>schema <span style="color: rgb(98,98,98)">=</span> schema <span class="ansi-bold" style="color: rgb(175,0,255)">or</span> {}
+
+File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_system.py:1246</span>, in <span class="ansi-cyan-fg">TypeSystem.complete</span><span class="ansi-blue-fg">(self, initial_schema, initial_state)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1242</span> full_schema <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>access(
+<span class="ansi-green-intense-fg ansi-bold">   1243</span>     initial_schema)
+<span class="ansi-green-intense-fg ansi-bold">   1245</span> <span style="color: rgb(95,135,135)"># hydrate the state given the initial composition</span>
+<span class="ansi-green-fg">-&gt; 1246</span> state <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">hydrate</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-intense-fg ansi-bold">   1247</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">full_schema</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">   1248</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">initial_state</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1250</span> <span style="color: rgb(95,135,135)"># fill in the parts of the composition schema</span>
+<span class="ansi-green-intense-fg ansi-bold">   1251</span> <span style="color: rgb(95,135,135)"># determined by the state</span>
+<span class="ansi-green-intense-fg ansi-bold">   1252</span> schema, state <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>infer_schema(
+<span class="ansi-green-intense-fg ansi-bold">   1253</span>     full_schema,
+<span class="ansi-green-intense-fg ansi-bold">   1254</span>     state)
+
+File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_system.py:1237</span>, in <span class="ansi-cyan-fg">TypeSystem.hydrate</span><span class="ansi-blue-fg">(self, schema, state)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1235</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">hydrate</span>(<span style="color: rgb(0,135,0)">self</span>, schema, state):
+<span class="ansi-green-intense-fg ansi-bold">   1236</span>     <span style="color: rgb(95,135,135)"># TODO: support partial hydration (!)</span>
+<span class="ansi-green-fg">-&gt; 1237</span>     hydrated <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">hydrate_state</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">schema</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">state</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1238</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>fill(schema, hydrated)
+
+File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_system.py:1209</span>, in <span class="ansi-cyan-fg">TypeSystem.hydrate_state</span><span class="ansi-blue-fg">(self, schema, state)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1207</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">hydrate_state</span>(<span style="color: rgb(0,135,0)">self</span>, schema, state):
+<span class="ansi-green-intense-fg ansi-bold">   1208</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">isinstance</span>(state, <span style="color: rgb(0,135,0)">str</span>) <span class="ansi-bold" style="color: rgb(175,0,255)">or</span> <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">_deserialize</span><span style="color: rgb(175,0,0)">'</span> <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> schema:
+<span class="ansi-green-fg">-&gt; 1209</span>         result <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">deserialize</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-intense-fg ansi-bold">   1210</span> <span class="ansi-yellow-bg">            </span><span class="ansi-yellow-bg">schema</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">   1211</span> <span class="ansi-yellow-bg">            </span><span class="ansi-yellow-bg">state</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1213</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">elif</span> <span style="color: rgb(0,135,0)">isinstance</span>(state, <span style="color: rgb(0,135,0)">dict</span>):
+<span class="ansi-green-intense-fg ansi-bold">   1214</span>         <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">isinstance</span>(schema, <span style="color: rgb(0,135,0)">str</span>):
+
+File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_system.py:606</span>, in <span class="ansi-cyan-fg">TypeSystem.deserialize</span><span class="ansi-blue-fg">(self, schema, encoded)</span>
+<span class="ansi-green-intense-fg ansi-bold">    603</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> encoded <span class="ansi-bold" style="color: rgb(175,0,255)">is</span> <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>:
+<span class="ansi-green-intense-fg ansi-bold">    604</span>         encoded <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>default(schema)
+<span class="ansi-green-fg">--&gt; 606</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">deserialize_function</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-intense-fg ansi-bold">    607</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">encoded</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">    608</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">found</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">    609</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    611</span> <span class="ansi-bold" style="color: rgb(0,135,0)">elif</span> <span style="color: rgb(0,135,0)">isinstance</span>(encoded, <span style="color: rgb(0,135,0)">dict</span>):
+<span class="ansi-green-intense-fg ansi-bold">    612</span>     result <span style="color: rgb(98,98,98)">=</span> {}
+
+File <span class="ansi-green-fg">~/code/process-bigraph/process_bigraph/composite.py:94</span>, in <span class="ansi-cyan-fg">deserialize_process</span><span class="ansi-blue-fg">(encoded, schema, core)</span>
+<span class="ansi-green-intense-fg ansi-bold">     89</span> interval <span style="color: rgb(98,98,98)">=</span> core<span style="color: rgb(98,98,98)">.</span>deserialize(
+<span class="ansi-green-intense-fg ansi-bold">     90</span>     <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">interval</span><span style="color: rgb(175,0,0)">'</span>,
+<span class="ansi-green-intense-fg ansi-bold">     91</span>     encoded<span style="color: rgb(98,98,98)">.</span>get(<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">interval</span><span style="color: rgb(175,0,0)">'</span>))
+<span class="ansi-green-intense-fg ansi-bold">     93</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">instance</span><span style="color: rgb(175,0,0)">'</span> <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> deserialized:
+<span class="ansi-green-fg">---&gt; 94</span>     process <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">instantiate</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">config</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">core</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     95</span>     deserialized[<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">instance</span><span style="color: rgb(175,0,0)">'</span>] <span style="color: rgb(98,98,98)">=</span> process
+<span class="ansi-green-intense-fg ansi-bold">     97</span> deserialized[<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">config</span><span style="color: rgb(175,0,0)">'</span>] <span style="color: rgb(98,98,98)">=</span> config
+
+<span class="ansi-red-fg">TypeError</span>: __init__() takes 2 positional arguments but 3 were given</pre>
 </div>
 </div>
 </div>
