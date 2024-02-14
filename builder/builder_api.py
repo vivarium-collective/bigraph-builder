@@ -6,24 +6,18 @@ API for building process bigraphs, integrating bigraph-schema, process-bigraph, 
 Python API.
 """
 import os
+import inspect
 import json
-import pprint
+from pprint import pformat as pf
 import warnings
 
-from process_bigraph import Process, Composite, types, register_process
-from process_bigraph import process_registry as PROCESS_REGISTRY
-from process_bigraph.experiments.minimal_gillespie import GillespieEvent, GillespieInterval
+from bigraph_schema.type_system import Edge
+from process_bigraph import Process, Step, Composite, ProcessTypes
+from bigraph_schema.protocols import local_lookup_module
 from bigraph_viz import plot_bigraph
 
 
-pretty = pprint.PrettyPrinter(indent=2)
-
-
-def pf(x):
-    return pretty.pformat(x)
-
-
-EDGE_KEYS = ['process', 'step', 'edge']
+EDGE_KEYS = ['process', 'step', 'edge']  # todo -- replace this with core.check() or similar
 
 
 def builder_tree_from_dict(d):
@@ -58,32 +52,72 @@ def get_process_ports(value, schema):
 def fill_process_ports(tree, schema):
     new_tree = tree.copy()
     for key, value in tree.items():
-        if value.get('_type') in EDGE_KEYS:
-            if '_ports' not in new_tree[key]:
-                new_tree[key]['_ports'] = {}
-            input_ports = schema[key].get('_inputs', {})
-            output_ports = schema[key].get('_outputs', {})
+        if isinstance(value, dict):
+            if value.get('_type') in EDGE_KEYS:
+                if '_ports' not in new_tree[key]:
+                    new_tree[key]['_ports'] = {}
+                input_ports = schema[key].get('_inputs', {})
+                output_ports = schema[key].get('_outputs', {})
 
-            for port, v in input_ports.items():
-                if port not in new_tree[key]['inputs']:
-                    new_tree[key]['_ports'][port] = v
-            for port, v in output_ports.items():
-                if port not in new_tree[key]['outputs']:
-                    new_tree[key]['_ports'][port] = v
+                for port, v in input_ports.items():
+                    if port not in new_tree[key]['inputs']:
+                        new_tree[key]['_ports'][port] = v
+                for port, v in output_ports.items():
+                    if port not in new_tree[key]['outputs']:
+                        new_tree[key]['_ports'][port] = v
 
-        elif isinstance(value, dict) and key in schema:
-            new_tree[key] = fill_process_ports(value, schema[key])
+            elif key in schema:
+                new_tree[key] = fill_process_ports(value, schema[key])
+
     return new_tree
 
 
 class Builder:
 
-    def __init__(self, tree=None, schema=None, process_registry=None):
+    def __init__(self, tree=None, schema=None, parent=None, core=None):
         super().__init__()
         self.tree = builder_tree_from_dict(tree)
         self.schema = schema or {}  # TODO -- need to track schema
+        self.core = core or ProcessTypes()
+        self.parent = parent
+
         self.compiled_composite = None
-        self.process_registry = process_registry or PROCESS_REGISTRY
+
+        # TODO -- add an emitter by default so results are automatic
+
+    def register_process(self, process_name, address):
+        assert isinstance(process_name, str), f'process name must be a string: {process_name}'
+        # Check if address is a class object
+        if inspect.isclass(address):
+            self.core.process_registry.register(process_name, address)
+        # Check if address is a string
+        elif isinstance(address, str):
+            # separate out the protocol from the address
+            try:
+                protocol, addr = address.split(':', 1)
+                assert protocol == 'local', 'BigraphBuilder only supports local protocol in the current version'
+
+                # TODO -- check protocol registry?
+                if addr[0] == '!':
+                    process_class = local_lookup_module(addr[1:])
+                    # Now you have the protocol and address separated, you can process them as needed
+                    self.core.process_registry.register(process_name, process_class)
+                else:
+                    Exception('only support local addresses')
+
+            except ValueError:
+                # Handle cases where the string does not conform to "protocol:address"
+                Exception(f"Address '{address}' does not contain a protocol. Registration failed.")
+        else:
+            # Handle other types if necessary
+            Exception(f"Unsupported address type for {process_name}. Registration failed.")
+
+    def top(self):
+        # recursively get the top parent
+        if self.parent:
+            return self.parent.top()
+        else:
+            return self
 
     def __repr__(self):
         return f"Builder({pf(self.tree)})"
@@ -94,13 +128,13 @@ class Builder:
 
         first_key = keys[0]
         if first_key not in self.tree:
-            self.tree[first_key] = Builder()
+            self.tree[first_key] = Builder(core=self.core)
 
         remaining = keys[1:]
         if len(remaining) > 0:
             self.tree[first_key].__setitem__(remaining, value)
         elif isinstance(value, dict):
-            self.tree[first_key] = Builder(tree=value)
+            self.tree[first_key] = Builder(tree=value, core=self.core)
         else:
             self.tree[first_key] = value
 
@@ -113,7 +147,7 @@ class Builder:
 
         first_key = keys[0]
         if first_key not in self.tree:
-            self.tree[first_key] = Builder()
+            self.tree[first_key] = Builder(parent=self, core=self.core)
 
         remaining = keys[1:]
         if len(remaining) > 0:
@@ -121,17 +155,27 @@ class Builder:
         else:
             return self.tree[first_key]
 
-    def process_registry_list(self):
-        return self.process_registry.list()
+    def list_types(self):
+        return self.core.type_registry.list()
 
-    def register_process(self, name, process, force=False):
-        self.process_registry.register(name, process, force=force)
+    def list_processes(self):
+        types = self.core.process_registry.list()
+        processes = [
+            types for type in types if type.get('_type') in EDGE_KEYS]
+        return processes
+
+    # def register(self, name, process, force=False):
+    #     if not self.core.access(name) and isinstance(process, Edge):
+    #         # TODO -- if process object is passed in, it has to be made into a schema and registered
+    #         process_schema = {}
+    #         warnings.warn(f"PROCESS SCHEMA INVALID.")
+    #         self.core.register(name, process_schema, force=force)
+    #     else:
+    #         warnings.warn(f"PROCESS '{process}' FAILED TO REGISTER.")
 
     def add_process(
             self,
             name=None,
-            protocol='local',
-            process=None,
             config=None,
             inputs=None,
             outputs=None,
@@ -140,42 +184,27 @@ class Builder:
         config = config or {}
         config.update(kwargs)
         edge_type = 'process'
-
-        # register processes
-        if protocol == 'local':
-            if not self.process_registry.access(name):
-                assert process, f"Process '{name}' not found in registry, and no process provided."
-                self.process_registry.register(name, process)
-
-        # get the address
-        address = None
-        if protocol == 'path':
-            address = f'local:!{name}'
-        else:
-            address = f'{protocol}:{name}'
+        # address = self.core.process_registry.access(name)
 
         # make the schema
         initial_state = {
                 '_type': edge_type,
-                'address': address,
+                'address': f'local:{name}',  # TODO -- only support local right now?
                 'config': config,
                 'inputs': inputs or {},
                 'outputs': outputs or {},
             }
 
         initial_schema = {'_type': edge_type}
-        schema, state = types.complete(initial_schema, initial_state)
+        schema, state = self.core.complete(initial_schema, initial_state)
 
         self.tree = builder_tree_from_dict(state)
         self.schema = schema
 
         # reset compiled composite
-        self.compiled_composite = None
+        self.compile()
 
     def connect(self, port=None, target=None):
-        if not self.compiled_composite:
-            self.compile()
-
         assert self.schema.get('_type') in EDGE_KEYS, f"Invalid type for connect: {self.schema}, needs to be in {EDGE_KEYS}"
         if port in self.schema['_inputs']:
             self.tree['inputs'][port] = target
@@ -183,10 +212,10 @@ class Builder:
             self.tree['outputs'][port] = target
 
         # reset compiled composite
-        self.compiled_composite = None
+        self.compile()
 
     def document(self):
-        doc = types.serialize(
+        doc = self.core.serialize(
             self.schema,
             dict_from_builder_tree(self.tree))
         return doc
@@ -205,12 +234,33 @@ class Builder:
         print(f"File '{filename}' successfully written in '{outdir}' directory.")
 
     def compile(self):
-        self.schema, tree = types.complete(
-            self.schema,
-            dict_from_builder_tree(self.tree)
-        )
-        self.tree = builder_tree_from_dict(tree)
-        self.compiled_composite = Composite({'state': tree, 'composition': self.schema})
+        # compile the top-level Builder
+        if self.parent:
+            return self.parent.compile()
+        else:
+            self.schema, tree = self.core.complete(
+                self.schema,
+                dict_from_builder_tree(self.tree)
+            )
+            self.compiled_composite = Composite({'state': tree, 'composition': self.schema})
+
+            # reset the builder tree
+            self.update_tree(self.compiled_composite.composition, self.compiled_composite.state)
+
+            return self.compiled_composite
+
+    def update_tree(self, schema=None, state=None):
+        self.schema = schema
+        state = state or {}
+        for k, i in state.items():
+            if isinstance(i, dict):
+                sub_schema = schema.get(k, {})
+                self.tree[k].update_tree(sub_schema, i)
+            else:
+                self.tree[k] = i  # leaves
+
+    def composite(self):
+        return self.top().compiled_composite
 
     def run(self, interval):
         if not self.compiled_composite:
@@ -218,7 +268,7 @@ class Builder:
         self.compiled_composite.run(interval)
 
     def ports(self):
-        self.compile()
+        # self.compile()
         tree_dict = dict_from_builder_tree(self.tree)
         tree_type = tree_dict.get('_type')
         if not tree_type:
@@ -228,7 +278,7 @@ class Builder:
         elif tree_type:
             return get_process_ports(tree_dict, self.schema)
 
-    def plot(self, filename=None, out_dir=None, **kwargs):
+    def visualize(self, filename=None, out_dir=None, **kwargs):
         if filename and not out_dir:
             out_dir = 'out'
         if not self.compiled_composite:
@@ -247,47 +297,104 @@ class Builder:
     def get_results(self, query=None):
         return self.compiled_composite.gather_results(query)
 
+    def emitter(self, name='ram-emitter', emit_keys=None):
+
+        address = self.core.address_registry(name)
+        emitter_schema = {
+            'emitter': {
+                '_type': 'step',
+                'address': address,
+                'config': {
+                    'emit': emit_keys or 'schema'   # TODO -- need more robust way to describe what gets emitted
+                },
+                'inputs': emit_keys or 'tree[any]'  # TODO -- these should be filled in automatically
+            }
+        }
+
 
 def build_gillespie():
-    # register processes
-    PROCESS_REGISTRY.register('GillespieEvent', GillespieEvent)
-    PROCESS_REGISTRY.register('GillespieInterval', GillespieInterval)
+    from process_bigraph.experiments.minimal_gillespie import GillespieEvent  #, GillespieInterval
 
-    gillespie = Builder(process_registry=PROCESS_REGISTRY)
+    gillespie = Builder()
+
+    # first, what processes do we want and where do they come from
+    gillespie.register_process(
+        'GillespieEvent', GillespieEvent)
+    gillespie.register_process(
+        'GillespieInterval',
+        address='local:!process_bigraph.experiments.minimal_gillespie.GillespieInterval',
+    )
+    # gillespie.register_process(
+    #     'remote_copasi', address='biosimulators.COPASI', protocol='ray')
+    # gillespie.register_process('lsoda_process',
+    #                            # address='KISAO:0000088',  # this would use a KISAO protocol
+    #                            address_config={
+    #                                'repository': 'KISAO',  # this tells us how to
+    #                                'address': '0000088',
+    #                                'location': 'remote'})
+
+
+    # build the bigraph
+    gillespie.update_tree(state={'variables': [0, 1, 2]})  # this should allow us to set variables
+
+    ## add processes
     gillespie['event_process'].add_process(
         name='GillespieEvent',
         kdeg=1.0,  # kwargs fill parameters in the config
-
     )
     gillespie['interval_process'].add_process(
-        name='process_bigraph.experiments.minimal_gillespie.GillespieInterval',
-        protocol='path',
+        name='GillespieInterval',
+        inputs={'port_id': ['store']}  # we should be able to set the wires directly like this
     )
 
-    # print(gillespie['event_process'].ports())
-    # TODO -- ports should connect more automatically and check types
-    gillespie['event_process'].connect(port='DNA', target=['DNA_store'])
-    gillespie['event_process'].connect(port='mRNA', target=['mRNA_store'])
-    gillespie['interval_process'].connect(port='DNA', target=['DNA_store'])
-    gillespie['interval_process'].connect(port='mRNA', target=['mRNA_store'])
+    ## choose an emitter
+    gillespie.emitter(name='ram-emitter', path=[])  # choose the emitter, path=[] would be all
+    gillespie.emitter(name='csv-emitter', path=['cell1', 'internal'], emit_tree={})  # add a second emitter
+
+    ## turn on emits (assume ram-emitter if none provided)
+    gillespie['event_process'].emit(port='mRNA')  # this should turn on an emit from this port
+    gillespie['interval_process'].emit(port='interval')
+
+    ## connect the bigraph
+    gillespie['event_process'].connect(input='DNA', target=['DNA_store'])
+    gillespie['event_process'].connect(input='mRNA', target=['mRNA_store'])
+    gillespie['interval_process'].connect(output='DNA', target=['DNA_store'])
+    gillespie['interval_process'].connect(output='mRNA', target=['mRNA_store'])
+
+    ## set some states
     gillespie['DNA_store'] = {'C': 2.0, 'G': 1.0}  # TODO this should check the type
     gillespie['mRNA_store'] = {'C': 0.0, 'G': 0.0}
+
+    # TODO: move states from one location to another.
+    # TODO: add custom types
+    # TODO: add reactions, apply reactions to bigraph
+    # TODO: update model subcomponents -- via config?
+
+    # compile
     gillespie.compile()  # this fills and checks, this should also connect ports to stores with the same name, at the same level
 
-    gillespie.plot(filename='gillespie_bigraph')  # create bigraph plot
-    doc = gillespie.document()  # get the document
-    gillespie.write(filename='gillespie1')  # save the document
-    gillespie.run(10)  # run simulation
+    # plot the bigraph
+    gillespie.visualize(filename='gillespie_bigraph')  # create bigraph plot
+
+    # get the document
+    doc = gillespie.document()
+
+    # save the document
+    gillespie.write(filename='gillespie1')
+
+    # run simulation
+    gillespie.run(10)
     results = gillespie.get_results()
 
     # This needs to work
     node = gillespie['path', 'to']
-    # node.add_process()
+    node.add_process()
 
 
 def test1():
     b = Builder()
 
+    # @register_process('toy')
     class Toy(Process):
         config_schema = {
             'A': 'float',
@@ -304,8 +411,8 @@ def test1():
         def update(self, state, interval):
             return {'C': state['A'] + state['B']}
 
-    b.register_process('toy', Toy)
-    print(b.process_registry_list())
+    b.register('toy', Toy)
+    print(b.list_types())
 
     b['toy'].add_process(name='toy')
 
@@ -314,13 +421,17 @@ def test1():
     print(ports)
     # b.plot(filename='toy[1]')
 
-    b['toy'].connect(port='A', target='A_store')
+    b['toy'].connect(port='A', target=['A_store'])
     b['A_store'] = 2.3
-    b['toy'].connect(port='B', target='B_store')
-    b.plot(filename='toy[2]')
-    # b.write(filename='toy[2]', outdir='out')
+    b['toy'].connect(port='B', target=['B_store'])
+
+    # plot the bigraph
+    b.visualize(filename='toy[2]')
+
+    b.write(filename='toy[2]', outdir='out')
+
 
 
 if __name__ == '__main__':
-    # build_gillespie()
-    test1()
+    build_gillespie()
+    # test1()
