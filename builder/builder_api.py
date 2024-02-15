@@ -122,6 +122,7 @@ class Builder:
             return decorator
 
         else:
+
             # Check if address is a string
             if isinstance(address, str):
                 protocol, addr = address.split(':', 1)
@@ -133,6 +134,7 @@ class Builder:
                     self.core.process_registry.register(process_name, process_class, force=True)
                 else:
                     raise ValueError('Only local addresses starting with "!" are supported')
+
             # Check if address is a class object
             elif issubclass(address, Edge):
                 self.core.process_registry.register(process_name, address, force=True)
@@ -204,7 +206,7 @@ class Builder:
         """
         config = config or {}
         config.update(kwargs)
-        edge_type = 'process'
+        edge_type = 'process'  # TODO -- don't hardcode as process
 
         # make the schema
         initial_state = {
@@ -221,18 +223,25 @@ class Builder:
         self.tree = builder_tree_from_dict(state)
         self.schema = schema or {}
 
-        # reset compiled composite
-        self.compile()
+        # complete the composite
+        self.complete()
+
+    def complete(self):
+        if self.parent:
+            return self.parent.complete()
+        else:
+            self.schema, tree = self.core.complete(self.schema, dict_from_builder_tree(self.tree))
+            self.tree = builder_tree_from_dict(tree)
 
     def connect(self, port=None, target=None):
-        assert self.core.check('edge', self.schema)
+        assert self.core.check('edge', dict_from_builder_tree(self.tree))
         if port in self.schema['_inputs']:
             self.tree['inputs'][port] = target
         if port in self.schema['_outputs']:
             self.tree['outputs'][port] = target
 
         # reset compiled composite
-        self.compile()
+        self.complete()
 
     def document(self):
         doc = self.core.serialize(
@@ -307,14 +316,14 @@ class Builder:
     def visualize(self, filename=None, out_dir=None, **kwargs):
         if filename and not out_dir:
             out_dir = 'out'
-        if not self.compiled_composite:
-            self.compile()
 
         tree_dict = dict_from_builder_tree(self.tree)
-        tree_dict = fill_process_ports(tree_dict, self.schema)
+        schema_dict = fill_process_ports(tree_dict, self.schema)
 
         return plot_bigraph(
             tree_dict,
+            schema=self.schema,
+            core=self.core,
             out_dir=out_dir,
             filename=filename,
             # show_process_schema=False,
@@ -361,7 +370,7 @@ def build_gillespie():
 
 
     # build the bigraph
-    gillespie.update_tree(state={'variables': [0, 1, 2]})  # this should allow us to set variables
+    # gillespie.update_tree(state={'variables': [0, 1, 2]})  # this should allow us to set variables
 
     ## add processes
     gillespie['event_process'].add_process(
@@ -372,6 +381,10 @@ def build_gillespie():
         name='GillespieInterval',
         # inputs={'port_id': ['store']}  # we should be able to set the wires directly like this
     )
+
+    gillespie['event_process'].connect(port='mRNA', target=['mRNA_store'])
+
+    gillespie.compile()
 
     ## visualize part-way through build
     gillespie.visualize(filename='bigraph1', out_dir='out')
