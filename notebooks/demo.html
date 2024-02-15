@@ -7558,7 +7558,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>['console-emitter', 'ram-emitter']
+<pre>['ram-emitter', 'console-emitter']
 </pre>
 </div>
 </div>
@@ -7601,7 +7601,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>['GillespieEvent', 'console-emitter', 'ram-emitter', 'GillespieInterval']
+<pre>['GillespieInterval', 'ram-emitter', 'console-emitter', 'GillespieEvent']
 </pre>
 </div>
 </div>
@@ -7661,16 +7661,8 @@ a.anchor-link {
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>{
-'_inputs': {
-   'mRNA': 'map[float]',
-   'DNA': {
-      'A gene': 'float',
-      'B gene': 'float'
-  }
-},
-'_outputs': {
-   'mRNA': 'map[float]'
-}
+'_inputs': {},
+'_outputs': {}
 }
 </pre>
 </div>
@@ -7712,82 +7704,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>{'_type': 'process',
- '_default': {'inputs': {}, 'outputs': {}},
- '_apply': 'process_bigraph.composite.apply_process',
- '_serialize': 'process_bigraph.composite.serialize_process',
- '_deserialize': 'process_bigraph.composite.deserialize_process',
- '_check': 'process_bigraph.composite.check_process',
- '_type_parameters': ['inputs', 'outputs'],
- '_description': '',
- 'inputs': {'_type': 'wires',
-  '_default': {},
-  '_apply': 'bigraph_schema.registry.apply_tree',
-  '_serialize': 'bigraph_schema.type_system.serialize_tree',
-  '_deserialize': 'bigraph_schema.type_system.deserialize_tree',
-  '_divide': 'bigraph_schema.type_system.divide_tree',
-  '_check': 'bigraph_schema.type_system.check_tree',
-  '_type_parameters': ['leaf'],
-  '_description': 'mapping from str to some type in a potentially nested form',
-  '_leaf': {'_type': 'path',
-   '_default': [],
-   '_apply': 'bigraph_schema.type_system.apply_path',
-   '_check': 'bigraph_schema.type_system.check_list',
-   '_serialize': 'bigraph_schema.type_system.serialize_list',
-   '_deserialize': 'bigraph_schema.type_system.deserialize_list',
-   '_divide': 'bigraph_schema.type_system.divide_list',
-   '_type_parameters': ['element'],
-   '_description': 'general list type (or sublists)',
-   '_element': {'_type': 'string',
-    '_default': '',
-    '_apply': 'bigraph_schema.type_system.replace',
-    '_check': 'bigraph_schema.type_system.check_string',
-    '_serialize': 'bigraph_schema.type_system.serialize_string',
-    '_deserialize': 'bigraph_schema.type_system.deserialize_string',
-    '_description': '64-bit integer'},
-   '_inherit': ['list[string]']},
-  '_inherit': ['tree[path]']},
- 'outputs': {'_type': 'wires',
-  '_default': {},
-  '_apply': 'bigraph_schema.registry.apply_tree',
-  '_serialize': 'bigraph_schema.type_system.serialize_tree',
-  '_deserialize': 'bigraph_schema.type_system.deserialize_tree',
-  '_divide': 'bigraph_schema.type_system.divide_tree',
-  '_check': 'bigraph_schema.type_system.check_tree',
-  '_type_parameters': ['leaf'],
-  '_description': 'mapping from str to some type in a potentially nested form',
-  '_leaf': {'_type': 'path',
-   '_default': [],
-   '_apply': 'bigraph_schema.type_system.apply_path',
-   '_check': 'bigraph_schema.type_system.check_list',
-   '_serialize': 'bigraph_schema.type_system.serialize_list',
-   '_deserialize': 'bigraph_schema.type_system.deserialize_list',
-   '_divide': 'bigraph_schema.type_system.divide_list',
-   '_type_parameters': ['element'],
-   '_description': 'general list type (or sublists)',
-   '_element': {'_type': 'string',
-    '_default': '',
-    '_apply': 'bigraph_schema.type_system.replace',
-    '_check': 'bigraph_schema.type_system.check_string',
-    '_serialize': 'bigraph_schema.type_system.serialize_string',
-    '_deserialize': 'bigraph_schema.type_system.deserialize_string',
-    '_description': '64-bit integer'},
-   '_inherit': ['list[string]']},
-  '_inherit': ['tree[path]']},
- '_inherit': ['edge'],
- '_divide': 'process_bigraph.composite.divide_process',
- 'interval': {'_type': 'interval',
-  '_apply': 'set',
-  '_check': 'bigraph_schema.type_system.check_float',
-  '_serialize': 'bigraph_schema.type_system.to_string',
-  '_description': '64-bit floating point precision number',
-  '_default': '1.0',
-  '_deserialize': 'bigraph_schema.type_system.deserialize_float',
-  '_divide': 'bigraph_schema.type_system.divide_float',
-  '_inherit': ['float']},
- '_inputs': {'mRNA': 'map[float]',
-  'DNA': {'A gene': 'float', 'B gene': 'float'}},
- '_outputs': {'mRNA': 'map[float]'}}</pre>
+<pre>{}</pre>
 </div>
 </div>
 </div>
@@ -7811,96 +7728,53 @@ a.anchor-link {
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">Exception</span>                                 Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[11], line 1</span>
-<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-yellow-bg">b</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">event_process</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">connect</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">port</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">mRNA</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">target</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">mRNA_store</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> b
-
-File <span class="ansi-green-fg">~/code/bigraph-builder/builder/builder_api.py:241</span>, in <span class="ansi-cyan-fg">Builder.connect</span><span class="ansi-blue-fg">(self, port, target)</span>
-<span class="ansi-green-intense-fg ansi-bold">    238</span>     <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>tree[<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">outputs</span><span style="color: rgb(175,0,0)">'</span>][port] <span style="color: rgb(98,98,98)">=</span> target
-<span class="ansi-green-intense-fg ansi-bold">    240</span> <span style="color: rgb(95,135,135)"># reset compiled composite</span>
-<span class="ansi-green-fg">--&gt; 241</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">complete</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">~/code/bigraph-builder/builder/builder_api.py:230</span>, in <span class="ansi-cyan-fg">Builder.complete</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    229</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">complete</span>(<span style="color: rgb(0,135,0)">self</span>):
-<span class="ansi-green-fg">--&gt; 230</span>     <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>schema, tree <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">core</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">complete</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">schema</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">dict_from_builder_tree</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">tree</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    231</span>     <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>tree <span style="color: rgb(98,98,98)">=</span> builder_tree_from_dict(tree)
-
-File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_system.py:1252</span>, in <span class="ansi-cyan-fg">TypeSystem.complete</span><span class="ansi-blue-fg">(self, initial_schema, initial_state)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1248</span> full_schema <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>access(
-<span class="ansi-green-intense-fg ansi-bold">   1249</span>     initial_schema)
-<span class="ansi-green-intense-fg ansi-bold">   1251</span> <span style="color: rgb(95,135,135)"># hydrate the state given the initial composition</span>
-<span class="ansi-green-fg">-&gt; 1252</span> state <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">hydrate</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-intense-fg ansi-bold">   1253</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">full_schema</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   1254</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">initial_state</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1256</span> <span style="color: rgb(95,135,135)"># fill in the parts of the composition schema</span>
-<span class="ansi-green-intense-fg ansi-bold">   1257</span> <span style="color: rgb(95,135,135)"># determined by the state</span>
-<span class="ansi-green-intense-fg ansi-bold">   1258</span> schema, state <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>infer_schema(
-<span class="ansi-green-intense-fg ansi-bold">   1259</span>     full_schema,
-<span class="ansi-green-intense-fg ansi-bold">   1260</span>     state)
-
-File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_system.py:1244</span>, in <span class="ansi-cyan-fg">TypeSystem.hydrate</span><span class="ansi-blue-fg">(self, schema, state)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1241</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">hydrate</span>(<span style="color: rgb(0,135,0)">self</span>, schema, state):
-<span class="ansi-green-intense-fg ansi-bold">   1242</span>     <span style="color: rgb(95,135,135)"># TODO: support partial hydration (!)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1243</span>     hydrated <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>hydrate_state(schema, state)
-<span class="ansi-green-fg">-&gt; 1244</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">fill</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">schema</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">hydrated</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_system.py:753</span>, in <span class="ansi-cyan-fg">TypeSystem.fill</span><span class="ansi-blue-fg">(self, original_schema, state)</span>
-<span class="ansi-green-intense-fg ansi-bold">    747</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">fill</span>(<span style="color: rgb(0,135,0)">self</span>, original_schema, state<span style="color: rgb(98,98,98)">=</span><span class="ansi-bold" style="color: rgb(0,135,0)">None</span>):
-<span class="ansi-green-intense-fg ansi-bold">    748</span>     <span style="color: rgb(95,135,135)"># # Removing deepcopy means the state may be updated</span>
-<span class="ansi-green-intense-fg ansi-bold">    749</span>     <span style="color: rgb(95,135,135)"># if state is not None:</span>
-<span class="ansi-green-intense-fg ansi-bold">    750</span>     <span style="color: rgb(95,135,135)">#     state = copy.deepcopy(state)</span>
-<span class="ansi-green-intense-fg ansi-bold">    751</span>     schema <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>access(original_schema)
-<span class="ansi-green-fg">--&gt; 753</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">fill_state</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-intense-fg ansi-bold">    754</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">schema</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    755</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">state</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">state</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_system.py:714</span>, in <span class="ansi-cyan-fg">TypeSystem.fill_state</span><span class="ansi-blue-fg">(self, schema, state, top, path, type_key, context)</span>
-<span class="ansi-green-intense-fg ansi-bold">    712</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">_inputs</span><span style="color: rgb(175,0,0)">'</span> <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> schema:
-<span class="ansi-green-intense-fg ansi-bold">    713</span>     inputs <span style="color: rgb(98,98,98)">=</span> state<span style="color: rgb(98,98,98)">.</span>get(<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">inputs</span><span style="color: rgb(175,0,0)">'</span>, {})
-<span class="ansi-green-fg">--&gt; 714</span>     state <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">fill_ports</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-intense-fg ansi-bold">    715</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">schema</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">_inputs</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    716</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">wires</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">inputs</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    717</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">state</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">state</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    718</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">top</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">top</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    719</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">path</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">path</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    721</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">_outputs</span><span style="color: rgb(175,0,0)">'</span> <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> schema:
-<span class="ansi-green-intense-fg ansi-bold">    722</span>     outputs <span style="color: rgb(98,98,98)">=</span> state<span style="color: rgb(98,98,98)">.</span>get(<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">outputs</span><span style="color: rgb(175,0,0)">'</span>, {})
-
-File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_system.py:663</span>, in <span class="ansi-cyan-fg">TypeSystem.fill_ports</span><span class="ansi-blue-fg">(self, schema, wires, state, top, path)</span>
-<span class="ansi-green-intense-fg ansi-bold">    660</span>     subwires <span style="color: rgb(98,98,98)">=</span> (subwires,)
-<span class="ansi-green-intense-fg ansi-bold">    662</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">len</span>(path) <span style="color: rgb(98,98,98)">==</span> <span style="color: rgb(98,98,98)">0</span>:
-<span class="ansi-green-fg">--&gt; 663</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> <span class="ansi-bold" style="color: rgb(215,95,95)">Exception</span>(
-<span class="ansi-green-intense-fg ansi-bold">    664</span>         <span style="color: rgb(175,0,0)">f</span><span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">cannot wire </span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span>port_key<span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span style="color: rgb(175,0,0)"> as we are already at the top level </span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span>schema<span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span style="color: rgb(175,0,0)">'</span>)
-<span class="ansi-green-intense-fg ansi-bold">    666</span> peer <span style="color: rgb(98,98,98)">=</span> get_path(
-<span class="ansi-green-intense-fg ansi-bold">    667</span>     top,
-<span class="ansi-green-intense-fg ansi-bold">    668</span>     path[:<span style="color: rgb(98,98,98)">-</span><span style="color: rgb(98,98,98)">1</span>])
-<span class="ansi-green-intense-fg ansi-bold">    670</span> destination <span style="color: rgb(98,98,98)">=</span> establish_path(
-<span class="ansi-green-intense-fg ansi-bold">    671</span>     peer,
-<span class="ansi-green-intense-fg ansi-bold">    672</span>     subwires[:<span style="color: rgb(98,98,98)">-</span><span style="color: rgb(98,98,98)">1</span>],
-<span class="ansi-green-intense-fg ansi-bold">    673</span>     top<span style="color: rgb(98,98,98)">=</span>top,
-<span class="ansi-green-intense-fg ansi-bold">    674</span>     cursor<span style="color: rgb(98,98,98)">=</span>path[:<span style="color: rgb(98,98,98)">-</span><span style="color: rgb(98,98,98)">1</span>])
-
-<span class="ansi-red-fg">Exception</span>: cannot wire mRNA as we are already at the top level {'mRNA': 'map[float]', 'DNA': {'A gene': 'float', 'B gene': 'float'}}</pre>
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>{
+'event_process': {
+   '_type': 'process',
+   'address': 'local:GillespieEvent',
+   'config': {
+      'kdeg': 1.0,
+      'ktsc': 5.0
+  },
+   'inputs': {
+      'mRNA': ['mRNA_store']
+  },
+   'outputs': {
+      'mRNA': ['mRNA_store']
+  },
+   'instance': &lt;process_bigraph.experiments.minimal_gillespie.GillespieEvent object at 0x109ddd910&gt;,
+   'interval': 1.0
+}
+}</pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=79809baf-1d87-475a-b85f-3729f4716cb4">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=79809baf-1d87-475a-b85f-3729f4716cb4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
+<div class="jp-RenderedSVG jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="image/svg+xml" tabindex="0">
+<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8IS0tIEdlbmVyYXRlZCBieSBncmFwaHZpeiB2ZXJzaW9uIDkuMC4wICgwKQogLS0+CjwhLS0gVGl0bGU6IGJpZ3JhcGggUGFnZXM6IDEgLS0+Cjxzdmcgd2lkdGg9IjkwcHQiIGhlaWdodD0iMTY5cHQiCiB2aWV3Qm94PSIwLjAwIDAuMDAgOTIuMTcgMTc0LjE3IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KPGcgaWQ9ImdyYXBoMCIgY2xhc3M9ImdyYXBoIiB0cmFuc2Zvcm09InNjYWxlKDAuOTcyMjIyIDAuOTcyMjIyKSByb3RhdGUoMCkgdHJhbnNsYXRlKDQgMTcwLjE3KSI+Cjx0aXRsZT5iaWdyYXBoPC90aXRsZT4KPHBvbHlnb24gZmlsbD0id2hpdGUiIHN0cm9rZT0ibm9uZSIgcG9pbnRzPSItNCw0IC00LC0xNzAuMTcgODguMTcsLTE3MC4xNyA4OC4xNyw0IC00LDQiLz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssKSAtLT4KPGcgaWQ9Im5vZGUxIiBjbGFzcz0ibm9kZSI+Cjx0aXRsZT4oJiMzOTttUk5BX3N0b3JlJiMzOTssKTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjQyLjA4IiBjeT0iLTEyNC4wOCIgcng9IjQyLjA4IiByeT0iNDIuMDgiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMC4wOCIgeT0iLTEyMC40OCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5tUk5BX3N0b3JlPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJub2RlMiIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIHBvaW50cz0iNzkuNjcsLTM2IDQuNSwtMzYgNC41LDAgNzkuNjcsMCA3OS42NywtMzYiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSI4LjEiIHk9Ii0xNC40IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPmV2ZW50X3Byb2Nlc3M8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpIC0tPgo8ZyBpZD0iZWRnZTEiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik0xOS44NSwtODcuNEMxNS43NCwtNzYuNzEgMTMuNywtNjQuOTMgMTcuMTksLTU0IDE4LjAxLC01MS40MiAxOS4xLC00OC44NyAyMC4zNywtNDYuNCIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSIyMy4yNywtNDguMzYgMjUuNTIsLTM4LjAxIDE3LjMsLTQ0LjcgMjMuMjcsLTQ4LjM2Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTguMDgiIHk9Ii01NiIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEwLjAwIj5tUk5BPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9ImVkZ2UyIiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTttUk5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWRhc2hhcnJheT0iNSwyIiBkPSJNNDYuMzksLTcwLjI2QzQ2LjQ2LC02NC43NyA0Ni4zOCwtNTkuMjcgNDYuMDgsLTU0IDQ1Ljc2LC00OC4zOCA0NS4xNiwtNDIuMjggNDQuNTEsLTM2Ljc3Ii8+Cjxwb2x5Z29uIGZpbGw9ImJsYWNrIiBzdHJva2U9ImJsYWNrIiBwb2ludHM9IjQyLjksLTY5LjgyIDQ2LjA5LC03OS45MyA0OS45LC03MC4wNCA0Mi45LC02OS44MiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjQ2LjA4IiB5PSItNTYiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMC4wMCI+bVJOQTwvdGV4dD4KPC9nPgo8L2c+Cjwvc3ZnPgo="/>
 </div>
 </div>
 </div>
@@ -7910,7 +7784,7 @@ File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_syste
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># from builder.builder_api import Builder, dict_from_builder_tree</span>
@@ -7927,7 +7801,7 @@ File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_syste
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="nd">@b</span><span class="o">.</span><span class="n">register_process</span><span class="p">(</span><span class="s1">'toy'</span><span class="p">)</span>
@@ -7959,16 +7833,29 @@ File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_syste
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=dae8ca8db70c4845">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=dae8ca8db70c4845">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">list_processes</span><span class="p">()</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>['toy', 'console-emitter', 'GillespieEvent', 'ram-emitter', 'GillespieInterval']
+</pre>
 </div>
 </div>
 </div>
@@ -7992,7 +7879,7 @@ File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_syste
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">[</span><span class="s1">'toy'</span><span class="p">]</span><span class="o">.</span><span class="n">add_process</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'toy'</span><span class="p">)</span>
@@ -8001,12 +7888,12 @@ File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_syste
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=329e64816e8ff626">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=329e64816e8ff626">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">[</span><span class="s1">'toy'</span><span class="p">]</span><span class="o">.</span><span class="n">ports</span><span class="p">()</span>
@@ -8015,16 +7902,40 @@ File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_syste
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3b1dd8569f3bb67a">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>{'_inputs': {}, '_outputs': {}}</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=3b1dd8569f3bb67a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
+<div class="jp-RenderedSVG jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="image/svg+xml" tabindex="0">
+<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8IS0tIEdlbmVyYXRlZCBieSBncmFwaHZpeiB2ZXJzaW9uIDkuMC4wICgwKQogLS0+CjwhLS0gVGl0bGU6IGJpZ3JhcGggUGFnZXM6IDEgLS0+Cjxzdmcgd2lkdGg9IjE2MHB0IiBoZWlnaHQ9IjE2OXB0Igogdmlld0JveD0iMC4wMCAwLjAwIDE2NC4wOCAxNzQuMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgo8ZyBpZD0iZ3JhcGgwIiBjbGFzcz0iZ3JhcGgiIHRyYW5zZm9ybT0ic2NhbGUoMC45NzIyMjIgMC45NzIyMjIpIHJvdGF0ZSgwKSB0cmFuc2xhdGUoNCAxNzAuMTcpIj4KPHRpdGxlPmJpZ3JhcGg8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJub25lIiBwb2ludHM9Ii00LDQgLTQsLTE3MC4xNyAxNjAuMDgsLTE3MC4xNyAxNjAuMDgsNCAtNCw0Ii8+CjwhLS0gKCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkgLS0+CjxnIGlkPSJub2RlMSIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCk8L3RpdGxlPgo8ZWxsaXBzZSBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGN4PSI0Mi4wOCIgY3k9Ii0xMjQuMDgiIHJ4PSI0Mi4wOCIgcnk9IjQyLjA4Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTAuMDgiIHk9Ii0xMjAuNDgiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+bVJOQV9zdG9yZTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpIC0tPgo8ZyBpZD0ibm9kZTIiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBvbHlnb24gZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBwb2ludHM9Ijc5LjY3LC0zNiA0LjUsLTM2IDQuNSwwIDc5LjY3LDAgNzkuNjcsLTM2Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iOC4xIiB5PSItMTQuNCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5ldmVudF9wcm9jZXNzPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9ImVkZ2UxIiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTttUk5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWRhc2hhcnJheT0iNSwyIiBkPSJNMTkuODUsLTg3LjRDMTUuNzQsLTc2LjcxIDEzLjcsLTY0LjkzIDE3LjE5LC01NCAxOC4wMSwtNTEuNDIgMTkuMSwtNDguODcgMjAuMzcsLTQ2LjQiLz4KPHBvbHlnb24gZmlsbD0iYmxhY2siIHN0cm9rZT0iYmxhY2siIHBvaW50cz0iMjMuMjcsLTQ4LjM2IDI1LjUyLC0zOC4wMSAxNy4zLC00NC43IDIzLjI3LC00OC4zNiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjE4LjA4IiB5PSItNTYiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMC4wMCI+bVJOQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlMiIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS1kYXNoYXJyYXk9IjUsMiIgZD0iTTQ2LjM5LC03MC4yNkM0Ni40NiwtNjQuNzcgNDYuMzgsLTU5LjI3IDQ2LjA4LC01NCA0NS43NiwtNDguMzggNDUuMTYsLTQyLjI4IDQ0LjUxLC0zNi43NyIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSI0Mi45LC02OS44MiA0Ni4wOSwtNzkuOTMgNDkuOSwtNzAuMDQgNDIuOSwtNjkuODIiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSI0Ni4wOCIgeT0iLTU2IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPm1STkE8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTt0b3kmIzM5OywpIC0tPgo8ZyBpZD0ibm9kZTMiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O3RveSYjMzk7LCk8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIHBvaW50cz0iMTU2LjA4LC0xNDIuMDggMTAyLjA4LC0xNDIuMDggMTAyLjA4LC0xMDYuMDggMTU2LjA4LC0xMDYuMDggMTU2LjA4LC0xNDIuMDgiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMjEuNDIiIHk9Ii0xMjAuNDgiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+dG95PC90ZXh0Pgo8L2c+CjwvZz4KPC9zdmc+Cg=="/>
 </div>
 </div>
 </div>
@@ -8034,7 +7945,7 @@ File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_syste
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">[</span><span class="s1">'toy'</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="s1">'A'</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">'A_store'</span><span class="p">)</span>
@@ -8045,16 +7956,28 @@ File <span class="ansi-green-fg">~/code/bigraph-schema/bigraph_schema/type_syste
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=aeb344bcd6a120ae">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=aeb344bcd6a120ae">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
+<div class="jp-RenderedSVG jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="image/svg+xml" tabindex="0">
+<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8IS0tIEdlbmVyYXRlZCBieSBncmFwaHZpeiB2ZXJzaW9uIDkuMC4wICgwKQogLS0+CjwhLS0gVGl0bGU6IGJpZ3JhcGggUGFnZXM6IDEgLS0+Cjxzdmcgd2lkdGg9IjE2MHB0IiBoZWlnaHQ9IjE2OXB0Igogdmlld0JveD0iMC4wMCAwLjAwIDE2NC4wOCAxNzQuMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgo8ZyBpZD0iZ3JhcGgwIiBjbGFzcz0iZ3JhcGgiIHRyYW5zZm9ybT0ic2NhbGUoMC45NzIyMjIgMC45NzIyMjIpIHJvdGF0ZSgwKSB0cmFuc2xhdGUoNCAxNzAuMTcpIj4KPHRpdGxlPmJpZ3JhcGg8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJub25lIiBwb2ludHM9Ii00LDQgLTQsLTE3MC4xNyAxNjAuMDgsLTE3MC4xNyAxNjAuMDgsNCAtNCw0Ii8+CjwhLS0gKCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkgLS0+CjxnIGlkPSJub2RlMSIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCk8L3RpdGxlPgo8ZWxsaXBzZSBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGN4PSI0Mi4wOCIgY3k9Ii0xMjQuMDgiIHJ4PSI0Mi4wOCIgcnk9IjQyLjA4Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTAuMDgiIHk9Ii0xMjAuNDgiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+bVJOQV9zdG9yZTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpIC0tPgo8ZyBpZD0ibm9kZTIiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBvbHlnb24gZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBwb2ludHM9Ijc5LjY3LC0zNiA0LjUsLTM2IDQuNSwwIDc5LjY3LDAgNzkuNjcsLTM2Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iOC4xIiB5PSItMTQuNCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5ldmVudF9wcm9jZXNzPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9ImVkZ2UxIiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTttUk5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWRhc2hhcnJheT0iNSwyIiBkPSJNMTkuODUsLTg3LjRDMTUuNzQsLTc2LjcxIDEzLjcsLTY0LjkzIDE3LjE5LC01NCAxOC4wMSwtNTEuNDIgMTkuMSwtNDguODcgMjAuMzcsLTQ2LjQiLz4KPHBvbHlnb24gZmlsbD0iYmxhY2siIHN0cm9rZT0iYmxhY2siIHBvaW50cz0iMjMuMjcsLTQ4LjM2IDI1LjUyLC0zOC4wMSAxNy4zLC00NC43IDIzLjI3LC00OC4zNiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjE4LjA4IiB5PSItNTYiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMC4wMCI+bVJOQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlMiIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS1kYXNoYXJyYXk9IjUsMiIgZD0iTTQ2LjM5LC03MC4yNkM0Ni40NiwtNjQuNzcgNDYuMzgsLTU5LjI3IDQ2LjA4LC01NCA0NS43NiwtNDguMzggNDUuMTYsLTQyLjI4IDQ0LjUxLC0zNi43NyIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSI0Mi45LC02OS44MiA0Ni4wOSwtNzkuOTMgNDkuOSwtNzAuMDQgNDIuOSwtNjkuODIiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSI0Ni4wOCIgeT0iLTU2IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPm1STkE8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTt0b3kmIzM5OywpIC0tPgo8ZyBpZD0ibm9kZTMiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O3RveSYjMzk7LCk8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIHBvaW50cz0iMTU2LjA4LC0xNDIuMDggMTAyLjA4LC0xNDIuMDggMTAyLjA4LC0xMDYuMDggMTU2LjA4LC0xMDYuMDggMTU2LjA4LC0xNDIuMDgiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMjEuNDIiIHk9Ii0xMjAuNDgiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+dG95PC90ZXh0Pgo8L2c+CjwvZz4KPC9zdmc+Cg=="/>
 </div>
 </div>
 </div>
