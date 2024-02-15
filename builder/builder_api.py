@@ -172,7 +172,8 @@ class Builder(dict):
 
         first_key = keys[0]
         if first_key not in self.builder_tree:
-            self.builder_tree[first_key] = Builder(parent=self, core=self.core, schema=self.schema.get(first_key, {}))
+            self.builder_tree[first_key] = Builder(
+                parent=self, core=self.core, schema=self.schema.get(first_key, {}))
 
         remaining = keys[1:]
         if len(remaining) > 0:
@@ -214,8 +215,8 @@ class Builder(dict):
         self.schema, state = self.core.complete(initial_schema, initial_state)
         self.builder_tree = builder_tree_from_dict(state)
 
-        # complete the composite
-        self.complete()
+        # # complete the composite
+        # self.complete()
 
     def complete(self):
         if self.parent:
@@ -248,7 +249,7 @@ class Builder(dict):
 
     def connect(self, port=None, target=None):
         assert self.core.check('edge', self.get_tree())
-        self.complete()
+        # self.complete()
         if port in self.schema['_inputs']:
             self.builder_tree['inputs'][port] = target
         if port in self.schema['_outputs']:
@@ -278,10 +279,9 @@ class Builder(dict):
         if self.parent:
             return self.parent.compile()
         else:
-            self.schema, tree = self.core.complete(
-                self.schema,
-                self.get_tree()
-            )
+            tree = self.get_tree()
+            schema, tree = self.core.complete(
+                self.schema, tree)
             self.compiled_composite = Composite(
                 {'state': tree, 'composition': self.schema},
                 core=self.core)
@@ -380,9 +380,13 @@ def build_gillespie():
         # inputs={'port_id': ['store']}  # we should be able to set the wires directly like this
     )
 
+    gillespie['event_process'].connect(port='DNA', target=['DNA_store'])
     gillespie['event_process'].connect(port='mRNA', target=['mRNA_store'])
+    gillespie['interval_process'].connect(port='DNA', target=['DNA_store'])
+    gillespie['interval_process'].connect(port='mRNA', target=['mRNA_store'])
+    gillespie['interval_process'].connect(port='interval', target=['interval_store'])
 
-    gillespie.connect_all()  # This can maybe be used to connect all ports to stores of the same name?
+    # gillespie.connect_all()  # This can maybe be used to connect all ports to stores of the same name?
 
     gillespie.complete()
     gillespie.compile()
