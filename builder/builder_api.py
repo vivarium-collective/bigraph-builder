@@ -80,7 +80,7 @@ def merge_dicts(original, new):
     return original
 
 
-class Builder:
+class Builder(dict):
 
     def __init__(self, tree=None, schema=None, parent=None, core=None):
         super().__init__()
@@ -223,26 +223,28 @@ class Builder:
         else:
             schema, tree = self.core.complete(self.schema, self.get_tree())
             self.schema = merge_dicts(self.schema, schema)
-            self.builder_tree = merge_dicts(self.builder_tree, builder_tree_from_dict(tree))
+            # self.builder_tree = merge_dicts(self.builder_tree, builder_tree_from_dict(tree))
 
             # TODO -- we may want to go through and update the existing schema and tree rather than completely redoing them...
             # self.schema = schema
-            # self.builder_tree = builder_tree_from_dict(tree)
+            self.builder_tree = builder_tree_from_dict(tree)
 
     def connect_all(self):
-        for k, v in self.builder_tree.items():
-            if isinstance(v, Builder):
+        self.complete()  # this will get the schema
+        tree = self.get_tree()
+        for k, v in tree.items():
+            if isinstance(v, dict):
                 if v.get('_type') in EDGE_KEYS:
                     for port in self.schema[k]['_inputs'].keys():
                         if port not in v.get('inputs', {}):
-                            v['inputs'].connect(port=port, target=[port])
+                            self.builder_tree[k].connect(port=port, target=[port])
                     for port in self.schema[k]['_outputs'].keys():
                         if port not in v.get('outputs', {}):
-                            v['outputs'].connect(port=port, target=[port])
+                            self.builder_tree[k].connect(port=port, target=[port])
                 else:
                     pass
                     # v.connect_all()
-                # TODO
+                # TODO -- propagate down
 
     def connect(self, port=None, target=None):
         assert self.core.check('edge', self.get_tree())
