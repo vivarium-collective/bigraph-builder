@@ -159,7 +159,7 @@ class Builder(dict):
         elif isinstance(value, dict):
             self.builder_tree[first_key] = Builder(tree=value,
                                                    core=self.core,
-                                                   schema=self.schema[first_key])
+                                                   schema=self.schema.get(first_key))
         else:
             self.builder_tree[first_key] = value
 
@@ -189,7 +189,7 @@ class Builder(dict):
 
     def add_process(
             self,
-            name=None,
+            name,
             config=None,
             inputs=None,
             outputs=None,
@@ -198,6 +198,7 @@ class Builder(dict):
         """
         Add a process to the tree
         """
+        assert name, 'add_process requires a name as input'
         config = config or {}
         config.update(kwargs)
         edge_type = 'process'  # TODO -- don't hardcode as process
@@ -337,17 +338,18 @@ class Builder(dict):
     def get_results(self, query=None):
         return self.compiled_composite.gather_results(query)
 
-    def emitter(self, name='ram-emitter', emit_keys=None):
+    def emitter(self, name='ram-emitter'):
+        # TODO - make this configurable
 
-        address = self.core.address_registry(name)
+        # address = self.core.address_registry(name)
         emitter_schema = {
             'emitter': {
                 '_type': 'step',
-                'address': address,
+                'address': f'local:{name}',
                 'config': {
-                    'emit': emit_keys or 'schema'   # TODO -- need more robust way to describe what gets emitted
+                    'emit': 'schema'
                 },
-                'inputs': emit_keys or 'tree[any]'  # TODO -- these should be filled in automatically
+                'inputs': []
             }
         }
 
@@ -355,7 +357,13 @@ class Builder(dict):
 def build_gillespie():
     from process_bigraph.experiments.minimal_gillespie import GillespieEvent #, GillespieInterval
 
-    gillespie = Builder()
+    core = ProcessTypes()
+    core.register(
+        'default 1', {
+            '_inherit': 'float',
+            '_default': 1.0})
+
+    gillespie = Builder(core=core)
 
     # first, what processes do we want and where do they come from
     gillespie.register_process(
@@ -379,38 +387,36 @@ def build_gillespie():
         name='GillespieInterval',
         # inputs={'port_id': ['store']}  # we should be able to set the wires directly like this
     )
+    ## visualize part-way through build
+    gillespie.visualize(filename='bigraph1', out_dir='out')
 
     gillespie['event_process'].connect(port='DNA', target=['DNA_store'])
     gillespie['event_process'].connect(port='mRNA', target=['mRNA_store'])
     gillespie['interval_process'].connect(port='DNA', target=['DNA_store'])
     gillespie['interval_process'].connect(port='mRNA', target=['mRNA_store'])
     gillespie['interval_process'].connect(port='interval', target=['interval_store'])
+    # gillespie.complete()
+
+    ## set some states
+    gillespie['DNA_store'] = {'A gene': 2.0, 'B gene': 1.0}  # TODO this should check the type
+    gillespie['mRNA_store'] = {'A mRNA': 0.0, 'B mRNA': 0.0}
 
     # gillespie.connect_all()  # This can maybe be used to connect all ports to stores of the same name?
-
     gillespie.complete()
     gillespie.compile()
 
     ## visualize part-way through build
-    gillespie.visualize(filename='bigraph1', out_dir='out')
+    gillespie.visualize(filename='bigraph2', out_dir='out')
 
     ## choose an emitter
-    gillespie.emitter(name='ram-emitter', path=[])  # choose the emitter, path=[] would be all
-    gillespie.emitter(name='csv-emitter', path=['cell1', 'internal'], emit_tree={})  # add a second emitter
+    gillespie.emitter(name='ram-emitter')  # choose the emitter, path=[] would be all
+    # gillespie.emitter(name='csv-emitter', emit_paths=['DNA_store'])  # add a second emitter
 
-    ## turn on emits (assume ram-emitter if none provided)
-    gillespie['event_process'].emit(port='mRNA')  # this should turn on an emit from this port
-    gillespie['interval_process'].emit(port='interval')
+    # ## turn on emits (assume ram-emitter if none provided)
+    # gillespie['event_process'].emit(port='mRNA')  # this should turn on an emit from this port
+    # gillespie['interval_process'].emit(port='interval')
 
-    ## connect the bigraph
-    gillespie['event_process'].connect(input='DNA', target=['DNA_store'])
-    gillespie['event_process'].connect(input='mRNA', target=['mRNA_store'])
-    gillespie['interval_process'].connect(output='DNA', target=['DNA_store'])
-    gillespie['interval_process'].connect(output='mRNA', target=['mRNA_store'])
 
-    ## set some states
-    gillespie['DNA_store'] = {'C': 2.0, 'G': 1.0}  # TODO this should check the type
-    gillespie['mRNA_store'] = {'C': 0.0, 'G': 0.0}
 
     # TODO: move states from one location to another.
     # TODO: add custom types
@@ -433,9 +439,10 @@ def build_gillespie():
     gillespie.run(10)
     results = gillespie.get_results()
 
-    # This needs to work
-    node = gillespie['path', 'to']
-    node.add_process()
+    print(f'RESULTS: \n{results}')
+    # # This needs to work
+    # node = gillespie['path', 'to']
+    # node.add_process()
 
 
 def test1():
