@@ -13,6 +13,10 @@ from process_bigraph import Process, Step, Edge, Composite, ProcessTypes
 from bigraph_schema.protocols import local_lookup_module
 from bigraph_viz.diagram import plot_bigraph
 
+
+EDGE_KEYS = ['process', 'step', 'edge']  # todo -- replace this with core.check() or similar
+
+
 def custom_pf(d, indent=0):
     """Custom dictionary formatter to achieve specific indentation styles."""
     items = []
@@ -27,19 +31,12 @@ def custom_pf(d, indent=0):
             value_str = repr(v)
         items.append(f"{' ' * indent}{key_str}{value_str}")
 
-    # Use f-string for final formatting, incorporating items_str
+    # final formatting
     items_str = ',\n'.join(items)
     if indent > 0:
         return f"{{\n{items_str}\n{' ' * (indent - 4)}}}"
     else:
         return f"{{\n{items_str}\n}}"
-
-
-
-# Examp
-
-
-EDGE_KEYS = ['process', 'step', 'edge']  # todo -- replace this with core.check() or similar
 
 
 def builder_tree_from_dict(d):
@@ -49,7 +46,7 @@ def builder_tree_from_dict(d):
         if isinstance(i, dict):
             builder_tree[k] = Builder(i)
         else:
-            builder_tree[k] = i  # leaves
+            builder_tree[k] = i  # this is a leaf
     return builder_tree
 
 
@@ -57,9 +54,9 @@ def dict_from_builder_tree(builder_tree):
     tree = {}
     for k, i in builder_tree.items():
         if isinstance(i, Builder):
-            tree[k] = dict_from_builder_tree(i.tree)
+            tree[k] = dict_from_builder_tree(i.builder_tree)
         else:
-            tree[k] = i  # leaves
+            tree[k] = i  # this is a leaf
     return tree
 
 
@@ -71,41 +68,38 @@ def get_process_ports(value, schema):
     return ports
 
 
-def fill_process_ports(tree, schema):
-    new_tree = tree.copy()
-    for key, value in tree.items():
-        if isinstance(value, dict):
-            if value.get('_type') in EDGE_KEYS:
-                if '_ports' not in new_tree[key]:
-                    new_tree[key]['_ports'] = {}
-                input_ports = schema[key].get('_inputs', {})
-                output_ports = schema[key].get('_outputs', {})
-
-                for port, v in input_ports.items():
-                    if port not in new_tree[key]['inputs']:
-                        new_tree[key]['_ports'][port] = v
-                for port, v in output_ports.items():
-                    if port not in new_tree[key]['outputs']:
-                        new_tree[key]['_ports'][port] = v
-
-            elif key in schema:
-                new_tree[key] = fill_process_ports(value, schema[key])
-
-    return new_tree
+def merge_dicts(original, new):
+    # TODO -- check this
+    for k, v in new.items():
+        if k not in original:
+            original[k] = v
+        elif isinstance(v, dict):
+            original[k] = merge_dicts(original[k], v)
+        else:
+            original[k] = v
+    return original
 
 
 class Builder:
 
     def __init__(self, tree=None, schema=None, parent=None, core=None):
         super().__init__()
-        self.tree = builder_tree_from_dict(tree)
+        self.builder_tree = builder_tree_from_dict(tree)
         self.schema = schema or {}  # TODO -- need to track schema
         self.core = core or ProcessTypes()
         self.parent = parent
 
         self.compiled_composite = None
-
         # TODO -- add an emitter by default so results are automatic
+
+    def get(self, key, default=None):
+        if key in self.builder_tree:
+            return self.builder_tree[key]
+        else:
+            return default
+
+    def get_tree(self):
+        return dict_from_builder_tree(self.builder_tree)
 
     def register_process(self, process_name, address=None):
         """
@@ -149,43 +143,42 @@ class Builder:
             return self
 
     def __repr__(self):
-        return custom_pf(dict_from_builder_tree(self.tree))
+        return custom_pf(self.get_tree())
         # return f"Builder(\n{pf(self.tree)})"
 
     def __setitem__(self, keys, value):
         # Convert single key to tuple
         keys = (keys,) if isinstance(keys, (str, int)) else keys
-
         first_key = keys[0]
-        if first_key not in self.tree:
-            self.tree[first_key] = Builder(core=self.core,
-                                           schema=self.schema.get(first_key, {})  # TODO -- is this correct?
-                                           )
-
         remaining = keys[1:]
-        if len(remaining) > 0:
-            self.tree[first_key].__setitem__(remaining, value)
-        elif isinstance(value, dict):
-            self.tree[first_key] = Builder(tree=value, core=self.core, schema=self.schema.get(first_key, {}))
-        else:
-            self.tree[first_key] = value
 
-        # reset compiled composite
-        self.compiled_composite = None
+        if first_key not in self.builder_tree:
+            self.builder_tree[first_key] = Builder(core=self.core)
+        if len(remaining) > 0:
+            self.builder_tree[first_key].__setitem__(remaining, value)
+        elif isinstance(value, dict):
+            self.builder_tree[first_key] = Builder(tree=value,
+                                                   core=self.core,
+                                                   schema=self.schema[first_key])
+        else:
+            self.builder_tree[first_key] = value
+
+        # # reset compiled composite
+        # self.compiled_composite = None
 
     def __getitem__(self, keys):
         # Convert single key to tuple
         keys = (keys,) if isinstance(keys, (str, int)) else keys
 
         first_key = keys[0]
-        if first_key not in self.tree:
-            self.tree[first_key] = Builder(parent=self, core=self.core, schema=self.schema.get(first_key, {}))
+        if first_key not in self.builder_tree:
+            self.builder_tree[first_key] = Builder(parent=self, core=self.core, schema=self.schema.get(first_key, {}))
 
         remaining = keys[1:]
         if len(remaining) > 0:
-            return self.tree[first_key].__getitem__(remaining)
+            return self.builder_tree[first_key].__getitem__(remaining)
         else:
-            return self.tree[first_key]
+            return self.builder_tree[first_key]
 
     def list_types(self):
         return self.core.type_registry.list()
@@ -218,10 +211,8 @@ class Builder:
             }
 
         initial_schema = {'_type': edge_type}
-        schema, state = self.core.complete(initial_schema, initial_state)
-
-        self.tree = builder_tree_from_dict(state)
-        self.schema = schema or {}
+        self.schema, state = self.core.complete(initial_schema, initial_state)
+        self.builder_tree = builder_tree_from_dict(state)
 
         # complete the composite
         self.complete()
@@ -230,23 +221,41 @@ class Builder:
         if self.parent:
             return self.parent.complete()
         else:
-            self.schema, tree = self.core.complete(self.schema, dict_from_builder_tree(self.tree))
-            self.tree = builder_tree_from_dict(tree)
+            schema, tree = self.core.complete(self.schema, self.get_tree())
+            self.schema = merge_dicts(self.schema, schema)
+            self.builder_tree = merge_dicts(self.builder_tree, builder_tree_from_dict(tree))
+
+            # TODO -- we may want to go through and update the existing schema and tree rather than completely redoing them...
+            # self.schema = schema
+            # self.builder_tree = builder_tree_from_dict(tree)
+
+    def connect_all(self):
+        for k, v in self.builder_tree.items():
+            if isinstance(v, Builder):
+                if v.get('_type') in EDGE_KEYS:
+                    for port in self.schema[k]['_inputs'].keys():
+                        if port not in v.get('inputs', {}):
+                            v['inputs'].connect(port=port, target=[port])
+                    for port in self.schema[k]['_outputs'].keys():
+                        if port not in v.get('outputs', {}):
+                            v['outputs'].connect(port=port, target=[port])
+                else:
+                    pass
+                    # v.connect_all()
+                # TODO
 
     def connect(self, port=None, target=None):
-        assert self.core.check('edge', dict_from_builder_tree(self.tree))
-        if port in self.schema['_inputs']:
-            self.tree['inputs'][port] = target
-        if port in self.schema['_outputs']:
-            self.tree['outputs'][port] = target
-
-        # reset compiled composite
+        assert self.core.check('edge', self.get_tree())
         self.complete()
+        if port in self.schema['_inputs']:
+            self.builder_tree['inputs'][port] = target
+        if port in self.schema['_outputs']:
+            self.builder_tree['outputs'][port] = target
 
     def document(self):
         doc = self.core.serialize(
             self.schema,
-            dict_from_builder_tree(self.tree))
+            self.get_tree())
         return doc
 
     def write(self, filename, outdir='out'):
@@ -269,7 +278,7 @@ class Builder:
         else:
             self.schema, tree = self.core.complete(
                 self.schema,
-                dict_from_builder_tree(self.tree)
+                self.get_tree()
             )
             self.compiled_composite = Composite(
                 {'state': tree, 'composition': self.schema},
@@ -281,14 +290,14 @@ class Builder:
             return self.compiled_composite
 
     def update_tree(self, schema=None, state=None):
-        self.schema = schema or self.schema
+        self.schema = schema or self.schema  # TODO -- should we be merging the schema?
         state = state or {}
         for k, i in state.items():
             if isinstance(i, dict):
                 sub_schema = schema.get(k, {})
-                self.tree[k].update_tree(sub_schema, i)
+                self.builder_tree[k].update_tree(sub_schema, i)
             else:
-                self.tree[k] = i  # leaves
+                self.builder_tree[k] = i  # this is a leaf
 
     def composite(self):
         return self.top().compiled_composite
@@ -300,7 +309,7 @@ class Builder:
 
     def ports(self, print_ports=False):
         # self.compile()
-        tree_dict = dict_from_builder_tree(self.tree)
+        tree_dict = self.get_tree()
         tree_type = tree_dict.get('_type')
         if not tree_type:
             warnings.warn(f"no type provided.")
@@ -314,14 +323,8 @@ class Builder:
                 print(custom_pf(process_ports))
 
     def visualize(self, filename=None, out_dir=None, **kwargs):
-        if filename and not out_dir:
-            out_dir = 'out'
-
-        tree_dict = dict_from_builder_tree(self.tree)
-        schema_dict = fill_process_ports(tree_dict, self.schema)
-
         return plot_bigraph(
-            tree_dict,
+            self.get_tree(),
             schema=self.schema,
             core=self.core,
             out_dir=out_dir,
@@ -359,15 +362,8 @@ def build_gillespie():
         'GillespieInterval',
         address='local:!process_bigraph.experiments.minimal_gillespie.GillespieInterval',
     )
-    # gillespie.register_process(
-    #     'remote_copasi', address='biosimulators.COPASI', protocol='ray')
-    # gillespie.register_process('lsoda_process',
-    #                            # address='KISAO:0000088',  # this would use a KISAO protocol
-    #                            address_config={
-    #                                'repository': 'KISAO',  # this tells us how to
-    #                                'address': '0000088',
-    #                                'location': 'remote'})
-
+    # gillespie.register_process('remote_copasi', address='biosimulators.COPASI', protocol='ray')
+    # gillespie.register_process('lsoda_process', address='KISAO:0000088'})  # this would use a KISAO protocol
 
     # build the bigraph
     # gillespie.update_tree(state={'variables': [0, 1, 2]})  # this should allow us to set variables
@@ -384,6 +380,9 @@ def build_gillespie():
 
     gillespie['event_process'].connect(port='mRNA', target=['mRNA_store'])
 
+    gillespie.connect_all()  # This can maybe be used to connect all ports to stores of the same name?
+
+    gillespie.complete()
     gillespie.compile()
 
     ## visualize part-way through build
