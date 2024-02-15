@@ -82,7 +82,7 @@ def merge_dicts(original, new):
 
 class Builder(dict):
 
-    def __init__(self, tree=None, schema=None, parent=None, core=None):
+    def __init__(self, tree=None, schema=None, core=None, parent=None):
         super().__init__()
         self.builder_tree = builder_tree_from_dict(tree)
         self.schema = schema or {}  # TODO -- need to track schema
@@ -135,6 +135,9 @@ class Builder(dict):
             else:
                 raise TypeError(f"Unsupported address type for {process_name}: {type(address)}. Registration failed.")
 
+    def register_type(self, key, schema):
+        self.core.type_registry.register(key, schema)
+
     def top(self):
         # recursively get the top parent
         if self.parent:
@@ -158,8 +161,8 @@ class Builder(dict):
             self.builder_tree[first_key].__setitem__(remaining, value)
         elif isinstance(value, dict):
             self.builder_tree[first_key] = Builder(tree=value,
-                                                   core=self.core,
-                                                   schema=self.schema.get(first_key))
+                                                   schema=self.schema.get(first_key),
+                                                   core=self.core)
         else:
             self.builder_tree[first_key] = value
 
@@ -173,7 +176,7 @@ class Builder(dict):
         first_key = keys[0]
         if first_key not in self.builder_tree:
             self.builder_tree[first_key] = Builder(
-                parent=self, core=self.core, schema=self.schema.get(first_key, {}))
+                parent=self, schema=self.schema.get(first_key, {}), core=self.core)
 
         remaining = keys[1:]
         if len(remaining) > 0:
@@ -216,7 +219,7 @@ class Builder(dict):
         self.schema, state = self.core.complete(initial_schema, initial_state)
         self.builder_tree = builder_tree_from_dict(state)
 
-        # # complete the composite
+        # complete the composite
         # self.complete()
 
     def complete(self):
@@ -239,22 +242,22 @@ class Builder(dict):
                 if v.get('_type') in EDGE_KEYS:
                     for port in self.schema[k]['_inputs'].keys():
                         if port not in v.get('inputs', {}):
-                            self.builder_tree[k].connect(port=port, target=[port])
+                            self[k].connect(port=port, target=[port])
                     for port in self.schema[k]['_outputs'].keys():
                         if port not in v.get('outputs', {}):
-                            self.builder_tree[k].connect(port=port, target=[port])
-                else:
-                    pass
-                    # v.connect_all()
+                            self[k].connect(port=port, target=[port])
+                elif isinstance(v, Builder):
+                    v.connect_all()
                 # TODO -- propagate down
 
     def connect(self, port=None, target=None):
         assert self.core.check('edge', self.get_tree())
         # self.complete()
         if port in self.schema['_inputs']:
-            self.builder_tree['inputs'][port] = target
+            self['inputs'][port] = target
         if port in self.schema['_outputs']:
-            self.builder_tree['outputs'][port] = target
+            self['outputs'][port] = target
+
 
     def document(self):
         doc = self.core.serialize(
@@ -390,18 +393,18 @@ def build_gillespie():
     ## visualize part-way through build
     gillespie.visualize(filename='bigraph1', out_dir='out')
 
+    # gillespie.connect_all()  # This can maybe be used to connect all ports to stores of the same name?
     gillespie['event_process'].connect(port='DNA', target=['DNA_store'])
     gillespie['event_process'].connect(port='mRNA', target=['mRNA_store'])
     gillespie['interval_process'].connect(port='DNA', target=['DNA_store'])
     gillespie['interval_process'].connect(port='mRNA', target=['mRNA_store'])
     gillespie['interval_process'].connect(port='interval', target=['interval_store'])
-    # gillespie.complete()
+    gillespie.complete()
 
     ## set some states
     gillespie['DNA_store'] = {'A gene': 2.0, 'B gene': 1.0}  # TODO this should check the type
     gillespie['mRNA_store'] = {'A mRNA': 0.0, 'B mRNA': 0.0}
 
-    # gillespie.connect_all()  # This can maybe be used to connect all ports to stores of the same name?
     gillespie.complete()
     gillespie.compile()
 
@@ -415,8 +418,6 @@ def build_gillespie():
     # ## turn on emits (assume ram-emitter if none provided)
     # gillespie['event_process'].emit(port='mRNA')  # this should turn on an emit from this port
     # gillespie['interval_process'].emit(port='interval')
-
-
 
     # TODO: move states from one location to another.
     # TODO: add custom types
@@ -464,25 +465,6 @@ def test1():
                     'C': 'float'}}
         def update(self, state, interval):
             return {'C': state['A'] + state['B']}
-
-    # b.register('toy', Toy)
-    # print(b.list_types())
-    #
-    # b['toy'].add_process(name='toy')
-    #
-    # # b.tree
-    # ports = b['toy'].ports()
-    # print(ports)
-    # # b.plot(filename='toy[1]')
-    #
-    # b['toy'].connect(port='A', target=['A_store'])
-    # b['A_store'] = 2.3
-    # b['toy'].connect(port='B', target=['B_store'])
-    #
-    # # plot the bigraph
-    # b.visualize(filename='toy[2]')
-    #
-    # b.write(filename='toy[2]', outdir='out')
 
 
 
