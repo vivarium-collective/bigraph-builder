@@ -196,6 +196,7 @@ class Builder(dict):
             config=None,
             inputs=None,
             outputs=None,
+            edge_type=None,
             **kwargs
     ):
         """
@@ -204,14 +205,14 @@ class Builder(dict):
         assert name, 'add_process requires a name as input'
         config = config or {}
         config.update(kwargs)
-        edge_type = 'process'  # TODO -- don't hardcode as process
+        edge_type = edge_type or 'process'  # TODO -- don't hardcode as process
 
         # make the schema
         initial_state = {
                 '_type': edge_type,
                 'address': f'local:{name}',  # TODO -- only support local right now?
                 'config': config,
-                'inputs': inputs or {},
+                'inputs': {} if inputs is None else inputs,
                 'outputs': outputs or {},
             }
 
@@ -342,19 +343,13 @@ class Builder(dict):
         return self.compiled_composite.gather_results(query)
 
     def emitter(self, name='ram-emitter'):
-        # TODO - make this configurable
-
-        # address = self.core.address_registry(name)
-        emitter_schema = {
-            'emitter': {
-                '_type': 'step',
-                'address': f'local:{name}',
-                'config': {
-                    'emit': 'schema'
-                },
-                'inputs': []
-            }
-        }
+        # TODO -- support more emitters
+        self.add_process(
+            name,
+            edge_type='step',
+            config={'emit': 'schema'},
+            inputs=[],  # top level emit, TODO this should be more configurable
+        )
 
 
 def build_gillespie():
@@ -378,9 +373,6 @@ def build_gillespie():
     # gillespie.register_process('remote_copasi', address='biosimulators.COPASI', protocol='ray')
     # gillespie.register_process('lsoda_process', address='KISAO:0000088'})  # this would use a KISAO protocol
 
-    # build the bigraph
-    # gillespie.update_tree(state={'variables': [0, 1, 2]})  # this should allow us to set variables
-
     ## add processes
     gillespie['event_process'].add_process(
         name='GillespieEvent',
@@ -399,7 +391,7 @@ def build_gillespie():
     gillespie['interval_process'].connect(port='DNA', target=['DNA_store'])
     gillespie['interval_process'].connect(port='mRNA', target=['mRNA_store'])
     gillespie['interval_process'].connect(port='interval', target=['interval_store'])
-    gillespie.complete()
+    # gillespie.complete()
 
     ## set some states
     gillespie['DNA_store'] = {'A gene': 2.0, 'B gene': 1.0}  # TODO this should check the type
