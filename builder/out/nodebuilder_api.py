@@ -173,7 +173,7 @@ def build_gillespie():
     gillespie.add_process(type='event', protocol='local', rate_param=1.0, wires={})  # protocol local should be default. kwargs could fill the config
     gillespie.add_process(type='interval')
 
-    print(gillespie['event'].ports())
+    print(gillespie['event'].interface())
     gillespie['event'].connect(port='DNA', target=['DNA_store'])
     gillespie['DNA_store'] = {'C': 2.0}  # this should check the type
 

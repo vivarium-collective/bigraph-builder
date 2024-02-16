@@ -85,7 +85,7 @@ class Builder(dict):
     def __init__(self, tree=None, schema=None, core=None, parent=None):
         super().__init__()
         self.builder_tree = builder_tree_from_dict(tree)
-        self.schema = schema or {}  # TODO -- need to track schema
+        self.schema = schema or {}  # TODO -- keep schema at the top level only
         self.core = core or ProcessTypes()
         self.parent = parent
 
@@ -213,7 +213,7 @@ class Builder(dict):
                 'address': f'local:{name}',  # TODO -- only support local right now?
                 'config': config,
                 'inputs': {} if inputs is None else inputs,
-                'outputs': outputs or {},
+                'outputs': {} if outputs is None else outputs,
             }
 
         initial_schema = {'_type': edge_type}
@@ -314,7 +314,7 @@ class Builder(dict):
             self.compile()
         self.compiled_composite.run(interval)
 
-    def ports(self, print_ports=False):
+    def interface(self, print_ports=False):
         # self.compile()
         tree_dict = self.get_tree()
         tree_type = tree_dict.get('_type')
@@ -342,20 +342,28 @@ class Builder(dict):
     def get_results(self, query=None):
         return self.compiled_composite.gather_results(query)
 
-    def emitter(self, name='ram-emitter'):
+    def emitter(self, name='ram-emitter', path=None):
+        if path:
+            assert isinstance(path, list)
+
         # TODO -- support more emitters
         self.add_process(
             name,
             edge_type='step',
-            config={'emit': 'schema'},
-            inputs=[],  # top level emit, TODO this should be more configurable
+            config={'emit': 'any'},
+            inputs=[] or path,  # TODO this should be more configurable
         )
 
 
 def build_gillespie():
     from process_bigraph.experiments.minimal_gillespie import GillespieEvent #, GillespieInterval
+    # from process_bigraph.experiments.definitions import definitions
+    # from sbmlprocess import definitions as sbml_definitions
 
     core = ProcessTypes()
+    # core.import(definitions)
+
+    # TODO -- this should not be required. Gillespie should somehow provide this
     core.register(
         'default 1', {
             '_inherit': 'float',
@@ -404,7 +412,7 @@ def build_gillespie():
     gillespie.visualize(filename='bigraph2', out_dir='out')
 
     ## choose an emitter
-    gillespie.emitter(name='ram-emitter')  # choose the emitter, path=[] would be all
+    gillespie.emitter(name='ram-emitter', path=['mRNA_store'])  # choose the emitter, path=[] would be all
     # gillespie.emitter(name='csv-emitter', emit_paths=['DNA_store'])  # add a second emitter
 
     # ## turn on emits (assume ram-emitter if none provided)
