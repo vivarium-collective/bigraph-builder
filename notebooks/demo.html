@@ -7631,7 +7631,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>['console-emitter', 'ram-emitter']
+<pre>['ram-emitter', 'console-emitter']
 </pre>
 </div>
 </div>
@@ -7771,7 +7771,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>['GillespieEvent', 'console-emitter', 'ram-emitter', 'toy', 'GillespieInterval']
+<pre>['console-emitter', 'GillespieInterval', 'ram-emitter', 'GillespieEvent', 'toy']
 </pre>
 </div>
 </div>
@@ -7930,7 +7930,7 @@ a.anchor-link {
    'outputs': {
       'mRNA': ['mRNA_store']
   },
-   'instance': &lt;process_bigraph.experiments.minimal_gillespie.GillespieEvent object at 0x1131a1640&gt;,
+   'instance': &lt;process_bigraph.experiments.minimal_gillespie.GillespieEvent object at 0x106e9a0d0&gt;,
    'interval': 1.0
 }
 }</pre>
@@ -8012,7 +8012,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">connect_all</span><span class="p">()</span>
@@ -8030,51 +8030,35 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[24], line 1</span>
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[16], line 1</span>
 <span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-yellow-bg">b</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">connect_all</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
 
-File <span class="ansi-green-fg">~/code/bigraph-builder/builder/builder_api.py:238</span>, in <span class="ansi-cyan-fg">Builder.connect_all</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    237</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">connect_all</span>(<span style="color: rgb(0,135,0)">self</span>):
-<span class="ansi-green-fg">--&gt; 238</span>     <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">complete</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>  <span style="color: rgb(95,135,135)"># this will get the schema</span>
-<span class="ansi-green-intense-fg ansi-bold">    239</span>     tree <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>get_tree()
-<span class="ansi-green-intense-fg ansi-bold">    240</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">for</span> k, v <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> tree<span style="color: rgb(98,98,98)">.</span>items():
+File <span class="ansi-green-fg">~/code/bigraph-builder/builder/builder_api.py:245</span>, in <span class="ansi-cyan-fg">Builder.connect_all</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">    243</span> <span class="ansi-bold" style="color: rgb(0,135,0)">for</span> port <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>schema[k][<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">_inputs</span><span style="color: rgb(175,0,0)">'</span>]<span style="color: rgb(98,98,98)">.</span>keys():
+<span class="ansi-green-intense-fg ansi-bold">    244</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> port <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> v<span style="color: rgb(98,98,98)">.</span>get(<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">inputs</span><span style="color: rgb(175,0,0)">'</span>, {}):
+<span class="ansi-green-fg">--&gt; 245</span>         <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">k</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">connect</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">port</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">port</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">target</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">port</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    246</span> <span class="ansi-bold" style="color: rgb(0,135,0)">for</span> port <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>schema[k][<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">_outputs</span><span style="color: rgb(175,0,0)">'</span>]<span style="color: rgb(98,98,98)">.</span>keys():
+<span class="ansi-green-intense-fg ansi-bold">    247</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> port <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> v<span style="color: rgb(98,98,98)">.</span>get(<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">outputs</span><span style="color: rgb(175,0,0)">'</span>, {}):
 
-File <span class="ansi-green-fg">~/code/bigraph-builder/builder/builder_api.py:230</span>, in <span class="ansi-cyan-fg">Builder.complete</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    228</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
-<span class="ansi-green-intense-fg ansi-bold">    229</span>     schema, tree <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>core<span style="color: rgb(98,98,98)">.</span>complete(<span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>schema, <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>get_tree())
-<span class="ansi-green-fg">--&gt; 230</span>     <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>schema <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">merge_dicts</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">schema</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">schema</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    231</span>     <span style="color: rgb(95,135,135)"># self.builder_tree = merge_dicts(self.builder_tree, builder_tree_from_dict(tree))</span>
-<span class="ansi-green-intense-fg ansi-bold">    232</span> 
-<span class="ansi-green-intense-fg ansi-bold">    233</span>     <span style="color: rgb(95,135,135)"># TODO -- we may want to go through and update the existing schema and tree rather than completely redoing them...</span>
-<span class="ansi-green-intense-fg ansi-bold">    234</span>     <span style="color: rgb(95,135,135)"># self.schema = schema</span>
-<span class="ansi-green-intense-fg ansi-bold">    235</span>     <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>builder_tree <span style="color: rgb(98,98,98)">=</span> builder_tree_from_dict(tree)
+File <span class="ansi-green-fg">~/code/bigraph-builder/builder/builder_api.py:256</span>, in <span class="ansi-cyan-fg">Builder.connect</span><span class="ansi-blue-fg">(self, port, target)</span>
+<span class="ansi-green-intense-fg ansi-bold">    254</span> <span class="ansi-bold" style="color: rgb(0,135,0)">assert</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>core<span style="color: rgb(98,98,98)">.</span>check(<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">edge</span><span style="color: rgb(175,0,0)">'</span>, <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>get_tree())
+<span class="ansi-green-intense-fg ansi-bold">    255</span> <span style="color: rgb(95,135,135)"># self.complete()</span>
+<span class="ansi-green-fg">--&gt; 256</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> port <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">schema</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">_inputs</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">]</span>:
+<span class="ansi-green-intense-fg ansi-bold">    257</span>     <span style="color: rgb(0,135,0)">self</span>[<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">inputs</span><span style="color: rgb(175,0,0)">'</span>][port] <span style="color: rgb(98,98,98)">=</span> target
+<span class="ansi-green-intense-fg ansi-bold">    258</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> port <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>schema[<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">_outputs</span><span style="color: rgb(175,0,0)">'</span>]:
 
-File <span class="ansi-green-fg">~/code/bigraph-builder/builder/builder_api.py:77</span>, in <span class="ansi-cyan-fg">merge_dicts</span><span class="ansi-blue-fg">(original, new)</span>
-<span class="ansi-green-intense-fg ansi-bold">     75</span>     original[k] <span style="color: rgb(98,98,98)">=</span> v
-<span class="ansi-green-intense-fg ansi-bold">     76</span> <span class="ansi-bold" style="color: rgb(0,135,0)">elif</span> <span style="color: rgb(0,135,0)">isinstance</span>(v, <span style="color: rgb(0,135,0)">dict</span>):
-<span class="ansi-green-fg">---&gt; 77</span>     original[k] <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">merge_dicts</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">original</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">k</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">v</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     78</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
-<span class="ansi-green-intense-fg ansi-bold">     79</span>     original[k] <span style="color: rgb(98,98,98)">=</span> v
-
-File <span class="ansi-green-fg">~/code/bigraph-builder/builder/builder_api.py:75</span>, in <span class="ansi-cyan-fg">merge_dicts</span><span class="ansi-blue-fg">(original, new)</span>
-<span class="ansi-green-intense-fg ansi-bold">     73</span> <span class="ansi-bold" style="color: rgb(0,135,0)">for</span> k, v <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> new<span style="color: rgb(98,98,98)">.</span>items():
-<span class="ansi-green-intense-fg ansi-bold">     74</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> k <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> original:
-<span class="ansi-green-fg">---&gt; 75</span>         <span class="ansi-yellow-bg">original</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">k</span><span class="ansi-yellow-bg">]</span> <span style="color: rgb(98,98,98)">=</span> v
-<span class="ansi-green-intense-fg ansi-bold">     76</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">elif</span> <span style="color: rgb(0,135,0)">isinstance</span>(v, <span style="color: rgb(0,135,0)">dict</span>):
-<span class="ansi-green-intense-fg ansi-bold">     77</span>         original[k] <span style="color: rgb(98,98,98)">=</span> merge_dicts(original[k], v)
-
-<span class="ansi-red-fg">TypeError</span>: 'str' object does not support item assignment</pre>
+<span class="ansi-red-fg">KeyError</span>: '_inputs'</pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6e00749f-03b8-496e-9a10-106dbac3713f">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6e00749f-03b8-496e-9a10-106dbac3713f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">builder_tree</span>
@@ -8083,52 +8067,12 @@ File <span class="ansi-green-fg">~/code/bigraph-builder/builder/builder_api.py:7
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>{'event_process': {
- '_type': 'process',
- 'address': 'local:GillespieEvent',
- 'config': {
-    'kdeg': 1.0,
-    'ktsc': 5.0
- },
- 'inputs': {
-    'mRNA': ['mRNA_store'],
-    'DNA': ['DNA_store']
- },
- 'outputs': {
-    'mRNA': ['mRNA_store']
- },
- 'instance': &lt;process_bigraph.experiments.minimal_gillespie.GillespieEvent object at 0x1131a1640&gt;,
- 'interval': 1.0
- },
- 'interval_process': {
- '_type': 'process',
- 'address': 'local:GillespieInterval',
- 'config': {
-    'ktsc': 5.0,
-    'kdeg': 0.1
- },
- 'inputs': {},
- 'outputs': {},
- 'instance': &lt;process_bigraph.experiments.minimal_gillespie.GillespieInterval object at 0x1131f6820&gt;,
- 'interval': 1.0
- }}</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e9a69f36-154c-416e-b00c-5df0726be49e">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e9a69f36-154c-416e-b00c-5df0726be49e">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
@@ -8137,93 +8081,12 @@ File <span class="ansi-green-fg">~/code/bigraph-builder/builder/builder_api.py:7
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[23], line 1</span>
-<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-yellow-bg">b</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">compile</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">~/code/bigraph-builder/builder/builder_api.py:289</span>, in <span class="ansi-cyan-fg">Builder.compile</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    286</span> tree <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>get_tree()
-<span class="ansi-green-intense-fg ansi-bold">    287</span> schema, tree <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>core<span style="color: rgb(98,98,98)">.</span>complete(
-<span class="ansi-green-intense-fg ansi-bold">    288</span>     <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>schema, tree)
-<span class="ansi-green-fg">--&gt; 289</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>compiled_composite <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">Composite</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-intense-fg ansi-bold">    290</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">{</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">state</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">:</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">tree</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">composition</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">:</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">schema</span><span class="ansi-yellow-bg">}</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    291</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">core</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">core</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    293</span> <span style="color: rgb(95,135,135)"># reset the builder tree</span>
-<span class="ansi-green-intense-fg ansi-bold">    294</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>update_tree(<span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>compiled_composite<span style="color: rgb(98,98,98)">.</span>composition, <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>compiled_composite<span style="color: rgb(98,98,98)">.</span>state)
-
-File <span class="ansi-green-fg">~/code/process-bigraph/process_bigraph/composite.py:834</span>, in <span class="ansi-cyan-fg">Composite.__init__</span><span class="ansi-blue-fg">(self, config, core)</span>
-<span class="ansi-green-intense-fg ansi-bold">    831</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>reset_step_state(<span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>step_paths)
-<span class="ansi-green-intense-fg ansi-bold">    832</span> to_run <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>cycle_step_state()
-<span class="ansi-green-fg">--&gt; 834</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">run_steps</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">to_run</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">~/code/process-bigraph/process_bigraph/composite.py:1096</span>, in <span class="ansi-cyan-fg">Composite.run_steps</span><span class="ansi-blue-fg">(self, step_paths)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1086</span>     step <span style="color: rgb(98,98,98)">=</span> get_path(
-<span class="ansi-green-intense-fg ansi-bold">   1087</span>         <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>state,
-<span class="ansi-green-intense-fg ansi-bold">   1088</span>         step_path)
-<span class="ansi-green-intense-fg ansi-bold">   1090</span>     state <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>core<span style="color: rgb(98,98,98)">.</span>view_edge(
-<span class="ansi-green-intense-fg ansi-bold">   1091</span>         <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>composition,
-<span class="ansi-green-intense-fg ansi-bold">   1092</span>         <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>state,
-<span class="ansi-green-intense-fg ansi-bold">   1093</span>         step_path,
-<span class="ansi-green-intense-fg ansi-bold">   1094</span>         <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">inputs</span><span style="color: rgb(175,0,0)">'</span>)
-<span class="ansi-green-fg">-&gt; 1096</span>     step_update <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">process_update</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-intense-fg ansi-bold">   1097</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">step_path</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   1098</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">step</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   1099</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">state</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   1100</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">-</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">1.0</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   1101</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">outputs</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1103</span>     updates<span style="color: rgb(98,98,98)">.</span>append(step_update)
-<span class="ansi-green-intense-fg ansi-bold">   1105</span> update_paths <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>apply_updates(updates)
-
-File <span class="ansi-green-fg">~/code/process-bigraph/process_bigraph/composite.py:884</span>, in <span class="ansi-cyan-fg">Composite.process_update</span><span class="ansi-blue-fg">(self, path, process, states, interval, ports_key)</span>
-<span class="ansi-green-intense-fg ansi-bold">    857</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">process_update</span>(
-<span class="ansi-green-intense-fg ansi-bold">    858</span>         <span style="color: rgb(0,135,0)">self</span>,
-<span class="ansi-green-intense-fg ansi-bold">    859</span>         path,
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-intense-fg ansi-bold">    862</span>         interval,
-<span class="ansi-green-intense-fg ansi-bold">    863</span>         ports_key<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">outputs</span><span style="color: rgb(175,0,0)">'</span>):
-<span class="ansi-green-intense-fg ansi-bold">    865</span> <span style="color: rgb(188,188,188)">    </span><span style="color: rgb(175,0,0)">"""Start generating a process's update.</span>
-<span class="ansi-green-intense-fg ansi-bold">    866</span> 
-<span class="ansi-green-intense-fg ansi-bold">    867</span> <span style="color: rgb(175,0,0)">    This function is similar to :py:meth:`_invoke_process` except in</span>
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-intense-fg ansi-bold">    882</span> <span style="color: rgb(175,0,0)">        ``store``.</span>
-<span class="ansi-green-intense-fg ansi-bold">    883</span> <span style="color: rgb(175,0,0)">    """</span>
-<span class="ansi-green-fg">--&gt; 884</span>     update <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">process</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">instance</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">invoke</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">states</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">interval</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    886</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">defer_project</span>(update, args):
-<span class="ansi-green-intense-fg ansi-bold">    887</span>         schema, state, path <span style="color: rgb(98,98,98)">=</span> args
-
-File <span class="ansi-green-fg">~/code/process-bigraph/process_bigraph/composite.py:401</span>, in <span class="ansi-cyan-fg">Step.invoke</span><span class="ansi-blue-fg">(self, state, _)</span>
-<span class="ansi-green-intense-fg ansi-bold">    400</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">invoke</span>(<span style="color: rgb(0,135,0)">self</span>, state, _<span style="color: rgb(98,98,98)">=</span><span class="ansi-bold" style="color: rgb(0,135,0)">None</span>):
-<span class="ansi-green-fg">--&gt; 401</span>     update <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">update</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">state</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    402</span>     sync <span style="color: rgb(98,98,98)">=</span> SyncUpdate(update)
-<span class="ansi-green-intense-fg ansi-bold">    403</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> sync
-
-File <span class="ansi-green-fg">~/code/process-bigraph/process_bigraph/experiments/minimal_gillespie.py:66</span>, in <span class="ansi-cyan-fg">GillespieInterval.update</span><span class="ansi-blue-fg">(self, input)</span>
-<span class="ansi-green-intense-fg ansi-bold">     64</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">update</span>(<span style="color: rgb(0,135,0)">self</span>, <span style="color: rgb(0,135,0)">input</span>):
-<span class="ansi-green-intense-fg ansi-bold">     65</span>     <span style="color: rgb(95,135,135)"># retrieve the state values</span>
-<span class="ansi-green-fg">---&gt; 66</span>     g <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">input</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">DNA</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">]</span>[<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">A gene</span><span style="color: rgb(175,0,0)">'</span>]
-<span class="ansi-green-intense-fg ansi-bold">     67</span>     c <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">input</span>[<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">mRNA</span><span style="color: rgb(175,0,0)">'</span>][<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">A mRNA</span><span style="color: rgb(175,0,0)">'</span>]
-<span class="ansi-green-intense-fg ansi-bold">     69</span>     array_state <span style="color: rgb(98,98,98)">=</span> np<span style="color: rgb(98,98,98)">.</span>array([g, c])
-
-<span class="ansi-red-fg">KeyError</span>: 'DNA'</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c975aab012b2706f">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=c975aab012b2706f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">doc</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">document</span><span class="p">()</span>
@@ -8233,41 +8096,16 @@ File <span class="ansi-green-fg">~/code/process-bigraph/process_bigraph/experime
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>{}</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=752e43636bf9fd17">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=752e43636bf9fd17">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">'toy_bigraph'</span><span class="p">)</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>File 'toy_bigraph' successfully written in 'out' directory.
-</pre>
 </div>
 </div>
 </div>
