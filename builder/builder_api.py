@@ -92,6 +92,52 @@ class Builder(dict):
         self.compiled_composite = None
         # TODO -- add an emitter by default so results are automatic
 
+    def __repr__(self):
+        # return custom_pf(self.get_tree())
+        return f"Builder(\n{custom_pf(self.get_tree())})"
+
+    def __setitem__(self, keys, value):
+        # Convert single key to tuple
+        keys = (keys,) if isinstance(keys, (str, int)) else keys
+        first_key = keys[0]
+        remaining = keys[1:]
+
+        if first_key not in self.builder_tree:
+            self.builder_tree[first_key] = Builder(core=self.core)
+        if len(remaining) > 0:
+            self.builder_tree[first_key].__setitem__(remaining, value)
+        elif isinstance(value, dict):
+            self.builder_tree[first_key] = Builder(tree=value,
+                                                   schema=self.schema.get(first_key),
+                                                   core=self.core)
+        else:
+            self.builder_tree[first_key] = value
+
+        # # reset compiled composite
+        # self.compiled_composite = None
+
+    def __getitem__(self, keys):
+        # Convert single key to tuple
+        keys = (keys,) if isinstance(keys, (str, int)) else keys
+
+        first_key = keys[0]
+        if first_key not in self.builder_tree:
+            self.builder_tree[first_key] = Builder(
+                parent=self, schema=self.schema.get(first_key, {}), core=self.core)
+
+        remaining = keys[1:]
+        if len(remaining) > 0:
+            return self.builder_tree[first_key].__getitem__(remaining)
+        else:
+            return self.builder_tree[first_key]
+
+    def top(self):
+        # recursively get the top parent
+        if self.parent:
+            return self.parent.top()
+        else:
+            return self
+
     def get(self, key, default=None):
         if key in self.builder_tree:
             return self.builder_tree[key]
@@ -137,52 +183,6 @@ class Builder(dict):
 
     def register_type(self, key, schema):
         self.core.type_registry.register(key, schema)
-
-    def top(self):
-        # recursively get the top parent
-        if self.parent:
-            return self.parent.top()
-        else:
-            return self
-
-    def __repr__(self):
-        # return custom_pf(self.get_tree())
-        return f"Builder(\n{custom_pf(self.get_tree())})"
-
-    def __setitem__(self, keys, value):
-        # Convert single key to tuple
-        keys = (keys,) if isinstance(keys, (str, int)) else keys
-        first_key = keys[0]
-        remaining = keys[1:]
-
-        if first_key not in self.builder_tree:
-            self.builder_tree[first_key] = Builder(core=self.core)
-        if len(remaining) > 0:
-            self.builder_tree[first_key].__setitem__(remaining, value)
-        elif isinstance(value, dict):
-            self.builder_tree[first_key] = Builder(tree=value,
-                                                   schema=self.schema.get(first_key),
-                                                   core=self.core)
-        else:
-            self.builder_tree[first_key] = value
-
-        # # reset compiled composite
-        # self.compiled_composite = None
-
-    def __getitem__(self, keys):
-        # Convert single key to tuple
-        keys = (keys,) if isinstance(keys, (str, int)) else keys
-
-        first_key = keys[0]
-        if first_key not in self.builder_tree:
-            self.builder_tree[first_key] = Builder(
-                parent=self, schema=self.schema.get(first_key, {}), core=self.core)
-
-        remaining = keys[1:]
-        if len(remaining) > 0:
-            return self.builder_tree[first_key].__getitem__(remaining)
-        else:
-            return self.builder_tree[first_key]
 
     def list_types(self):
         return self.core.type_registry.list()
@@ -258,7 +258,6 @@ class Builder(dict):
             self.builder_tree['inputs'][port] = target
         if port in self.schema['_outputs']:
             self.builder_tree['outputs'][port] = target
-
 
     def document(self):
         doc = self.core.serialize(
