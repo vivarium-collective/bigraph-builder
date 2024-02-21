@@ -32,7 +32,7 @@ def custom_pf(d, indent=0):
         items.append(f"{' ' * indent}{key_str}{value_str}")
 
     # final formatting
-    items_str = ',\n'.join(items)
+    items_str = ','.join(items)
     if indent > 0:
         return f"{{\n{items_str}\n{' ' * (indent - 4)}}}"
     else:
@@ -146,8 +146,8 @@ class Builder(dict):
             return self
 
     def __repr__(self):
-        return custom_pf(self.get_tree())
-        # return f"Builder(\n{pf(self.tree)})"
+        # return custom_pf(self.get_tree())
+        return f"Builder(\n{custom_pf(self.get_tree())})"
 
     def __setitem__(self, keys, value):
         # Convert single key to tuple
@@ -243,10 +243,10 @@ class Builder(dict):
                 if v.get('_type') in EDGE_KEYS:
                     for port in self.schema[k]['_inputs'].keys():
                         if port not in v.get('inputs', {}):
-                            self[k].connect(port=port, target=[port])
+                            self.builder_tree[k].connect(port=port, target=[port])
                     for port in self.schema[k]['_outputs'].keys():
                         if port not in v.get('outputs', {}):
-                            self[k].connect(port=port, target=[port])
+                            self.builder_tree[k].connect(port=port, target=[port])
                 elif isinstance(v, Builder):
                     v.connect_all()
                 # TODO -- propagate down
@@ -255,9 +255,9 @@ class Builder(dict):
         assert self.core.check('edge', self.get_tree())
         # self.complete()
         if port in self.schema['_inputs']:
-            self['inputs'][port] = target
+            self.builder_tree['inputs'][port] = target
         if port in self.schema['_outputs']:
-            self['outputs'][port] = target
+            self.builder_tree['outputs'][port] = target
 
 
     def document(self):
@@ -412,7 +412,7 @@ def build_gillespie():
     gillespie.visualize(filename='bigraph2', out_dir='out')
 
     ## choose an emitter
-    gillespie.emitter(name='ram-emitter', path=['mRNA_store'])  # choose the emitter, path=[] would be all
+    # gillespie.emitter(name='ram-emitter', path=['mRNA_store'])  # choose the emitter, path=[] would be all
     # gillespie.emitter(name='csv-emitter', emit_paths=['DNA_store'])  # add a second emitter
 
     # ## turn on emits (assume ram-emitter if none provided)
