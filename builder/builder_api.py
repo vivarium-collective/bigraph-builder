@@ -42,21 +42,29 @@ def custom_pf(d, indent=0):
 def builder_tree_from_dict(d):
     d = d or {}
     builder_tree = {}
-    for k, i in d.items():
-        if isinstance(i, dict):
-            builder_tree[k] = Builder(i)
-        else:
-            builder_tree[k] = i  # this is a leaf
+    # for k, i in d.items():
+    #     if isinstance(i, dict):
+    #         builder_tree[k] = Builder(i, key=k)
+    #     else:
+    #         builder_tree[k] = i  # this is a leaf
+    if isinstance(d, dict):
+        for k, i in d.items():
+            builder_tree[k] = Builder(tree=i, key=k)
+    else:
+        builder_tree = d  # this is a leaf
     return builder_tree
 
 
 def dict_from_builder_tree(builder_tree):
     tree = {}
-    for k, i in builder_tree.items():
-        if isinstance(i, Builder):
-            tree[k] = dict_from_builder_tree(i.builder_tree)
-        else:
-            tree[k] = i  # this is a leaf
+    if isinstance(builder_tree, Builder):
+        for k, i in builder_tree.items():
+            if isinstance(i, Builder):
+                tree[k] = dict_from_builder_tree(i.builder_tree)
+            else:
+                tree[k] = i  # this is a leaf
+    elif builder_tree:
+        tree = builder_tree
     return tree
 
 
@@ -80,14 +88,43 @@ def merge_dicts(original, new):
     return original
 
 
+def get_value_from_path(dictionary, path):
+    """
+    Retrieves a value from a nested dictionary based on the given path.
+
+    Parameters:
+    - dictionary (dict): The dictionary to search within.
+    - path (list): A list of keys representing the path to the desired value.
+
+    Returns:
+    - The value found at the specified path, or None if the path does not exist.
+    """
+    current = dictionary
+    for key in path:
+        # Check if the key exists in the current level of the dictionary
+        if key in current:
+            current = current[key]
+        else:
+            # Return None if any key in the path does not exist
+            return None
+    return current
+
+
 class Builder(dict):
 
-    def __init__(self, tree=None, schema=None, core=None, parent=None):
+    def __init__(self, tree=None, core=None, parent=None, key=None, schema=None):
         super().__init__()
         self.builder_tree = builder_tree_from_dict(tree)
-        self.schema = schema or {}  # TODO -- keep schema at the top level only
         self.core = core or ProcessTypes()
         self.parent = parent
+        self.key = key
+
+        self.schema = None
+        if not self.parent:
+            # keep schema at the top level only
+            self.schema = schema or {}
+        elif schema:
+            raise Exception('schema is for top node only')
 
         self.compiled_composite = None
         # TODO -- add an emitter by default so results are automatic
@@ -103,15 +140,19 @@ class Builder(dict):
         remaining = keys[1:]
 
         if first_key not in self.builder_tree:
-            self.builder_tree[first_key] = Builder(core=self.core)
+            self.builder_tree[first_key] = Builder(core=self.core,
+                                                   key=first_key)
         if len(remaining) > 0:
             self.builder_tree[first_key].__setitem__(remaining, value)
         elif isinstance(value, dict):
             self.builder_tree[first_key] = Builder(tree=value,
-                                                   schema=self.schema.get(first_key),
-                                                   core=self.core)
+                                                   core=self.core,
+                                                   key=first_key)
         else:
-            self.builder_tree[first_key] = value
+            # self.builder_tree[first_key] = value
+            self.builder_tree[first_key] = Builder(tree=value,
+                                                   core=self.core,
+                                                   key=first_key)
 
         # # reset compiled composite
         # self.compiled_composite = None
@@ -123,7 +164,9 @@ class Builder(dict):
         first_key = keys[0]
         if first_key not in self.builder_tree:
             self.builder_tree[first_key] = Builder(
-                parent=self, schema=self.schema.get(first_key, {}), core=self.core)
+                parent=self,
+                core=self.core,
+                key=first_key)
 
         remaining = keys[1:]
         if len(remaining) > 0:
@@ -138,6 +181,18 @@ class Builder(dict):
         else:
             return self
 
+    def top_schema(self):
+        if self.parent:
+            return self.parent.top_schema
+        return self.schema
+
+    def path_for(self):
+        if self.parent:
+            # concatenate with the parent's path
+            return self.parent.path_for() + [self.key]
+        # return root identifier
+        return [self.key]
+
     def get(self, key, default=None):
         if key in self.builder_tree:
             return self.builder_tree[key]
@@ -146,6 +201,14 @@ class Builder(dict):
 
     def get_tree(self):
         return dict_from_builder_tree(self.builder_tree)
+
+    def get_schema(self):
+        top_schema = self.top_schema()
+        path = self.path_for()
+        schema = get_value_from_path(top_schema, path)
+        # TODO -- go down the path to get the schema at the current level
+
+        return schema
 
     def register_process(self, process_name, address=None):
         """
@@ -217,8 +280,8 @@ class Builder(dict):
             }
 
         initial_schema = {'_type': edge_type}
-        self.schema, state = self.core.complete(initial_schema, initial_state)
-        self.builder_tree = builder_tree_from_dict(state)
+        schema, state = self.core.complete(initial_schema, initial_state)
+        self.builder_tree = builder_tree_from_dict(state)  # TODO -- does this propagate to top level?
 
         # complete the composite
         # self.complete()
@@ -232,7 +295,6 @@ class Builder(dict):
             # self.builder_tree = merge_dicts(self.builder_tree, builder_tree_from_dict(tree))
 
             # TODO -- we may want to go through and update the existing schema and tree rather than completely redoing them...
-            # self.schema = schema
             self.builder_tree = builder_tree_from_dict(tree)
 
     def connect_all(self):
@@ -253,17 +315,25 @@ class Builder(dict):
 
     def connect(self, port=None, target=None):
         assert self.core.check('edge', self.get_tree())
-        # self.complete()
-        if port in self.schema['_inputs']:
+
+        # TODO -- need to get schema AT THIS LEVEL, using the top-level schema
+        schema = self.get_schema()
+
+        # TODO -- assert that this is indeed a process/edge
+
+        if port in schema['_inputs']:
             self.builder_tree['inputs'][port] = target
-        if port in self.schema['_outputs']:
+        if port in schema['_outputs']:
             self.builder_tree['outputs'][port] = target
 
     def document(self):
-        doc = self.core.serialize(
+        # return top-level document
+        if self.parent:
+            return self.parent.document()
+
+        return self.core.serialize(
             self.schema,
             self.get_tree())
-        return doc
 
     def write(self, filename, outdir='out'):
         if not os.path.exists(outdir):
@@ -282,18 +352,18 @@ class Builder(dict):
         # compile the top-level Builder
         if self.parent:
             return self.parent.compile()
-        else:
-            tree = self.get_tree()
-            schema, tree = self.core.complete(
-                self.schema, tree)
-            self.compiled_composite = Composite(
-                {'state': tree, 'composition': self.schema},
-                core=self.core)
 
-            # reset the builder tree
-            self.update_tree(self.compiled_composite.composition, self.compiled_composite.state)
+        tree = self.get_tree()
+        schema, tree = self.core.complete(
+            self.schema, tree)
+        self.compiled_composite = Composite(
+            {'state': tree, 'composition': self.schema},
+            core=self.core)
 
-            return self.compiled_composite
+        # reset the builder tree
+        self.update_tree(self.compiled_composite.composition, self.compiled_composite.state)
+
+        return self.compiled_composite
 
     def update_tree(self, schema=None, state=None):
         self.schema = schema or self.schema  # TODO -- should we be merging the schema?
@@ -329,6 +399,8 @@ class Builder(dict):
                 print(custom_pf(process_ports))
 
     def visualize(self, filename=None, out_dir=None, **kwargs):
+        if self.parent:
+            return self.parent.visualize()
         return plot_bigraph(
             self.get_tree(),
             schema=self.schema,
@@ -445,6 +517,15 @@ def build_gillespie():
     # node.add_process()
 
 
+def test_embedded():
+    b = Builder()
+
+    b['down', 'node1'] = 1
+    b['down', 'node2'] = 2
+
+    path = b['down', 'node1'].path_for()
+    print(f"PATH: {path}")
+
 def test1():
     b = Builder()
 
@@ -469,4 +550,5 @@ def test1():
 
 if __name__ == '__main__':
     build_gillespie()
-    # test1()
+    test1()
+    test_embedded()
