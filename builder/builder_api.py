@@ -1,5 +1,6 @@
 from bigraph_schema.registry import get_path, set_path
-from process_bigraph import ProcessTypes
+from process_bigraph import ProcessTypes, Composite
+from bigraph_viz.diagram import plot_bigraph
 
 
 def builder_tree_from_dict(
@@ -104,6 +105,24 @@ class Builder:
     def complete(self):
         self.schema, self.tree = self.core.complete(self.schema, self.tree)
 
+    def visualize(self, filename=None, out_dir=None, **kwargs):
+        return plot_bigraph(
+            state=self.tree,
+            schema=self.schema,
+            core=self.core,
+            out_dir=out_dir,
+            filename=filename,
+            **kwargs)
+
+    def generate(self):
+        composite = Composite({
+            'state': self.tree,
+            'composition': self.schema
+        },
+            core=self.core)
+
+        return composite
+
 
 
 def test_builder():
@@ -121,7 +140,12 @@ def test_builder():
     b['down', 'here'] = {'_value': 10, '_type': 'integer'}
     x = b['down', 'here']
     # assert x.get_tree() == 10
-    x
+
+    b.visualize(filename='builder_test')
+
+    # make composite, simulate
+    composite = b.generate()
+    composite.run(10)
 
 
 if __name__ == '__main__':
