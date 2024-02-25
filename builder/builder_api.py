@@ -1,6 +1,13 @@
 from bigraph_schema.registry import get_path, set_path
 from process_bigraph import ProcessTypes, Composite
 from bigraph_viz.diagram import plot_bigraph
+import pprint
+
+pretty = pprint.PrettyPrinter(indent=2)
+
+
+def pf(x):
+    return pretty.pformat(x)
 
 
 def builder_tree_from_dict(
@@ -95,6 +102,9 @@ class Builder:
         self.schema, self.tree = self.core.complete(schema, tree)
         self.builder_tree = builder_tree_from_dict(self, self.schema, self.tree)
 
+    def __repr__(self):
+        return f"Builder(\n{pf(self.tree)})"
+
     def __getitem__(self, keys):
         return self.builder_tree[keys]
 
@@ -132,7 +142,12 @@ def test_builder():
         'DNA_store': {
             '_type': 'map[float]',
             'A gene': 2.0,
-            'B gene': 1.0}}
+            'B gene': 1.0},
+        'RNA_store': {
+            '_type': 'map[float]',
+            'A rna': 0.0,
+            'B rna': 0.0},
+    }
 
     b = Builder(core=core, tree=initial_tree)
 
