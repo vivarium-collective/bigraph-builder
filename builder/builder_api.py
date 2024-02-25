@@ -1,7 +1,10 @@
+import os
+import json
+import pprint
 from bigraph_schema.registry import get_path, set_path
 from process_bigraph import ProcessTypes, Composite
 from bigraph_viz.diagram import plot_bigraph
-import pprint
+
 
 pretty = pprint.PrettyPrinter(indent=2)
 
@@ -133,6 +136,23 @@ class Builder:
 
         return composite
 
+    def document(self):
+        return self.core.serialize(
+            self.schema,
+            self.tree)
+
+    def write(self, filename, outdir='out'):
+        if not os.path.exists(outdir):
+            os.makedirs(outdir)
+
+        filepath = f"{outdir}/{filename}.json"
+        document = self.document()
+
+        # Writing the dictionary to a JSON file
+        with open(filepath, 'w') as json_file:
+            json.dump(document, json_file, indent=4)
+
+        print(f"File '{filename}' successfully written in '{outdir}' directory.")
 
 
 def test_builder():
@@ -161,6 +181,9 @@ def test_builder():
     # make composite, simulate
     composite = b.generate()
     composite.run(10)
+
+    # save document
+    b.write(filename='builder_test_doc')
 
 
 if __name__ == '__main__':
