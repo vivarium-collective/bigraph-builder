@@ -40,6 +40,9 @@ class BuilderNode:
         self.path = path
         self.branches = {}
 
+    def __repr__(self):
+        tree = self.value()
+        return f"BuilderNode({pf(tree)})"
 
     def __getitem__(self, keys):
         # Convert single key to tuple
@@ -127,7 +130,8 @@ class Builder:
         self.node = node_from_tree(self, self.schema, self.tree)
 
     def __repr__(self):
-        return f"Builder(\n{pf(self.tree)})"
+        return f"Builder({pf(self.tree)})"
+
 
     def __getitem__(self, keys):
         return self.node[keys]
@@ -200,8 +204,6 @@ def test_builder():
     builder['down', 'here'] = {
         '_value': 10,
         '_type': 'integer'}
-
-    import ipdb; ipdb.set_trace()
 
     x = builder['down', 'here']
     assert x.value() == 10
