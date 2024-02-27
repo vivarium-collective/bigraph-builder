@@ -103,14 +103,11 @@ class BuilderNode:
             # set the value
             set_path(tree=self.builder.tree, path=path_here, value=value)
 
-
     def value(self):
         return get_path(self.builder.tree, self.path)
 
-
     def schema(self):
         return get_path(self.builder.schema, self.path)
-
 
     def top(self):
         return self.builder.node
@@ -142,8 +139,17 @@ class BuilderNode:
         }
 
         set_path(tree=self.builder.tree, path=self.path, value=state)
+        self.builder.complete()
 
+    def connect(self, port=None, target=None):
+        value = self.value()
+        assert self.builder.core.check('edge', value), "connect only works on edges"
+        schema = self.schema()
 
+        if port in schema['_inputs']:
+            value['inputs'][port] = target
+        if port in schema['_outputs']:
+            value['outputs'][port] = target
 
 class Builder:
 
@@ -174,7 +180,7 @@ class Builder:
         return self.core.type_registry.list()
 
     def list_processes(self):
-        print(self.core.process_registry.list())
+        return self.core.process_registry.list()
 
     def complete(self):
         self.schema, self.tree = self.core.complete(self.schema, self.tree)
@@ -225,36 +231,29 @@ class Builder:
             def decorator(cls):
                 if not issubclass(cls, Edge):
                     raise TypeError(f"The class {cls.__name__} must be a subclass of Edge")
-                self.core.process_registry.register(process_name, cls, force=True)
+                self.core.process_registry.register(process_name, cls)
                 return cls
-
             return decorator
 
         else:
-
             # Check if address is a string
+            # TODO -- we want to also support remote processes with non local protocol
             if isinstance(address, str):
-                protocol, addr = address.split(':', 1)
-                if protocol != 'local':
-                    raise ValueError('BigraphBuilder only supports the local protocol in the current version')
-
-                if addr.startswith('!'):
-                    process_class = local_lookup_module(addr[1:])
-                    self.core.process_registry.register(process_name, process_class, force=True)
-                else:
-                    raise ValueError('Only local addresses starting with "!" are supported')
+                process_class = local_lookup_module(address)
+                self.core.process_registry.register(process_name, process_class)
 
             # Check if address is a class object
             elif issubclass(address, Edge):
-                self.core.process_registry.register(process_name, address, force=True)
+                self.core.process_registry.register(process_name, address)
             else:
                 raise TypeError(f"Unsupported address type for {process_name}: {type(address)}. Registration failed.")
 
 
 def test_builder():
-    from process_bigraph.experiments.minimal_gillespie import GillespieEvent  # , GillespieInterval
+    from process_bigraph.experiments.minimal_gillespie import GillespieEvent, EXPORT  # , GillespieInterval
 
     core = ProcessTypes()
+    core.import_types(EXPORT)  # TODO -- make this better
 
     initial_tree = {
         'DNA_store': {
@@ -288,7 +287,7 @@ def test_builder():
         'GillespieEvent', GillespieEvent)
     builder.register_process(
         'GillespieInterval',
-        address='local:!process_bigraph.experiments.minimal_gillespie.GillespieInterval')
+        address='process_bigraph.experiments.minimal_gillespie.GillespieInterval')
 
     ## add processes
     builder['event_process'].add_process(
@@ -300,11 +299,20 @@ def test_builder():
         # inputs={'port_id': ['store']}  # we should be able to set the wires directly like this
     )
 
+    # make bigraph-viz diagram before connect
+    builder.visualize(filename='builder_test1',
+                      show_values=True,
+                      show_types=True)
 
+    # connect processes
+    builder['event_process'].connect(port='DNA', target=['DNA_store'])
+    builder['event_process'].connect(port='mRNA', target=['mRNA_store'])
+    builder['interval_process'].connect(port='DNA', target=['DNA_store'])
+    builder['interval_process'].connect(port='mRNA', target=['mRNA_store'])
+    builder['interval_process'].connect(port='interval', target=['interval_store'])
 
-
-    # make bigraph-viz diagram
-    builder.visualize(filename='builder_test',
+    # make bigraph-viz diagram after connect
+    builder.visualize(filename='builder_test2',
                       show_values=True,
                       show_types=True)
 
