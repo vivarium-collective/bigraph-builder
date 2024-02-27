@@ -118,7 +118,7 @@ class BuilderNode:
             config=None,
             inputs=None,
             outputs=None,
-            edge_type=None,
+            edge_type='process',
             **kwargs
     ):
         """ Add a process to the tree """
@@ -127,7 +127,7 @@ class BuilderNode:
         assert name, 'add_process requires a name as input'
         config = config or {}
         config.update(kwargs)
-        edge_type = edge_type or 'process'  # TODO -- don't hardcode as process
+        # edge_type = edge_type or 'process'  # TODO -- don't hardcode as process
 
         # make the process spec
         state = {
@@ -296,6 +296,7 @@ def test_builder():
     )
     builder['interval_process'].add_process(
         name='GillespieInterval',
+        edge_type='step',  # TODO -- it should know this automatically
         # inputs={'port_id': ['store']}  # we should be able to set the wires directly like this
     )
 
@@ -309,7 +310,7 @@ def test_builder():
     builder['event_process'].connect(port='mRNA', target=['mRNA_store'])
     builder['interval_process'].connect(port='DNA', target=['DNA_store'])
     builder['interval_process'].connect(port='mRNA', target=['mRNA_store'])
-    builder['interval_process'].connect(port='interval', target=['interval_store'])
+    builder['interval_process'].connect(port='interval', target=['event_process', 'interval'])  # TODO -- viz  needs to show interval in process
 
     # make bigraph-viz diagram after connect
     builder.visualize(filename='builder_test2',
