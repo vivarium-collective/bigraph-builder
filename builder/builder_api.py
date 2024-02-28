@@ -143,13 +143,27 @@ class BuilderNode:
 
     def connect(self, port=None, target=None):
         value = self.value()
-        assert self.builder.core.check('edge', value), "connect only works on edges"
         schema = self.schema()
+        assert self.builder.core.check('edge', value), "connect only works on edges"
 
         if port in schema['_inputs']:
             value['inputs'][port] = target
         if port in schema['_outputs']:
             value['outputs'][port] = target
+
+    def connect_all(self, append_to_store_name=''):
+        value = self.value()
+        schema = self.schema()
+        assert self.builder.core.check('edge', value), "connect_all only works on edges"
+
+        for port, port_schema in schema['_inputs'].items():
+            if port not in value['inputs']:
+                value['inputs'][port] = [port + append_to_store_name]
+        for port, port_schema in schema['_outputs'].items():
+            if port not in value['outputs']:
+                value['outputs'][port] = [port + append_to_store_name]
+
+
 
 class Builder:
 
@@ -249,6 +263,7 @@ class Builder:
                 raise TypeError(f"Unsupported address type for {process_name}: {type(address)}. Registration failed.")
 
 
+
 def test_builder():
     from process_bigraph.experiments.minimal_gillespie import GillespieEvent, EXPORT  # , GillespieInterval
 
@@ -306,11 +321,13 @@ def test_builder():
                       show_types=True)
 
     # connect processes
-    builder['event_process'].connect(port='DNA', target=['DNA_store'])
-    builder['event_process'].connect(port='mRNA', target=['mRNA_store'])
-    builder['interval_process'].connect(port='DNA', target=['DNA_store'])
-    builder['interval_process'].connect(port='mRNA', target=['mRNA_store'])
+    # builder['event_process'].connect(port='DNA', target=['DNA_store'])
+    # builder['event_process'].connect(port='mRNA', target=['mRNA_store'])
+    # builder['interval_process'].connect(port='DNA', target=['DNA_store'])
+    # builder['interval_process'].connect(port='mRNA', target=['mRNA_store'])
     builder['interval_process'].connect(port='interval', target=['event_process', 'interval'])  # TODO -- viz  needs to show interval in process
+    builder['interval_process'].connect_all(append_to_store_name='_store')
+    builder['event_process'].connect_all(append_to_store_name='_store')
 
     # make bigraph-viz diagram after connect
     builder.visualize(filename='builder_test2',
