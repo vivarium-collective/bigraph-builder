@@ -2,7 +2,7 @@ import re
 from setuptools import setup, find_packages
 
 
-VERSION = '0.0.1'
+VERSION = '0.0.2'
 
 
 with open("README.md", "r") as readme:
@@ -11,8 +11,8 @@ with open("README.md", "r") as readme:
 setup(
     name="bigraph-builder",
     version=VERSION,
-    author="Eran Agmon",
-    author_email="agmon.eran@gmail.com",
+    author="Eran Agmon, Ryan Spangler",
+    author_email="agmon.eran@gmail.com, ryan.spangler@gmail.com",
     description="",
     long_description=long_description,
     long_description_content_type="text/markdown",
