@@ -163,6 +163,19 @@ class BuilderNode:
             if port not in value['outputs']:
                 value['outputs'][port] = [port + append_to_store_name]
 
+    def interface(self, print_ports=False):
+        value = self.value()
+        schema = self.schema()
+        if not self.builder.core.check('edge', value):
+            warnings.warn(f"Expected '_type' to be in {EDGE_KEYS}, found '{tree_type}' instead.")
+        elif self.builder.core.check('edge', value):
+            process_ports = {}
+            process_ports['_inputs'] = schema.get('_inputs', {})
+            process_ports['_outputs'] = schema.get('_outputs', {})
+            if not print_ports:
+                return process_ports
+            else:
+                print(pf(process_ports))
 
 
 class Builder:
@@ -234,6 +247,9 @@ class Builder:
             json.dump(document, json_file, indent=4)
 
         print(f"File '{filename}' successfully written in '{outdir}' directory.")
+
+    def register_type(self, key, schema):
+        self.core.type_registry.register(key, schema)
 
     def register_process(self, process_name, address=None):
         """
