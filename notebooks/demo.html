@@ -7520,7 +7520,7 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b385dca6-942d-472c-9963-13b8cb33843c">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=72d9bc95-019b-48aa-a841-202fcf449e64">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7528,9 +7528,65 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">executable</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>'/Users/eranagmon/code/bigraph-builder/venv/bin/python'</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b385dca6-942d-472c-9963-13b8cb33843c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># imports</span>
 <span class="kn">from</span> <span class="nn">builder</span> <span class="kn">import</span> <span class="n">Builder</span><span class="p">,</span> <span class="n">Process</span><span class="p">,</span> <span class="n">ProcessTypes</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ModuleNotFoundError</span>                       Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[2], line 2</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span style="color: rgb(95,135,135)"># imports</span>
+<span class="ansi-green-fg">----&gt; 2</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">builder</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> Builder, Process, ProcessTypes
+
+File <span class="ansi-green-fg">~/code/bigraph-builder/venv/lib/python3.9/site-packages/builder/__init__.py:1</span>
+<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">builder</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">builder_api_old</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> Builder
+<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">process_bigraph</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">composite</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> Process, Step, Composite, ProcessTypes
+<span class="ansi-green-intense-fg ansi-bold">      4</span> __all__ <span style="color: rgb(98,98,98)">=</span> [
+<span class="ansi-green-intense-fg ansi-bold">      5</span>     <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">Builder</span><span style="color: rgb(175,0,0)">'</span>,
+<span class="ansi-green-intense-fg ansi-bold">      6</span>     <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">Process</span><span style="color: rgb(175,0,0)">'</span>,
+<span class="ansi-green-fg">   (...)</span>
+<span class="ansi-green-intense-fg ansi-bold">      9</span>     <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">ProcessTypes</span><span style="color: rgb(175,0,0)">'</span>,
+<span class="ansi-green-intense-fg ansi-bold">     10</span> ]
+
+<span class="ansi-red-fg">ModuleNotFoundError</span>: No module named 'builder.builder_api_old'</pre>
 </div>
 </div>
 </div>
@@ -7551,7 +7607,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">core</span> <span class="o">=</span> <span class="n">ProcessTypes</span><span class="p">()</span>
@@ -7577,7 +7633,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">register_type</span><span class="p">(</span>
@@ -7611,29 +7667,16 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=979e0bd85a31d4b0">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=979e0bd85a31d4b0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">list_processes</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>['ram-emitter', 'console-emitter']
-</pre>
 </div>
 </div>
 </div>
@@ -7654,7 +7697,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">process_bigraph.experiments.minimal_gillespie</span> <span class="kn">import</span> <span class="n">GillespieEvent</span>
@@ -7680,7 +7723,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">register_process</span><span class="p">(</span>
@@ -7708,7 +7751,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="nd">@b</span><span class="o">.</span><span class="n">register_process</span><span class="p">(</span><span class="s1">'toy'</span><span class="p">)</span>
@@ -7751,29 +7794,16 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=40cde984-cfdf-4571-af9c-3a3755e3763c">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=40cde984-cfdf-4571-af9c-3a3755e3763c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">list_processes</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>['toy', 'GillespieEvent', 'ram-emitter', 'GillespieInterval', 'console-emitter']
-</pre>
 </div>
 </div>
 </div>
@@ -7794,7 +7824,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1">## add processes</span>
@@ -7807,28 +7837,16 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b094f1e5-5202-48d0-8bdd-57bbdded7fd1">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b094f1e5-5202-48d0-8bdd-57bbdded7fd1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
-<div class="jp-RenderedSVG jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="image/svg+xml" tabindex="0">
-<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8IS0tIEdlbmVyYXRlZCBieSBncmFwaHZpeiB2ZXJzaW9uIDkuMC4wICgwKQogLS0+CjwhLS0gVGl0bGU6IGJpZ3JhcGggUGFnZXM6IDEgLS0+Cjxzdmcgd2lkdGg9IjgxcHQiIGhlaWdodD0iNDNwdCIKIHZpZXdCb3g9IjAuMDAgMC4wMCA4My4xNyA0NC4wMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CjxnIGlkPSJncmFwaDAiIGNsYXNzPSJncmFwaCIgdHJhbnNmb3JtPSJzY2FsZSgwLjk3MjIyMiAwLjk3MjIyMikgcm90YXRlKDApIHRyYW5zbGF0ZSg0IDQwKSI+Cjx0aXRsZT5iaWdyYXBoPC90aXRsZT4KPHBvbHlnb24gZmlsbD0id2hpdGUiIHN0cm9rZT0ibm9uZSIgcG9pbnRzPSItNCw0IC00LC00MCA3OS4xNywtNDAgNzkuMTcsNCAtNCw0Ii8+CjwhLS0gKCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJub2RlMSIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIHBvaW50cz0iNzUuMTcsLTM2IDAsLTM2IDAsMCA3NS4xNywwIDc1LjE3LC0zNiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjMuNiIgeT0iLTE0LjQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+ZXZlbnRfcHJvY2VzczwvdGV4dD4KPC9nPgo8L2c+Cjwvc3ZnPgo="/>
 </div>
 </div>
 </div>
@@ -7844,40 +7862,16 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=5ea31425-a8bb-45c3-a31d-77714cc8c137">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=5ea31425-a8bb-45c3-a31d-77714cc8c137">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">[</span><span class="s1">'event_process'</span><span class="p">]</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>{
-'_inputs': {
-   'mRNA': 'map[float]',
-   'DNA': {
-      'A gene': 'float',
-      'B gene': 'float'
-  }
-},
-'_outputs': {
-   'mRNA': 'map[float]'
-}
-}
-</pre>
 </div>
 </div>
 </div>
@@ -7893,12 +7887,12 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c9f462bb-5316-4724-aa8e-b3b71eb379b2">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=c9f462bb-5316-4724-aa8e-b3b71eb379b2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">[</span><span class="s1">'event_process'</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="s1">'mRNA'</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="p">[</span><span class="s1">'mRNA_store'</span><span class="p">])</span>
@@ -7909,58 +7903,16 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>{
-'event_process': {
-   '_type': 'process',
-   'address': 'local:GillespieEvent',
-   'config': {
-      'kdeg': 1.0,
-      'ktsc': 5.0
-  },
-   'inputs': {
-      'mRNA': ['mRNA_store'],
-      'DNA': ['DNA_store']
-  },
-   'outputs': {
-      'mRNA': ['mRNA_store']
-  },
-   'instance': &lt;process_bigraph.experiments.minimal_gillespie.GillespieEvent object at 0x1138592b0&gt;,
-   'interval': 1.0
-}
-}</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=79809baf-1d87-475a-b85f-3729f4716cb4">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=79809baf-1d87-475a-b85f-3729f4716cb4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
-<div class="jp-RenderedSVG jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="image/svg+xml" tabindex="0">
-<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8IS0tIEdlbmVyYXRlZCBieSBncmFwaHZpeiB2ZXJzaW9uIDkuMC4wICgwKQogLS0+CjwhLS0gVGl0bGU6IGJpZ3JhcGggUGFnZXM6IDEgLS0+Cjxzdmcgd2lkdGg9IjI1MnB0IiBoZWlnaHQ9IjE4MXB0Igogdmlld0JveD0iMC4wMCAwLjAwIDI1OS4yMyAxODYuNDciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgo8ZyBpZD0iZ3JhcGgwIiBjbGFzcz0iZ3JhcGgiIHRyYW5zZm9ybT0ic2NhbGUoMC45NzIyMjIgMC45NzIyMjIpIHJvdGF0ZSgwKSB0cmFuc2xhdGUoNCAxODIuNDcpIj4KPHRpdGxlPmJpZ3JhcGg8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJub25lIiBwb2ludHM9Ii00LDQgLTQsLTE4Mi40NyAyNTUuMjMsLTE4Mi40NyAyNTUuMjMsNCAtNCw0Ii8+CjwhLS0gKCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkgLS0+CjxnIGlkPSJub2RlMSIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCk8L3RpdGxlPgo8ZWxsaXBzZSBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGN4PSI0Mi4wOCIgY3k9Ii0xMzYuMzkiIHJ4PSI0Mi4wOCIgcnk9IjQyLjA4Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTAuMDgiIHk9Ii0xMzIuNzkiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+bVJOQV9zdG9yZTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpIC0tPgo8ZyBpZD0ibm9kZTUiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBvbHlnb24gZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBwb2ludHM9IjEwOS42NywtNDIuMTUgMzQuNSwtNDIuMTUgMzQuNSwtNi4xNSAxMDkuNjcsLTYuMTUgMTA5LjY3LC00Mi4xNSIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjM4LjEiIHk9Ii0yMC41NSIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5ldmVudF9wcm9jZXNzPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9ImVkZ2UzIiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTttUk5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWRhc2hhcnJheT0iNSwyIiBkPSJNMjEuMTEsLTk5LjExQzE3LjUsLTg4LjMgMTYuMjgsLTc2LjYgMjEuMTksLTY2LjMxIDI0LjAxLC02MC4zOSAyOC4xNSwtNTUuMDYgMzIuODYsLTUwLjM0Ii8+Cjxwb2x5Z29uIGZpbGw9ImJsYWNrIiBzdHJva2U9ImJsYWNrIiBwb2ludHM9IjM0Ljg4LC01My4yMiA0MC4wNiwtNDMuOTggMzAuMjUsLTQ3Ljk3IDM0Ljg4LC01My4yMiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjIyLjA4IiB5PSItNjguMzEiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMC4wMCI+bVJOQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlNSIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS1kYXNoYXJyYXk9IjUsMiIgZD0iTTU2LjA5LC04My45QzYwLjA4LC02OS4yNiA2NC4xNiwtNTQuMjcgNjcuMiwtNDMuMSIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSI1Mi43MywtODIuOTQgNTMuNDgsLTkzLjUxIDU5LjQ4LC04NC43OCA1Mi43MywtODIuOTQiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSI2MS4wOCIgeT0iLTY4LjMxIiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPm1STkE8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywpIC0tPgo8ZyBpZD0ibm9kZTIiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O0ROQV9zdG9yZSYjMzk7LCk8L3RpdGxlPgo8ZWxsaXBzZSBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGN4PSIxNjEuMDgiIGN5PSItMTM2LjM5IiByeD0iMzYuOTYiIHJ5PSIzNi45NiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjEzMy40MiIgeT0iLTEzMi43OSIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5ETkFfc3RvcmU8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtBIGdlbmUmIzM5OykgLS0+CjxnIGlkPSJub2RlMyIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QSBnZW5lJiMzOTspPC90aXRsZT4KPGVsbGlwc2UgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBjeD0iMTYxLjA4IiBjeT0iLTI0LjE1IiByeD0iMjQuMTUiIHJ5PSIyNC4xNSIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjE0NC4yNSIgeT0iLTIwLjU1IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPkEgZ2VuZTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O0ROQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtBIGdlbmUmIzM5OykgLS0+CjxnIGlkPSJlZGdlMSIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0EgZ2VuZSYjMzk7KTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZD0iTTE2MS4wOCwtOTguNjhDMTYxLjA4LC04Mi40IDE2MS4wOCwtNjMuNjkgMTYxLjA4LC00OS4yMiIvPgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QiBnZW5lJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTQiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0IgZ2VuZSYjMzk7KTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjIyNy4wOCIgY3k9Ii0yNC4xNSIgcng9IjI0LjE1IiByeT0iMjQuMTUiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIyMTAuMjUiIHk9Ii0yMC41NSIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5CIGdlbmU8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QiBnZW5lJiMzOTspIC0tPgo8ZyBpZD0iZWRnZTIiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O0ROQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtCIGdlbmUmIzM5Oyk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGQ9Ik0xODAsLTEwMy44QzE5MS4xMiwtODUuMjIgMjA0Ljg3LC02Mi4yNSAyMTQuNjMsLTQ1Ljk1Ii8+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlNCIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWRhc2hhcnJheT0iNSwyIiBkPSJNMTM3LjkzLC0xMDYuNzFDMTI0LjIsLTg5LjcgMTA2LjkxLC02OC4yOSA5My41LC01MS42OCIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSI5Ni40NCwtNDkuNzYgODcuNDQsLTQ0LjE3IDkxLC01NC4xNSA5Ni40NCwtNDkuNzYiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMTIuMDgiIHk9Ii02OC4zMSIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEwLjAwIj5ETkE8L3RleHQ+CjwvZz4KPC9nPgo8L3N2Zz4K"/>
 </div>
 </div>
 </div>
@@ -7970,7 +7922,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">[</span><span class="s1">'interval_process'</span><span class="p">]</span><span class="o">.</span><span class="n">add_process</span><span class="p">(</span>
@@ -7982,12 +7934,12 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=aeb344bcd6a120ae">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=aeb344bcd6a120ae">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
@@ -7996,60 +7948,16 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
-<div class="jp-RenderedSVG jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="image/svg+xml" tabindex="0">
-<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8IS0tIEdlbmVyYXRlZCBieSBncmFwaHZpeiB2ZXJzaW9uIDkuMC4wICgwKQogLS0+CjwhLS0gVGl0bGU6IGJpZ3JhcGggUGFnZXM6IDEgLS0+Cjxzdmcgd2lkdGg9IjMwMXB0IiBoZWlnaHQ9IjE4MXB0Igogdmlld0JveD0iMC4wMCAwLjAwIDMxMC4wMCAxODYuNDciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgo8ZyBpZD0iZ3JhcGgwIiBjbGFzcz0iZ3JhcGgiIHRyYW5zZm9ybT0ic2NhbGUoMC45NzIyMjIgMC45NzIyMjIpIHJvdGF0ZSgwKSB0cmFuc2xhdGUoNCAxODIuNDcpIj4KPHRpdGxlPmJpZ3JhcGg8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJub25lIiBwb2ludHM9Ii00LDQgLTQsLTE4Mi40NyAzMDYsLTE4Mi40NyAzMDYsNCAtNCw0Ii8+CjwhLS0gKCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkgLS0+CjxnIGlkPSJub2RlMSIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCk8L3RpdGxlPgo8ZWxsaXBzZSBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGN4PSI0Mi4wOCIgY3k9Ii0xMzYuMzkiIHJ4PSI0Mi4wOCIgcnk9IjQyLjA4Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTAuMDgiIHk9Ii0xMzIuNzkiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+bVJOQV9zdG9yZTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpIC0tPgo8ZyBpZD0ibm9kZTUiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBvbHlnb24gZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBwb2ludHM9IjEwOS42NywtNDIuMTUgMzQuNSwtNDIuMTUgMzQuNSwtNi4xNSAxMDkuNjcsLTYuMTUgMTA5LjY3LC00Mi4xNSIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjM4LjEiIHk9Ii0yMC41NSIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5ldmVudF9wcm9jZXNzPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9ImVkZ2UzIiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTttUk5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWRhc2hhcnJheT0iNSwyIiBkPSJNMjEuMTEsLTk5LjExQzE3LjUsLTg4LjMgMTYuMjgsLTc2LjYgMjEuMTksLTY2LjMxIDI0LjAxLC02MC4zOSAyOC4xNSwtNTUuMDYgMzIuODYsLTUwLjM0Ii8+Cjxwb2x5Z29uIGZpbGw9ImJsYWNrIiBzdHJva2U9ImJsYWNrIiBwb2ludHM9IjM0Ljg4LC01My4yMiA0MC4wNiwtNDMuOTggMzAuMjUsLTQ3Ljk3IDM0Ljg4LC01My4yMiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjIyLjA4IiB5PSItNjguMzEiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMC4wMCI+bVJOQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlNSIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS1kYXNoYXJyYXk9IjUsMiIgZD0iTTU2LjA5LC04My45QzYwLjA4LC02OS4yNiA2NC4xNiwtNTQuMjcgNjcuMiwtNDMuMSIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSI1Mi43MywtODIuOTQgNTMuNDgsLTkzLjUxIDU5LjQ4LC04NC43OCA1Mi43MywtODIuOTQiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSI2MS4wOCIgeT0iLTY4LjMxIiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPm1STkE8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywpIC0tPgo8ZyBpZD0ibm9kZTIiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O0ROQV9zdG9yZSYjMzk7LCk8L3RpdGxlPgo8ZWxsaXBzZSBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGN4PSIxNjEuMDgiIGN5PSItMTM2LjM5IiByeD0iMzYuOTYiIHJ5PSIzNi45NiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjEzMy40MiIgeT0iLTEzMi43OSIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5ETkFfc3RvcmU8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtBIGdlbmUmIzM5OykgLS0+CjxnIGlkPSJub2RlMyIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QSBnZW5lJiMzOTspPC90aXRsZT4KPGVsbGlwc2UgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBjeD0iMTYxLjA4IiBjeT0iLTI0LjE1IiByeD0iMjQuMTUiIHJ5PSIyNC4xNSIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjE0NC4yNSIgeT0iLTIwLjU1IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPkEgZ2VuZTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O0ROQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtBIGdlbmUmIzM5OykgLS0+CjxnIGlkPSJlZGdlMSIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0EgZ2VuZSYjMzk7KTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZD0iTTE2MS4wOCwtOTguNjhDMTYxLjA4LC04Mi40IDE2MS4wOCwtNjMuNjkgMTYxLjA4LC00OS4yMiIvPgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QiBnZW5lJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTQiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0IgZ2VuZSYjMzk7KTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjIyNy4wOCIgY3k9Ii0yNC4xNSIgcng9IjI0LjE1IiByeT0iMjQuMTUiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIyMTAuMjUiIHk9Ii0yMC41NSIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5CIGdlbmU8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QiBnZW5lJiMzOTspIC0tPgo8ZyBpZD0iZWRnZTIiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O0ROQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtCIGdlbmUmIzM5Oyk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGQ9Ik0xODAsLTEwMy44QzE5MS4xMiwtODUuMjIgMjA0Ljg3LC02Mi4yNSAyMTQuNjMsLTQ1Ljk1Ii8+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlNCIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWRhc2hhcnJheT0iNSwyIiBkPSJNMTM3LjkzLC0xMDYuNzFDMTI0LjIsLTg5LjcgMTA2LjkxLC02OC4yOSA5My41LC01MS42OCIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSI5Ni40NCwtNDkuNzYgODcuNDQsLTQ0LjE3IDkxLC01NC4xNSA5Ni40NCwtNDkuNzYiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMTIuMDgiIHk9Ii02OC4zMSIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEwLjAwIj5ETkE8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9Im5vZGU2IiBjbGFzcz0ibm9kZSI+Cjx0aXRsZT4oJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+Cjxwb2x5Z29uIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgcG9pbnRzPSIzMDIsLTE1NC4zOSAyMTYuMTYsLTE1NC4zOSAyMTYuMTYsLTExOC4zOSAzMDIsLTExOC4zOSAzMDIsLTE1NC4zOSIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjIxOS43NiIgeT0iLTEzMi43OSIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5pbnRlcnZhbF9wcm9jZXNzPC90ZXh0Pgo8L2c+CjwvZz4KPC9zdmc+Cg=="/>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a5a1f48a-41aa-4768-b931-ad268495d836">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a5a1f48a-41aa-4768-b931-ad268495d836">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">connect_all</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[16], line 1</span>
-<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-yellow-bg">b</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">connect_all</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">~/code/bigraph-builder/builder/builder_api.py:246</span>, in <span class="ansi-cyan-fg">Builder.connect_all</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    244</span> <span class="ansi-bold" style="color: rgb(0,135,0)">for</span> port <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>schema[k][<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">_inputs</span><span style="color: rgb(175,0,0)">'</span>]<span style="color: rgb(98,98,98)">.</span>keys():
-<span class="ansi-green-intense-fg ansi-bold">    245</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> port <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> v<span style="color: rgb(98,98,98)">.</span>get(<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">inputs</span><span style="color: rgb(175,0,0)">'</span>, {}):
-<span class="ansi-green-fg">--&gt; 246</span>         <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">k</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">connect</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">port</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">port</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">target</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">port</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    247</span> <span class="ansi-bold" style="color: rgb(0,135,0)">for</span> port <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>schema[k][<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">_outputs</span><span style="color: rgb(175,0,0)">'</span>]<span style="color: rgb(98,98,98)">.</span>keys():
-<span class="ansi-green-intense-fg ansi-bold">    248</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> port <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> v<span style="color: rgb(98,98,98)">.</span>get(<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">outputs</span><span style="color: rgb(175,0,0)">'</span>, {}):
-
-File <span class="ansi-green-fg">~/code/bigraph-builder/builder/builder_api.py:257</span>, in <span class="ansi-cyan-fg">Builder.connect</span><span class="ansi-blue-fg">(self, port, target)</span>
-<span class="ansi-green-intense-fg ansi-bold">    255</span> <span class="ansi-bold" style="color: rgb(0,135,0)">assert</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>core<span style="color: rgb(98,98,98)">.</span>check(<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">edge</span><span style="color: rgb(175,0,0)">'</span>, <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>get_tree())
-<span class="ansi-green-intense-fg ansi-bold">    256</span> <span style="color: rgb(95,135,135)"># self.complete()</span>
-<span class="ansi-green-fg">--&gt; 257</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> port <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">schema</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">_inputs</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">]</span>:
-<span class="ansi-green-intense-fg ansi-bold">    258</span>     <span style="color: rgb(0,135,0)">self</span>[<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">inputs</span><span style="color: rgb(175,0,0)">'</span>][port] <span style="color: rgb(98,98,98)">=</span> target
-<span class="ansi-green-intense-fg ansi-bold">    259</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> port <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>schema[<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">_outputs</span><span style="color: rgb(175,0,0)">'</span>]:
-
-<span class="ansi-red-fg">KeyError</span>: '_inputs'</pre>
 </div>
 </div>
 </div>
