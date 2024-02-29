@@ -7596,7 +7596,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Register-some-processes">Register some processes<a class="anchor-link" href="#Register-some-processes">¶</a></h2>
+<h2 id="Register-processes">Register processes<a class="anchor-link" href="#Register-processes">¶</a></h2>
 </div>
 </div>
 </div>
@@ -7632,7 +7632,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>['ram-emitter', 'console-emitter']</pre>
+<pre>['console-emitter', 'ram-emitter']</pre>
 </div>
 </div>
 </div>
@@ -7644,7 +7644,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="register-by-passing-in-process-class">register by passing in process class<a class="anchor-link" href="#register-by-passing-in-process-class">¶</a></h3>
+<h3 id="register-process-with-process-class">register process with process class<a class="anchor-link" href="#register-process-with-process-class">¶</a></h3>
 </div>
 </div>
 </div>
@@ -7670,7 +7670,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="register-by-address">register by address<a class="anchor-link" href="#register-by-address">¶</a></h3>
+<h3 id="register-process-by-address">register process by address<a class="anchor-link" href="#register-process-by-address">¶</a></h3><p>currently only supports local addresses, but the plan is to support remote addresses and different protocols</p>
 </div>
 </div>
 </div>
@@ -7684,7 +7684,7 @@ a.anchor-link {
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">register_process</span><span class="p">(</span>
     <span class="s1">'GillespieInterval'</span><span class="p">,</span>
-    <span class="n">address</span><span class="o">=</span><span class="s1">'process_bigraph.experiments.minimal_gillespie.GillespieInterval'</span><span class="p">,</span>  <span class="c1"># currently only supports local addresses</span>
+    <span class="n">address</span><span class="o">=</span><span class="s1">'process_bigraph.experiments.minimal_gillespie.GillespieInterval'</span><span class="p">,</span>  
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -7714,8 +7714,7 @@ a.anchor-link {
 <span class="k">class</span> <span class="nc">Toy</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
     <span class="n">config_schema</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">'A'</span><span class="p">:</span> <span class="s1">'float'</span><span class="p">,</span>
-        <span class="s1">'B'</span><span class="p">:</span> <span class="s1">'float'</span><span class="p">,</span>
-    <span class="p">}</span>
+        <span class="s1">'B'</span><span class="p">:</span> <span class="s1">'float'</span><span class="p">}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">core</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">core</span><span class="p">)</span>
@@ -7726,13 +7725,10 @@ a.anchor-link {
                 <span class="s1">'A'</span><span class="p">:</span> <span class="s1">'float'</span><span class="p">,</span>
                 <span class="s1">'B'</span><span class="p">:</span> <span class="s1">'float'</span><span class="p">},</span>
             <span class="s1">'outputs'</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">'C'</span><span class="p">:</span> <span class="s1">'float'</span><span class="p">}</span>
-        <span class="p">}</span>
+                <span class="s1">'C'</span><span class="p">:</span> <span class="s1">'float'</span><span class="p">}}</span>
 
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">interval</span><span class="p">):</span>
-        <span class="n">update</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">'C'</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s1">'A'</span><span class="p">]</span> <span class="o">+</span> <span class="n">state</span><span class="p">[</span><span class="s1">'B'</span><span class="p">]</span>
-        <span class="p">}</span>
+        <span class="n">update</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'C'</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s1">'A'</span><span class="p">]</span> <span class="o">+</span> <span class="n">state</span><span class="p">[</span><span class="s1">'B'</span><span class="p">]}</span>
         <span class="k">return</span> <span class="n">update</span>
 </pre></div>
 </div>
@@ -7771,11 +7767,11 @@ a.anchor-link {
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>['ram-emitter',
+<pre>['toy',
+ 'ram-emitter',
+ 'console-emitter',
  'GillespieEvent',
- 'GillespieInterval',
- 'toy',
- 'console-emitter']</pre>
+ 'GillespieInterval']</pre>
 </div>
 </div>
 </div>
@@ -7791,6 +7787,17 @@ a.anchor-link {
 </div>
 </div>
 </div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=49cca341-3f7d-4ac8-be5a-6a7e9f6c4872">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="add-event_process">add event_process<a class="anchor-link" href="#add-event_process">¶</a></h3>
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=503863ee-0a58-44b3-accc-20e0167b947b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -7799,8 +7806,7 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## add processes</span>
-<span class="n">b</span><span class="p">[</span><span class="s1">'event_process'</span><span class="p">]</span><span class="o">.</span><span class="n">add_process</span><span class="p">(</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">[</span><span class="s1">'event_process'</span><span class="p">]</span><span class="o">.</span><span class="n">add_process</span><span class="p">(</span>
     <span class="n">name</span><span class="o">=</span><span class="s1">'GillespieEvent'</span><span class="p">,</span>
     <span class="n">kdeg</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># kwargs fill parameters in the config</span>
 <span class="p">)</span>
@@ -7817,7 +7823,8 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># visualize shows the process with its disconnected ports</span>
+<span class="n">b</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -7830,7 +7837,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
 <div class="jp-RenderedSVG jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="image/svg+xml" tabindex="0">
-<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8IS0tIEdlbmVyYXRlZCBieSBncmFwaHZpeiB2ZXJzaW9uIDkuMC4wICgwKQogLS0+CjwhLS0gVGl0bGU6IGJpZ3JhcGggUGFnZXM6IDEgLS0+Cjxzdmcgd2lkdGg9IjgxcHQiIGhlaWdodD0iMTI4cHQiCiB2aWV3Qm94PSIwLjAwIDAuMDAgODMuMTcgMTMxLjg0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KPGcgaWQ9ImdyYXBoMCIgY2xhc3M9ImdyYXBoIiB0cmFuc2Zvcm09InNjYWxlKDAuOTcyMjIyIDAuOTcyMjIyKSByb3RhdGUoMCkgdHJhbnNsYXRlKDQgMTI3Ljg0KSI+Cjx0aXRsZT5iaWdyYXBoPC90aXRsZT4KPHBvbHlnb24gZmlsbD0id2hpdGUiIHN0cm9rZT0ibm9uZSIgcG9pbnRzPSItNCw0IC00LC0xMjcuODQgNzkuMTcsLTEyNy44NCA3OS4xNyw0IC00LDQiLz4KPCEtLSAoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssICYjMzk7aW50ZXJ2YWwmIzM5OykgLS0+CjxnIGlkPSJub2RlMSIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspPC90aXRsZT4KPGVsbGlwc2UgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBjeD0iMzcuNTkiIGN5PSItMjUuOTIiIHJ4PSIyNS45MiIgcnk9IjI1LjkyIi8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTkuMjYiIHk9Ii0yMi4zMiIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5pbnRlcnZhbDwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpIC0tPgo8ZyBpZD0ibm9kZTIiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBvbHlnb24gZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBwb2ludHM9Ijc1LjE3LC0xMjMuODQgMCwtMTIzLjg0IDAsLTg3Ljg0IDc1LjE3LC04Ny44NCA3NS4xNywtMTIzLjg0Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMy42IiB5PSItMTAyLjI0IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPmV2ZW50X3Byb2Nlc3M8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTtpbnRlcnZhbCYjMzk7KSAtLT4KPGcgaWQ9ImVkZ2UxIiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTtpbnRlcnZhbCYjMzk7KTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZD0iTTM3LjU5LC04Ny4xNkMzNy41OSwtNzcuMDEgMzcuNTksLTY0LjA4IDM3LjU5LC01Mi44MSIvPgo8L2c+CjwvZz4KPC9zdmc+Cg=="/>
+<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8IS0tIEdlbmVyYXRlZCBieSBncmFwaHZpeiB2ZXJzaW9uIDkuMC4wICgwKQogLS0+CjwhLS0gVGl0bGU6IGJpZ3JhcGggUGFnZXM6IDEgLS0+Cjxzdmcgd2lkdGg9IjEyM3B0IiBoZWlnaHQ9IjIwMHB0Igogdmlld0JveD0iMC4wMCAwLjAwIDEyNi40NSAyMDUuOTkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgo8ZyBpZD0iZ3JhcGgwIiBjbGFzcz0iZ3JhcGgiIHRyYW5zZm9ybT0ic2NhbGUoMC45NzIyMjIgMC45NzIyMjIpIHJvdGF0ZSgwKSB0cmFuc2xhdGUoNCAyMDEuOTkpIj4KPHRpdGxlPmJpZ3JhcGg8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJub25lIiBwb2ludHM9Ii00LDQgLTQsLTIwMS45OSAxMjIuNDUsLTIwMS45OSAxMjIuNDUsNCAtNCw0Ii8+CjwhLS0gKCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTEiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTtpbnRlcnZhbCYjMzk7KTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjUyLjg3IiBjeT0iLTI1LjkyIiByeD0iMjUuOTIiIHJ5PSIyNS45MiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjM0LjU0IiB5PSItMjIuMzIiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+aW50ZXJ2YWw8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9Im5vZGUyIiBjbGFzcz0ibm9kZSI+Cjx0aXRsZT4oJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+Cjxwb2x5Z29uIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgcG9pbnRzPSI5MC40NiwtMTI0Ljg0IDE1LjI4LC0xMjQuODQgMTUuMjgsLTg4Ljg0IDkwLjQ2LC04OC44NCA5MC40NiwtMTI0Ljg0Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTguODgiIHk9Ii0xMDMuMjQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+ZXZlbnRfcHJvY2VzczwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspIC0tPgo8ZyBpZD0iZWRnZTEiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBkPSJNNTIuODcsLTg3LjkzQzUyLjg3LC03Ny40NyA1Mi44NywtNjQuMSA1Mi44NywtNTIuNTQiLz4KPC9nPgo8IS0tICgmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTttJiMzOTssICYjMzk7UiYjMzk7LCAmIzM5O04mIzM5OywgJiMzOTtBJiMzOTspIC0tPgo8IS0tICgmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTttJiMzOTssICYjMzk7UiYjMzk7LCAmIzM5O04mIzM5OywgJiMzOTtBJiMzOTspJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlMiIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O20mIzM5OywgJiMzOTtSJiMzOTssICYjMzk7TiYjMzk7LCAmIzM5O0EmIzM5OykmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS1kYXNoYXJyYXk9IjUsMiIgZD0iTTE2LjA1LC0xNzUuMjFDNi44MSwtMTY3LjE0IC00LjEsLTE1NC40IDEuOTgsLTE0Mi44NCAzLjgsLTEzOS4zNiA2LjE1LC0xMzYuMTcgOC44MywtMTMzLjI0Ii8+Cjxwb2x5Z29uIGZpbGw9ImJsYWNrIiBzdHJva2U9ImJsYWNrIiBwb2ludHM9IjEwLjk1LC0xMzYuMDQgMTUuOTgsLTEyNi43MiA2LjI0LC0xMzAuODcgMTAuOTUsLTEzNi4wNCIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjIuODciIHk9Ii0xNDQuODQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMC4wMCI+bVJOQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTttJiMzOTssICYjMzk7UiYjMzk7LCAmIzM5O04mIzM5OywgJiMzOTtBJiMzOTspJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlNCIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O20mIzM5OywgJiMzOTtSJiMzOTssICYjMzk7TiYjMzk7LCAmIzM5O0EmIzM5OykmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS1kYXNoYXJyYXk9IjUsMiIgZD0iTTM0LjkyLC0xNjBDMzguNzEsLTE0OC45OSA0My4xNiwtMTM2LjA2IDQ2LjY4LC0xMjUuODMiLz4KPHBvbHlnb24gZmlsbD0iYmxhY2siIHN0cm9rZT0iYmxhY2siIHBvaW50cz0iMzEuNzIsLTE1OC41NyAzMS43NywtMTY5LjE2IDM4LjMzLC0xNjAuODUgMzEuNzIsLTE1OC41NyIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjQwLjg3IiB5PSItMTQ0Ljg0IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPm1STkE8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssICYjMzk7RCYjMzk7LCAmIzM5O04mIzM5OywgJiMzOTtBJiMzOTspIC0tPgo8IS0tICgmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTtEJiMzOTssICYjMzk7TiYjMzk7LCAmIzM5O0EmIzM5OykmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9ImVkZ2UzIiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTtldmVudF9wcm9jZXNzJiMzOTssICYjMzk7RCYjMzk7LCAmIzM5O04mIzM5OywgJiMzOTtBJiMzOTspJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik05Ny4yLC0xNzIuMjZDOTAuNDksLTE2Mi41MSA4MC40NywtMTQ3Ljk1IDcxLjY1LC0xMzUuMTMiLz4KPHBvbHlnb24gZmlsbD0iYmxhY2siIHN0cm9rZT0iYmxhY2siIHBvaW50cz0iNzQuNjIsLTEzMy4yOCA2Ni4wNywtMTI3LjAzIDY4Ljg2LC0xMzcuMjUgNzQuNjIsLTEzMy4yOCIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjgyLjg3IiB5PSItMTQ0Ljg0IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPkROQTwvdGV4dD4KPC9nPgo8L2c+Cjwvc3ZnPgo="/>
 </div>
 </div>
 </div>
@@ -7882,7 +7889,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="connect-ports">connect ports<a class="anchor-link" href="#connect-ports">¶</a></h3>
+<h3 id="connect-ports-using-connect_all">connect ports using connect_all<a class="anchor-link" href="#connect-ports-using-connect_all">¶</a></h3><p><code>Builder.connect_all</code> connects ports to stores of the same name</p>
 </div>
 </div>
 </div>
@@ -7894,8 +7901,7 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">[</span><span class="s1">'event_process'</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="s1">'mRNA'</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="p">[</span><span class="s1">'mRNA_store'</span><span class="p">])</span>
-<span class="n">b</span><span class="p">[</span><span class="s1">'event_process'</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="s1">'DNA'</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="p">[</span><span class="s1">'DNA_store'</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">connect_all</span><span class="p">(</span><span class="n">append_to_store_name</span><span class="o">=</span><span class="s1">'_store'</span><span class="p">)</span>
 <span class="n">b</span>
 </pre></div>
 </div>
@@ -7913,7 +7919,7 @@ a.anchor-link {
                      'address': 'local:GillespieEvent',
                      'config': {'kdeg': 1.0, 'ktsc': 5.0},
                      'inputs': {'DNA': ['DNA_store'], 'mRNA': ['mRNA_store']},
-                     'instance': &lt;process_bigraph.experiments.minimal_gillespie.GillespieEvent object at 0x11552c400&gt;,
+                     'instance': &lt;process_bigraph.experiments.minimal_gillespie.GillespieEvent object at 0x113ddf760&gt;,
                      'interval': 1.0,
                      'outputs': {'mRNA': ['mRNA_store']}}})</pre>
 </div>
@@ -7943,6 +7949,17 @@ a.anchor-link {
 <div class="jp-RenderedSVG jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="image/svg+xml" tabindex="0">
 <img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8IS0tIEdlbmVyYXRlZCBieSBncmFwaHZpeiB2ZXJzaW9uIDkuMC4wICgwKQogLS0+CjwhLS0gVGl0bGU6IGJpZ3JhcGggUGFnZXM6IDEgLS0+Cjxzdmcgd2lkdGg9IjI1MnB0IiBoZWlnaHQ9IjI2OHB0Igogdmlld0JveD0iMC4wMCAwLjAwIDI1OS4yMyAyNzUuMzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgo8ZyBpZD0iZ3JhcGgwIiBjbGFzcz0iZ3JhcGgiIHRyYW5zZm9ybT0ic2NhbGUoMC45NzIyMjIgMC45NzIyMjIpIHJvdGF0ZSgwKSB0cmFuc2xhdGUoNCAyNzEuMzEpIj4KPHRpdGxlPmJpZ3JhcGg8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJub25lIiBwb2ludHM9Ii00LDQgLTQsLTI3MS4zMSAyNTUuMjMsLTI3MS4zMSAyNTUuMjMsNCAtNCw0Ii8+CjwhLS0gKCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTEiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTtpbnRlcnZhbCYjMzk7KTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjcyLjA4IiBjeT0iLTI1LjkyIiByeD0iMjUuOTIiIHJ5PSIyNS45MiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjUzLjc2IiB5PSItMjIuMzIiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+aW50ZXJ2YWw8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssKSAtLT4KPGcgaWQ9Im5vZGUyIiBjbGFzcz0ibm9kZSI+Cjx0aXRsZT4oJiMzOTttUk5BX3N0b3JlJiMzOTssKTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjQyLjA4IiBjeT0iLTIyNS4yMyIgcng9IjQyLjA4IiByeT0iNDIuMDgiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMC4wOCIgeT0iLTIyMS42MyIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5tUk5BX3N0b3JlPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJub2RlNiIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIHBvaW50cz0iMTA5LjY3LC0xMzAuOTkgMzQuNSwtMTMwLjk5IDM0LjUsLTk0Ljk5IDEwOS42NywtOTQuOTkgMTA5LjY3LC0xMzAuOTkiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIzOC4xIiB5PSItMTA5LjM5IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPmV2ZW50X3Byb2Nlc3M8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpIC0tPgo8ZyBpZD0iZWRnZTQiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik0yMS4xMSwtMTg3Ljk1QzE3LjUsLTE3Ny4xNCAxNi4yOCwtMTY1LjQzIDIxLjE5LC0xNTUuMTQgMjQuMDEsLTE0OS4yMyAyOC4xNSwtMTQzLjkgMzIuODYsLTEzOS4xOCIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSIzNC44OCwtMTQyLjA2IDQwLjA2LC0xMzIuODIgMzAuMjUsLTEzNi44MSAzNC44OCwtMTQyLjA2Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMjIuMDgiIHk9Ii0xNTcuMTQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMC4wMCI+bVJOQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlNiIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS1kYXNoYXJyYXk9IjUsMiIgZD0iTTU2LjA5LC0xNzIuNzRDNjAuMDgsLTE1OC4xIDY0LjE2LC0xNDMuMTEgNjcuMiwtMTMxLjkzIi8+Cjxwb2x5Z29uIGZpbGw9ImJsYWNrIiBzdHJva2U9ImJsYWNrIiBwb2ludHM9IjUyLjczLC0xNzEuNzggNTMuNDgsLTE4Mi4zNCA1OS40OCwtMTczLjYxIDUyLjczLC0xNzEuNzgiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSI2MS4wOCIgeT0iLTE1Ny4xNCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEwLjAwIj5tUk5BPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssKSAtLT4KPGcgaWQ9Im5vZGUzIiBjbGFzcz0ibm9kZSI+Cjx0aXRsZT4oJiMzOTtETkFfc3RvcmUmIzM5OywpPC90aXRsZT4KPGVsbGlwc2UgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBjeD0iMTYxLjA4IiBjeT0iLTIyNS4yMyIgcng9IjM2Ljk2IiByeT0iMzYuOTYiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMzMuNDIiIHk9Ii0yMjEuNjMiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+RE5BX3N0b3JlPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QSBnZW5lJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTQiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0EgZ2VuZSYjMzk7KTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjE2MS4wOCIgY3k9Ii0xMTIuOTkiIHJ4PSIyNC4xNSIgcnk9IjI0LjE1Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTQ0LjI1IiB5PSItMTA5LjM5IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPkEgZ2VuZTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O0ROQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtBIGdlbmUmIzM5OykgLS0+CjxnIGlkPSJlZGdlMiIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0EgZ2VuZSYjMzk7KTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZD0iTTE2MS4wOCwtMTg3LjUyQzE2MS4wOCwtMTcxLjI0IDE2MS4wOCwtMTUyLjUzIDE2MS4wOCwtMTM4LjA2Ii8+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtCIGdlbmUmIzM5OykgLS0+CjxnIGlkPSJub2RlNSIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QiBnZW5lJiMzOTspPC90aXRsZT4KPGVsbGlwc2UgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBjeD0iMjI3LjA4IiBjeT0iLTExMi45OSIgcng9IjI0LjE1IiByeT0iMjQuMTUiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIyMTAuMjUiIHk9Ii0xMDkuMzkiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+QiBnZW5lPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0IgZ2VuZSYjMzk7KSAtLT4KPGcgaWQ9ImVkZ2UzIiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QiBnZW5lJiMzOTspPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBkPSJNMTgwLC0xOTIuNjRDMTkxLjEyLC0xNzQuMDYgMjA0Ljg3LC0xNTEuMDkgMjE0LjYzLC0xMzQuNzgiLz4KPC9nPgo8IS0tICgmIzM5O0ROQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9ImVkZ2U1IiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik0xMzcuOTMsLTE5NS41NUMxMjQuMiwtMTc4LjU0IDEwNi45MSwtMTU3LjEzIDkzLjUsLTE0MC41MSIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSI5Ni40NCwtMTM4LjU5IDg3LjQ0LC0xMzMuMDEgOTEsLTE0Mi45OSA5Ni40NCwtMTM4LjU5Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTEyLjA4IiB5PSItMTU3LjE0IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPkROQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspIC0tPgo8ZyBpZD0iZWRnZTEiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBkPSJNNzIuMDgsLTk0LjM2QzcyLjA4LC04Mi4yOSA3Mi4wOCwtNjYuMDkgNzIuMDgsLTUyLjYiLz4KPC9nPgo8L2c+Cjwvc3ZnPgo="/>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c7687da5-6992-447b-a51b-14373984597f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="add-interval-process">add interval process<a class="anchor-link" href="#add-interval-process">¶</a></h3>
 </div>
 </div>
 </div>
@@ -7984,12 +8001,23 @@ a.anchor-link {
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
 <div class="jp-RenderedSVG jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="image/svg+xml" tabindex="0">
-<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8IS0tIEdlbmVyYXRlZCBieSBncmFwaHZpeiB2ZXJzaW9uIDkuMC4wICgwKQogLS0+CjwhLS0gVGl0bGU6IGJpZ3JhcGggUGFnZXM6IDEgLS0+Cjxzdmcgd2lkdGg9IjMzNnB0IiBoZWlnaHQ9IjI3MXB0Igogdmlld0JveD0iMC4wMCAwLjAwIDM0Ni4wMCAyNzguODQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgo8ZyBpZD0iZ3JhcGgwIiBjbGFzcz0iZ3JhcGgiIHRyYW5zZm9ybT0ic2NhbGUoMC45NzIyMjIgMC45NzIyMjIpIHJvdGF0ZSgwKSB0cmFuc2xhdGUoNCAyNzQuODQpIj4KPHRpdGxlPmJpZ3JhcGg8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJub25lIiBwb2ludHM9Ii00LDQgLTQsLTI3NC44NCAzNDIsLTI3NC44NCAzNDIsNCAtNCw0Ii8+CjwhLS0gKCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTEiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTtpbnRlcnZhbCYjMzk7KTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjcyLjA4IiBjeT0iLTI1LjkyIiByeD0iMjUuOTIiIHJ5PSIyNS45MiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjUzLjc2IiB5PSItMjIuMzIiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+aW50ZXJ2YWw8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssICYjMzk7aW50ZXJ2YWwmIzM5OykgLS0+CjxnIGlkPSJub2RlMiIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspPC90aXRsZT4KPGVsbGlwc2UgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBjeD0iMjk1LjA4IiBjeT0iLTExNC43NiIgcng9IjI1LjkyIiByeT0iMjUuOTIiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIyNzYuNzYiIHk9Ii0xMTEuMTYiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+aW50ZXJ2YWw8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssKSAtLT4KPGcgaWQ9Im5vZGUzIiBjbGFzcz0ibm9kZSI+Cjx0aXRsZT4oJiMzOTttUk5BX3N0b3JlJiMzOTssKTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjQyLjA4IiBjeT0iLTIyOC43NiIgcng9IjQyLjA4IiByeT0iNDIuMDgiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMC4wOCIgeT0iLTIyNS4xNiIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5tUk5BX3N0b3JlPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJub2RlNyIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIHBvaW50cz0iMTA5LjY3LC0xMzIuNzYgMzQuNSwtMTMyLjc2IDM0LjUsLTk2Ljc2IDEwOS42NywtOTYuNzYgMTA5LjY3LC0xMzIuNzYiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIzOC4xIiB5PSItMTExLjE2IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPmV2ZW50X3Byb2Nlc3M8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpIC0tPgo8ZyBpZD0iZWRnZTUiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik0yMS4xMywtMTkxLjE5QzE3LjYxLC0xODAuNDggMTYuNDQsLTE2OC45IDIxLjE5LC0xNTguNjggMjQuMiwtMTUyLjIxIDI4LjcxLC0xNDYuMzcgMzMuODMsLTE0MS4yMyIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSIzNS45NywtMTQ0IDQxLjExLC0xMzQuNzQgMzEuMzEsLTEzOC43OCAzNS45NywtMTQ0Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMjIuMDgiIHk9Ii0xNjAuNjgiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMC4wMCI+bVJOQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlNyIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS1kYXNoYXJyYXk9IjUsMiIgZD0iTTU1Ljg2LC0xNzYuMzJDNTkuOTYsLTE2MSA2NC4xOSwtMTQ1LjIyIDY3LjMsLTEzMy42MSIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSI1Mi41MSwtMTc1LjMgNTMuMzEsLTE4NS44NiA1OS4yNywtMTc3LjExIDUyLjUxLC0xNzUuMyIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjYwLjA4IiB5PSItMTYwLjY4IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPm1STkE8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywpIC0tPgo8ZyBpZD0ibm9kZTQiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O0ROQV9zdG9yZSYjMzk7LCk8L3RpdGxlPgo8ZWxsaXBzZSBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGN4PSIxNjEuMDgiIGN5PSItMjI4Ljc2IiByeD0iMzYuOTYiIHJ5PSIzNi45NiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjEzMy40MiIgeT0iLTIyNS4xNiIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5ETkFfc3RvcmU8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtBIGdlbmUmIzM5OykgLS0+CjxnIGlkPSJub2RlNSIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QSBnZW5lJiMzOTspPC90aXRsZT4KPGVsbGlwc2UgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBjeD0iMTYxLjA4IiBjeT0iLTExNC43NiIgcng9IjI0LjE1IiByeT0iMjQuMTUiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxNDQuMjUiIHk9Ii0xMTEuMTYiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+QSBnZW5lPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0EgZ2VuZSYjMzk7KSAtLT4KPGcgaWQ9ImVkZ2UzIiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QSBnZW5lJiMzOTspPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBkPSJNMTYxLjA4LC0xOTEuMDlDMTYxLjA4LC0xNzQuMjQgMTYxLjA4LC0xNTQuNzQgMTYxLjA4LC0xMzkuOCIvPgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QiBnZW5lJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTYiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0IgZ2VuZSYjMzk7KTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjIyNy4wOCIgY3k9Ii0xMTQuNzYiIHJ4PSIyNC4xNSIgcnk9IjI0LjE1Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMjEwLjI1IiB5PSItMTExLjE2IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPkIgZ2VuZTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O0ROQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtCIGdlbmUmIzM5OykgLS0+CjxnIGlkPSJlZGdlNCIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0IgZ2VuZSYjMzk7KTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZD0iTTE3OS44MiwtMTk1Ljk2QzE5MS4wMiwtMTc2Ljk1IDIwNC45NCwtMTUzLjMzIDIxNC43NywtMTM2LjY2Ii8+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlNiIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWRhc2hhcnJheT0iNSwyIiBkPSJNMTM4LjE2LC0xOTguOTJDMTI0LjM0LC0xODEuNTMgMTA2Ljg2LC0xNTkuNTIgOTMuMzUsLTE0Mi41MiIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSI5Ni4yLC0xNDAuNDkgODcuMjQsLTEzNC44MyA5MC43MiwtMTQ0Ljg0IDk2LjIsLTE0MC40OSIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjExNC4wOCIgeT0iLTE2MC42OCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEwLjAwIj5ETkE8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTtpbnRlcnZhbCYjMzk7KSAtLT4KPGcgaWQ9ImVkZ2UxIiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTtpbnRlcnZhbCYjMzk7KTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZD0iTTcyLjA4LC05NS43NkM3Mi4wOCwtODMuMzQgNzIuMDgsLTY2LjY0IDcyLjA4LC01Mi44Ii8+CjwvZz4KPCEtLSAoJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9Im5vZGU4IiBjbGFzcz0ibm9kZSI+Cjx0aXRsZT4oJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+Cjxwb2x5Z29uIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgcG9pbnRzPSIzMzgsLTI0Ni43NiAyNTIuMTYsLTI0Ni43NiAyNTIuMTYsLTIxMC43NiAzMzgsLTIxMC43NiAzMzgsLTI0Ni43NiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjI1NS43NiIgeT0iLTIyNS4xNiIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5pbnRlcnZhbF9wcm9jZXNzPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCkmIzQ1OyZndDsoJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssICYjMzk7aW50ZXJ2YWwmIzM5OykgLS0+CjxnIGlkPSJlZGdlMiIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCkmIzQ1OyZndDsoJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssICYjMzk7aW50ZXJ2YWwmIzM5Oyk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGQ9Ik0yOTUuMDgsLTIwOS43NkMyOTUuMDgsLTE5MS4zNCAyOTUuMDgsLTE2Mi41MSAyOTUuMDgsLTE0MS42NCIvPgo8L2c+CjwvZz4KPC9zdmc+Cg=="/>
+<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8IS0tIEdlbmVyYXRlZCBieSBncmFwaHZpeiB2ZXJzaW9uIDkuMC4wICgwKQogLS0+CjwhLS0gVGl0bGU6IGJpZ3JhcGggUGFnZXM6IDEgLS0+Cjxzdmcgd2lkdGg9IjM3NXB0IiBoZWlnaHQ9IjI2OHB0Igogdmlld0JveD0iMC4wMCAwLjAwIDM4NS42NiAyNzUuMzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgo8ZyBpZD0iZ3JhcGgwIiBjbGFzcz0iZ3JhcGgiIHRyYW5zZm9ybT0ic2NhbGUoMC45NzIyMjIgMC45NzIyMjIpIHJvdGF0ZSgwKSB0cmFuc2xhdGUoNCAyNzEuMzEpIj4KPHRpdGxlPmJpZ3JhcGg8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJub25lIiBwb2ludHM9Ii00LDQgLTQsLTI3MS4zMSAzODEuNjYsLTI3MS4zMSAzODEuNjYsNCAtNCw0Ii8+CjwhLS0gKCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTEiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTtpbnRlcnZhbCYjMzk7KTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjcyLjA4IiBjeT0iLTI1LjkyIiByeD0iMjUuOTIiIHJ5PSIyNS45MiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjUzLjc2IiB5PSItMjIuMzIiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+aW50ZXJ2YWw8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssKSAtLT4KPGcgaWQ9Im5vZGUyIiBjbGFzcz0ibm9kZSI+Cjx0aXRsZT4oJiMzOTttUk5BX3N0b3JlJiMzOTssKTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjQyLjA4IiBjeT0iLTIyNS4yMyIgcng9IjQyLjA4IiByeT0iNDIuMDgiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMC4wOCIgeT0iLTIyMS42MyIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5tUk5BX3N0b3JlPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJub2RlNiIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIHBvaW50cz0iMTA5LjY3LC0xMzAuOTkgMzQuNSwtMTMwLjk5IDM0LjUsLTk0Ljk5IDEwOS42NywtOTQuOTkgMTA5LjY3LC0xMzAuOTkiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIzOC4xIiB5PSItMTA5LjM5IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPmV2ZW50X3Byb2Nlc3M8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpIC0tPgo8ZyBpZD0iZWRnZTQiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik0yMS4xMSwtMTg3Ljk1QzE3LjUsLTE3Ny4xNCAxNi4yOCwtMTY1LjQzIDIxLjE5LC0xNTUuMTQgMjQuMDEsLTE0OS4yMyAyOC4xNSwtMTQzLjkgMzIuODYsLTEzOS4xOCIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSIzNC44OCwtMTQyLjA2IDQwLjA2LC0xMzIuODIgMzAuMjUsLTEzNi44MSAzNC44OCwtMTQyLjA2Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMjIuMDgiIHk9Ii0xNTcuMTQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMC4wMCI+bVJOQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlNiIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS1kYXNoYXJyYXk9IjUsMiIgZD0iTTU2LjA5LC0xNzIuNzRDNjAuMDgsLTE1OC4xIDY0LjE2LC0xNDMuMTEgNjcuMiwtMTMxLjkzIi8+Cjxwb2x5Z29uIGZpbGw9ImJsYWNrIiBzdHJva2U9ImJsYWNrIiBwb2ludHM9IjUyLjczLC0xNzEuNzggNTMuNDgsLTE4Mi4zNCA1OS40OCwtMTczLjYxIDUyLjczLC0xNzEuNzgiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSI2MS4wOCIgeT0iLTE1Ny4xNCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEwLjAwIj5tUk5BPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssKSAtLT4KPGcgaWQ9Im5vZGUzIiBjbGFzcz0ibm9kZSI+Cjx0aXRsZT4oJiMzOTtETkFfc3RvcmUmIzM5OywpPC90aXRsZT4KPGVsbGlwc2UgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBjeD0iMTYxLjA4IiBjeT0iLTIyNS4yMyIgcng9IjM2Ljk2IiByeT0iMzYuOTYiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMzMuNDIiIHk9Ii0yMjEuNjMiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+RE5BX3N0b3JlPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QSBnZW5lJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTQiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0EgZ2VuZSYjMzk7KTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjE2MS4wOCIgY3k9Ii0xMTIuOTkiIHJ4PSIyNC4xNSIgcnk9IjI0LjE1Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTQ0LjI1IiB5PSItMTA5LjM5IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPkEgZ2VuZTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O0ROQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtBIGdlbmUmIzM5OykgLS0+CjxnIGlkPSJlZGdlMiIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0EgZ2VuZSYjMzk7KTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZD0iTTE2MS4wOCwtMTg3LjUyQzE2MS4wOCwtMTcxLjI0IDE2MS4wOCwtMTUyLjUzIDE2MS4wOCwtMTM4LjA2Ii8+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtCIGdlbmUmIzM5OykgLS0+CjxnIGlkPSJub2RlNSIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QiBnZW5lJiMzOTspPC90aXRsZT4KPGVsbGlwc2UgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBjeD0iMjI3LjA4IiBjeT0iLTExMi45OSIgcng9IjI0LjE1IiByeT0iMjQuMTUiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIyMTAuMjUiIHk9Ii0xMDkuMzkiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+QiBnZW5lPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0IgZ2VuZSYjMzk7KSAtLT4KPGcgaWQ9ImVkZ2UzIiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QiBnZW5lJiMzOTspPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBkPSJNMTgwLC0xOTIuNjRDMTkxLjEyLC0xNzQuMDYgMjA0Ljg3LC0xNTEuMDkgMjE0LjYzLC0xMzQuNzgiLz4KPC9nPgo8IS0tICgmIzM5O0ROQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9ImVkZ2U1IiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik0xMzcuOTMsLTE5NS41NUMxMjQuMiwtMTc4LjU0IDEwNi45MSwtMTU3LjEzIDkzLjUsLTE0MC41MSIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSI5Ni40NCwtMTM4LjU5IDg3LjQ0LC0xMzMuMDEgOTEsLTE0Mi45OSA5Ni40NCwtMTM4LjU5Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTEyLjA4IiB5PSItMTU3LjE0IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPkROQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspIC0tPgo8ZyBpZD0iZWRnZTEiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBkPSJNNzIuMDgsLTk0LjM2QzcyLjA4LC04Mi4yOSA3Mi4wOCwtNjYuMDkgNzIuMDgsLTUyLjYiLz4KPC9nPgo8IS0tICgmIzM5O2ludGVydmFsX3Byb2Nlc3MmIzM5OywpIC0tPgo8ZyBpZD0ibm9kZTciIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O2ludGVydmFsX3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBvbHlnb24gZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBwb2ludHM9IjM1NSwtMTMwLjk5IDI2OS4xNiwtMTMwLjk5IDI2OS4xNiwtOTQuOTkgMzU1LC05NC45OSAzNTUsLTEzMC45OSIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjI3Mi43NiIgeT0iLTEwOS4zOSIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5pbnRlcnZhbF9wcm9jZXNzPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCAmIzM5O0QmIzM5OywgJiMzOTtOJiMzOTssICYjMzk7QSYjMzk7KSAtLT4KPCEtLSAoJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssICYjMzk7RCYjMzk7LCAmIzM5O04mIzM5OywgJiMzOTtBJiMzOTspJiM0NTsmZ3Q7KCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlNyIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCAmIzM5O0QmIzM5OywgJiMzOTtOJiMzOTssICYjMzk7QSYjMzk7KSYjNDU7Jmd0OygmIzM5O2ludGVydmFsX3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWRhc2hhcnJheT0iNSwyIiBkPSJNMjcyLjAxLC0yMDAuMjZDMjc1LjI0LC0xODYuNjkgMjgwLjA0LC0xNjkuNiAyODYuNDIsLTE1NS4xNCAyODkuOTUsLTE0Ny4xMyAyOTQuODUsLTEzOC44NCAyOTkuNDIsLTEzMS44MSIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSIyNjguNjgsLTE5OS4xMSAyNjkuOTIsLTIwOS42NCAyNzUuNTEsLTIwMC42NCAyNjguNjgsLTE5OS4xMSIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjI4Ny4wOCIgeT0iLTE1Ny4xNCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEwLjAwIj5ETkE8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssICYjMzk7bSYjMzk7LCAmIzM5O1ImIzM5OywgJiMzOTtOJiMzOTssICYjMzk7QSYjMzk7KSAtLT4KPCEtLSAoJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssICYjMzk7bSYjMzk7LCAmIzM5O1ImIzM5OywgJiMzOTtOJiMzOTssICYjMzk7QSYjMzk7KSYjNDU7Jmd0OygmIzM5O2ludGVydmFsX3Byb2Nlc3MmIzM5OywpIC0tPgo8ZyBpZD0iZWRnZTgiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O2ludGVydmFsX3Byb2Nlc3MmIzM5OywgJiMzOTttJiMzOTssICYjMzk7UiYjMzk7LCAmIzM5O04mIzM5OywgJiMzOTtBJiMzOTspJiM0NTsmZ3Q7KCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik0zMTIuMDgsLTE5OS4zOEMzMTIuMDgsLTE3OC43NiAzMTIuMDgsLTE0OS45NCAzMTIuMDgsLTEzMS42MyIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSIzMDguNTgsLTE5OS4yIDMxMi4wOCwtMjA5LjIgMzE1LjU4LC0xOTkuMiAzMDguNTgsLTE5OS4yIi8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMzEyLjA4IiB5PSItMTU3LjE0IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPm1STkE8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssICYjMzk7aSYjMzk7LCAmIzM5O24mIzM5OywgJiMzOTt0JiMzOTssICYjMzk7ZSYjMzk7LCAmIzM5O3ImIzM5OywgJiMzOTt2JiMzOTssICYjMzk7YSYjMzk7LCAmIzM5O2wmIzM5OykgLS0+CjwhLS0gKCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCAmIzM5O2kmIzM5OywgJiMzOTtuJiMzOTssICYjMzk7dCYjMzk7LCAmIzM5O2UmIzM5OywgJiMzOTtyJiMzOTssICYjMzk7diYjMzk7LCAmIzM5O2EmIzM5OywgJiMzOTtsJiMzOTspJiM0NTsmZ3Q7KCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlOSIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCAmIzM5O2kmIzM5OywgJiMzOTtuJiMzOTssICYjMzk7dCYjMzk7LCAmIzM5O2UmIzM5OywgJiMzOTtyJiMzOTssICYjMzk7diYjMzk7LCAmIzM5O2EmIzM5OywgJiMzOTtsJiMzOTspJiM0NTsmZ3Q7KCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik0zNTguNDUsLTIwMC4wOUMzNTQuNzcsLTE4Ni40NyAzNDkuMywtMTY5LjM5IDM0Mi4wOCwtMTU1LjE0IDMzNy45MywtMTQ2Ljk0IDMzMi4yLC0xMzguNjEgMzI2Ljg2LC0xMzEuNjEiLz4KPHBvbHlnb24gZmlsbD0iYmxhY2siIHN0cm9rZT0iYmxhY2siIHBvaW50cz0iMzU0Ljk5LC0yMDAuNzEgMzYwLjg0LC0yMDkuNTQgMzYxLjc4LC0xOTguOTkgMzU0Ljk5LC0yMDAuNzEiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIzNDYuMDgiIHk9Ii0xNTcuMTQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMC4wMCI+aW50ZXJ2YWw8L3RleHQ+CjwvZz4KPC9nPgo8L3N2Zz4K"/>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a5a1f48a-41aa-4768-b931-ad268495d836">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=be3f6695-80ed-4819-a121-de29c5cce23e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="connect-port-to-specific-target">connect port to specific target<a class="anchor-link" href="#connect-port-to-specific-target">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a5a1f48a-41aa-4768-b931-ad268495d836">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7997,7 +8025,134 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">connect_all</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">[</span><span class="s1">'interval_process'</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="s1">'interval'</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="p">[</span><span class="s1">'event_process'</span><span class="p">,</span> <span class="s1">'interval'</span><span class="p">])</span> 
+
+<span class="c1"># the remaining ports can connect_all</span>
+<span class="n">b</span><span class="o">.</span><span class="n">connect_all</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b21b54ae-49e8-47ad-bc88-1327a8e9d230">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+<div class="jp-RenderedSVG jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="image/svg+xml" tabindex="0">
+<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8IS0tIEdlbmVyYXRlZCBieSBncmFwaHZpeiB2ZXJzaW9uIDkuMC4wICgwKQogLS0+CjwhLS0gVGl0bGU6IGJpZ3JhcGggUGFnZXM6IDEgLS0+Cjxzdmcgd2lkdGg9IjQwNHB0IiBoZWlnaHQ9IjM3MHB0Igogdmlld0JveD0iMC4wMCAwLjAwIDQxNS4wMyAzODAuNTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgo8ZyBpZD0iZ3JhcGgwIiBjbGFzcz0iZ3JhcGgiIHRyYW5zZm9ybT0ic2NhbGUoMC45NzIyMjIgMC45NzIyMjIpIHJvdGF0ZSgwKSB0cmFuc2xhdGUoNCAzNzYuNTIpIj4KPHRpdGxlPmJpZ3JhcGg8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJub25lIiBwb2ludHM9Ii00LDQgLTQsLTM3Ni41MiA0MTEuMDMsLTM3Ni41MiA0MTEuMDMsNCAtNCw0Ii8+CjwhLS0gKCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTEiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTtpbnRlcnZhbCYjMzk7KTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjIxNy4zNyIgY3k9Ii0xMDcuOTIiIHJ4PSIyNS45MiIgcnk9IjI1LjkyIi8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTk5LjA0IiB5PSItMTA0LjMyIiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPmludGVydmFsPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJub2RlOSIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIHBvaW50cz0iMjYwLjI5LC0zNiAxNzQuNDUsLTM2IDE3NC40NSwwIDI2MC4yOSwwIDI2MC4yOSwtMzYiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxNzguMDUiIHk9Ii0xNC40IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPmludGVydmFsX3Byb2Nlc3M8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssICYjMzk7aW50ZXJ2YWwmIzM5OykmIzQ1OyZndDsoJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9ImVkZ2UxMSIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspJiM0NTsmZ3Q7KCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik0yMTcuMzcsLTY5LjU3QzIxNy4zNywtNTguMjYgMjE3LjM3LC00Ni4zNCAyMTcuMzcsLTM2LjkyIi8+Cjxwb2x5Z29uIGZpbGw9ImJsYWNrIiBzdHJva2U9ImJsYWNrIiBwb2ludHM9IjIxMy44NywtNjkuNSAyMTcuMzcsLTc5LjUgMjIwLjg3LC02OS41IDIxMy44NywtNjkuNSIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjIxNy4zNyIgeT0iLTU2IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPmludGVydmFsPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkgLS0+CjxnIGlkPSJub2RlMiIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCk8L3RpdGxlPgo8ZWxsaXBzZSBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGN4PSIxMzAuMzciIGN5PSItMzMwLjQzIiByeD0iNDIuMDgiIHJ5PSI0Mi4wOCIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9Ijk4LjM3IiB5PSItMzI2LjgzIiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPm1STkFfc3RvcmU8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssICYjMzk7QSBtUk5BJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTMiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O21STkFfc3RvcmUmIzM5OywgJiMzOTtBIG1STkEmIzM5Oyk8L3RpdGxlPgo8ZWxsaXBzZSBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGN4PSI0OS4zNyIgY3k9Ii0yMTEuMDkiIHJ4PSIzMS4yNiIgcnk9IjMxLjI2Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMjYuNTMiIHk9Ii0yMDcuNDkiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+QSBtUk5BPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTttUk5BX3N0b3JlJiMzOTssICYjMzk7QSBtUk5BJiMzOTspIC0tPgo8ZyBpZD0iZWRnZTIiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCAmIzM5O0EgbVJOQSYjMzk7KTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZD0iTTEwNi41LC0yOTQuODZDOTMuOSwtMjc2LjYxIDc4LjcsLTI1NC41OSA2Ny4xNSwtMjM3Ljg1Ii8+CjwvZz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssICYjMzk7QiBtUk5BJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTQiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O21STkFfc3RvcmUmIzM5OywgJiMzOTtCIG1STkEmIzM5Oyk8L3RpdGxlPgo8ZWxsaXBzZSBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGN4PSIxMzAuMzciIGN5PSItMjExLjA5IiByeD0iMzEuMjUiIHJ5PSIzMS4yNSIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjEwNy41MyIgeT0iLTIwNy40OSIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5CIG1STkE8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O21STkFfc3RvcmUmIzM5OywgJiMzOTtCIG1STkEmIzM5OykgLS0+CjxnIGlkPSJlZGdlMyIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTttUk5BX3N0b3JlJiMzOTssICYjMzk7QiBtUk5BJiMzOTspPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBkPSJNMTMwLjM3LC0yODcuNEMxMzAuMzcsLTI3Mi44IDEzMC4zNywtMjU2LjcxIDEzMC4zNywtMjQzLjE2Ii8+CjwvZz4KPCEtLSAoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9Im5vZGU4IiBjbGFzcz0ibm9kZSI+Cjx0aXRsZT4oJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+Cjxwb2x5Z29uIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgcG9pbnRzPSIyNTQuOTYsLTIyOS4wOSAxNzkuNzgsLTIyOS4wOSAxNzkuNzgsLTE5My4wOSAyNTQuOTYsLTE5My4wOSAyNTQuOTYsLTIyOS4wOSIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjE4My4zOCIgeT0iLTIwNy40OSIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5ldmVudF9wcm9jZXNzPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9ImVkZ2U2IiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTttUk5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWRhc2hhcnJheT0iNSwyIiBkPSJNMTQ2LjM3LC0yOTAuNjZDMTUxLjQ0LC0yODAuMzYgMTU3LjU2LC0yNjkuNTQgMTY0LjQ4LC0yNjAuMzUgMTcwLjY4LC0yNTIuMTEgMTc4LjQyLC0yNDQuMTQgMTg2LjA0LC0yMzcuMTMiLz4KPHBvbHlnb24gZmlsbD0iYmxhY2siIHN0cm9rZT0iYmxhY2siIHBvaW50cz0iMTg3Ljg4LC0yNDAuMTggMTkzLjA2LC0yMzAuOTQgMTgzLjI1LC0yMzQuOTMgMTg3Ljg4LC0yNDAuMTgiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxNjUuMzciIHk9Ii0yNjIuMzUiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMC4wMCI+bVJOQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlMTAiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik0xNzEuNDcsLTI5NS43NUMxNzkuNDEsLTI4Ny45OCAxODcuMTcsLTI3OS4zMyAxOTMuMzcsLTI3MC4zNSAyMDEuOTQsLTI1Ny45MyAyMDguMjUsLTI0MS45NyAyMTIuMjQsLTIyOS45Ii8+Cjxwb2x5Z29uIGZpbGw9ImJsYWNrIiBzdHJva2U9ImJsYWNrIiBwb2ludHM9IjE2OS41MiwtMjkyLjc5IDE2NC42MywtMzAyLjE5IDE3NC4zMSwtMjk3Ljg5IDE2OS41MiwtMjkyLjc5Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTk5LjM3IiB5PSItMjYyLjM1IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPm1STkE8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2ludGVydmFsX3Byb2Nlc3MmIzM5OywpIC0tPgo8ZyBpZD0iZWRnZTkiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik05MS4yMSwtMzEzLjIxQzYyLjc4LC0yOTkuMDkgMjYuNDIsLTI3NS42NCA5LjM3LC0yNDIuMzUgLTMuMywtMjE3LjYyIC0yLjg3LC0yMDQuNzggOS4zNywtMTc5Ljg0IDQxLjczLC0xMTMuOSAxMTUuNTksLTY3LjMxIDE2NS45OSwtNDEuNzkiLz4KPHBvbHlnb24gZmlsbD0iYmxhY2siIHN0cm9rZT0iYmxhY2siIHBvaW50cz0iMTY3LjI4LC00NS4wNiAxNzQuNywtMzcuNDkgMTY0LjE4LC0zOC43OCAxNjcuMjgsLTQ1LjA2Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMjYuMzciIHk9Ii0xNTMuODQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMC4wMCI+bVJOQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O0ROQV9zdG9yZSYjMzk7LCkgLS0+CjxnIGlkPSJub2RlNSIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssKTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjMzMy4zNyIgY3k9Ii0zMzAuNDMiIHJ4PSIzNi45NiIgcnk9IjM2Ljk2Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMzA1LjcxIiB5PSItMzI2LjgzIiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPkROQV9zdG9yZTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0EgZ2VuZSYjMzk7KSAtLT4KPGcgaWQ9Im5vZGU2IiBjbGFzcz0ibm9kZSI+Cjx0aXRsZT4oJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtBIGdlbmUmIzM5Oyk8L3RpdGxlPgo8ZWxsaXBzZSBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGN4PSIyOTcuMzciIGN5PSItMjExLjA5IiByeD0iMjQuMTUiIHJ5PSIyNC4xNSIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjI4MC41NCIgeT0iLTIwNy40OSIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5BIGdlbmU8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QSBnZW5lJiMzOTspIC0tPgo8ZyBpZD0iZWRnZTQiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O0ROQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtBIGdlbmUmIzM5Oyk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGQ9Ik0zMjIuNTcsLTI5NC4yM0MzMTYuNjksLTI3NS4wNiAzMDkuNTgsLTI1MS44OCAzMDQuNDEsLTIzNS4wNSIvPgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QiBnZW5lJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTciIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0IgZ2VuZSYjMzk7KTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjM2My4zNyIgY3k9Ii0yMTEuMDkiIHJ4PSIyNC4xNSIgcnk9IjI0LjE1Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMzQ2LjU0IiB5PSItMjA3LjQ5IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPkIgZ2VuZTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O0ROQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtCIGdlbmUmIzM5OykgLS0+CjxnIGlkPSJlZGdlNSIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0IgZ2VuZSYjMzk7KTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZD0iTTM0Mi40NSwtMjkzLjkxQzM0Ny4zMSwtMjc0Ljg5IDM1My4xNywtMjUyIDM1Ny40NCwtMjM1LjI4Ii8+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlNyIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWRhc2hhcnJheT0iNSwyIiBkPSJNMzA3LjM0LC0zMDMuMUMyODguMTMsLTI4My42OCAyNjIuMTMsLTI1Ny4zOCAyNDMuMDIsLTIzOC4wNCIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSIyNDUuNjIsLTIzNS42OSAyMzYuMSwtMjMxLjA0IDI0MC42NCwtMjQwLjYxIDI0NS42MiwtMjM1LjY5Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMjcyLjM3IiB5PSItMjYyLjM1IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPkROQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O0ROQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9ImVkZ2U4IiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik0zNTkuMzUsLTMwMi45M0MzNzMuMjYsLTI4Ni44NSAzODkuMDEsLTI2NS4wNyAzOTYuMzcsLTI0Mi4zNSA0MDQuOTMsLTIxNS45MiA0MDcuNjgsLTIwNS4yMSAzOTYuMzcsLTE3OS44NCAzNjguNjcsLTExNy43MSAzMDMuOCwtNjkuNTUgMjYwLjI0LC00Mi43MiIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSIyNjIuMTUsLTM5Ljc4IDI1MS43OCwtMzcuNjIgMjU4LjU0LC00NS43OCAyNjIuMTUsLTM5Ljc4Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMzg1LjM3IiB5PSItMTUzLjg0IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPkROQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspIC0tPgo8ZyBpZD0iZWRnZTEiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBkPSJNMjE3LjM3LC0xOTIuNDdDMjE3LjM3LC0xNzYuNTEgMjE3LjM3LC0xNTIuNzggMjE3LjM3LC0xMzQuNjkiLz4KPC9nPgo8L2c+Cjwvc3ZnPgo="/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ed3131ee-c607-42e5-88a3-930a84eedf0f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Generate-composite">Generate composite<a class="anchor-link" href="#Generate-composite">¶</a></h2>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6e00749f-03b8-496e-9a10-106dbac3713f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># check current Builder config</span>
+<span class="n">b</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>Builder({ 'DNA_store': {'A gene': 0.0, 'B gene': 0.0},
+  'event_process': { '_type': 'process',
+                     'address': 'local:GillespieEvent',
+                     'config': {'kdeg': 1.0, 'ktsc': 5.0},
+                     'inputs': {'DNA': ['DNA_store'], 'mRNA': ['mRNA_store']},
+                     'instance': &lt;process_bigraph.experiments.minimal_gillespie.GillespieEvent object at 0x113ddf760&gt;,
+                     'interval': 1.0,
+                     'outputs': {'mRNA': ['mRNA_store']}},
+  'interval_process': { '_type': 'step',
+                        'address': 'local:GillespieInterval',
+                        'config': {'kdeg': 0.1, 'ktsc': 5.0},
+                        'inputs': { 'DNA': ['DNA_store'],
+                                    'mRNA': ['mRNA_store']},
+                        'instance': &lt;process_bigraph.experiments.minimal_gillespie.GillespieInterval object at 0x113dff070&gt;,
+                        'outputs': {'interval': ['event_process', 'interval']}},
+  'mRNA_store': {}})</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9fd708e8-0688-4b97-a50c-e3d0a1c78d83">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="update-the-initial-state">update the initial state<a class="anchor-link" href="#update-the-initial-state">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=212f4501-8050-4c39-88b8-986b3c38e716">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">initial_state</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'DNA_store'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'A gene'</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="s1">'B gene'</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e9a69f36-154c-416e-b00c-5df0726be49e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># make composite from the current builder config, simulate</span>
+<span class="n">composite</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+<span class="n">composite</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8009,19 +8164,112 @@ a.anchor-link {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>produced interval: {'interval': 0.029337100553640385}
+received interval: 0.029337100553640385
+produced interval: {'interval': 0.0}
+received interval: 0.0
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>/Users/eranagmon/code/process-bigraph/process_bigraph/experiments/minimal_gillespie.py:139: RuntimeWarning: invalid value encountered in scalar divide
+  if r_rxn &lt; propensities[i] / prop_sum:
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[16], line 1</span>
-<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-yellow-bg">b</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">connect_all</span>()
+<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[24], line 3</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span style="color: rgb(95,135,135)"># make composite from the current builder config, simulate</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span> composite <span style="color: rgb(98,98,98)">=</span> b<span style="color: rgb(98,98,98)">.</span>generate()
+<span class="ansi-green-fg">----&gt; 3</span> <span class="ansi-yellow-bg">composite</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">run</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">10</span><span class="ansi-yellow-bg">)</span>
 
-<span class="ansi-red-fg">AttributeError</span>: 'Builder' object has no attribute 'connect_all'</pre>
+File <span class="ansi-green-fg">~/code/process-bigraph/process_bigraph/composite.py:1044</span>, in <span class="ansi-cyan-fg">Composite.run</span><span class="ansi-blue-fg">(self, interval, force_complete)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1041</span>     <span style="color: rgb(95,135,135)"># get all update paths, then trigger steps that</span>
+<span class="ansi-green-intense-fg ansi-bold">   1042</span>     <span style="color: rgb(95,135,135)"># depend on those paths</span>
+<span class="ansi-green-intense-fg ansi-bold">   1043</span>     update_paths <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>apply_updates(updates)
+<span class="ansi-green-fg">-&gt; 1044</span>     <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">trigger_steps</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">update_paths</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1046</span>     <span style="color: rgb(95,135,135)"># # display and emit</span>
+<span class="ansi-green-intense-fg ansi-bold">   1047</span>     <span style="color: rgb(95,135,135)"># if self.progress_bar:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1048</span>     <span style="color: rgb(95,135,135)">#     print_progress_bar(self.global_time, end_time)</span>
+<span class="ansi-green-fg">   (...)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1056</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
+<span class="ansi-green-intense-fg ansi-bold">   1057</span>     <span style="color: rgb(95,135,135)"># all processes have run past the interval</span>
+<span class="ansi-green-intense-fg ansi-bold">   1058</span>     <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>state[<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">global_time</span><span style="color: rgb(175,0,0)">'</span>] <span style="color: rgb(98,98,98)">=</span> end_time
+
+File <span class="ansi-green-fg">~/code/process-bigraph/process_bigraph/composite.py:1136</span>, in <span class="ansi-cyan-fg">Composite.trigger_steps</span><span class="ansi-blue-fg">(self, update_paths)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1133</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>reset_step_state(steps_to_run)
+<span class="ansi-green-intense-fg ansi-bold">   1134</span> to_run <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>cycle_step_state()
+<span class="ansi-green-fg">-&gt; 1136</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">run_steps</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">to_run</span><span class="ansi-yellow-bg">)</span>
+
+File <span class="ansi-green-fg">~/code/process-bigraph/process_bigraph/composite.py:1097</span>, in <span class="ansi-cyan-fg">Composite.run_steps</span><span class="ansi-blue-fg">(self, step_paths)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1087</span>     step <span style="color: rgb(98,98,98)">=</span> get_path(
+<span class="ansi-green-intense-fg ansi-bold">   1088</span>         <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>state,
+<span class="ansi-green-intense-fg ansi-bold">   1089</span>         step_path)
+<span class="ansi-green-intense-fg ansi-bold">   1091</span>     state <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>core<span style="color: rgb(98,98,98)">.</span>view_edge(
+<span class="ansi-green-intense-fg ansi-bold">   1092</span>         <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>composition,
+<span class="ansi-green-intense-fg ansi-bold">   1093</span>         <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>state,
+<span class="ansi-green-intense-fg ansi-bold">   1094</span>         step_path,
+<span class="ansi-green-intense-fg ansi-bold">   1095</span>         <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">inputs</span><span style="color: rgb(175,0,0)">'</span>)
+<span class="ansi-green-fg">-&gt; 1097</span>     step_update <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">process_update</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-intense-fg ansi-bold">   1098</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">step_path</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">   1099</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">step</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">   1100</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">state</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">   1101</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">-</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">1.0</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">   1102</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">outputs</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1104</span>     updates<span style="color: rgb(98,98,98)">.</span>append(step_update)
+<span class="ansi-green-intense-fg ansi-bold">   1106</span> update_paths <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>apply_updates(updates)
+
+File <span class="ansi-green-fg">~/code/process-bigraph/process_bigraph/composite.py:885</span>, in <span class="ansi-cyan-fg">Composite.process_update</span><span class="ansi-blue-fg">(self, path, process, states, interval, ports_key)</span>
+<span class="ansi-green-intense-fg ansi-bold">    858</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">process_update</span>(
+<span class="ansi-green-intense-fg ansi-bold">    859</span>         <span style="color: rgb(0,135,0)">self</span>,
+<span class="ansi-green-intense-fg ansi-bold">    860</span>         path,
+<span class="ansi-green-fg">   (...)</span>
+<span class="ansi-green-intense-fg ansi-bold">    863</span>         interval,
+<span class="ansi-green-intense-fg ansi-bold">    864</span>         ports_key<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">outputs</span><span style="color: rgb(175,0,0)">'</span>):
+<span class="ansi-green-intense-fg ansi-bold">    866</span> <span style="color: rgb(188,188,188)">    </span><span style="color: rgb(175,0,0)">"""Start generating a process's update.</span>
+<span class="ansi-green-intense-fg ansi-bold">    867</span> 
+<span class="ansi-green-intense-fg ansi-bold">    868</span> <span style="color: rgb(175,0,0)">    This function is similar to :py:meth:`_invoke_process` except in</span>
+<span class="ansi-green-fg">   (...)</span>
+<span class="ansi-green-intense-fg ansi-bold">    883</span> <span style="color: rgb(175,0,0)">        ``store``.</span>
+<span class="ansi-green-intense-fg ansi-bold">    884</span> <span style="color: rgb(175,0,0)">    """</span>
+<span class="ansi-green-fg">--&gt; 885</span>     update <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">process</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">instance</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">invoke</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">states</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">interval</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    887</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">defer_project</span>(update, args):
+<span class="ansi-green-intense-fg ansi-bold">    888</span>         schema, state, path <span style="color: rgb(98,98,98)">=</span> args
+
+File <span class="ansi-green-fg">~/code/process-bigraph/process_bigraph/composite.py:401</span>, in <span class="ansi-cyan-fg">Step.invoke</span><span class="ansi-blue-fg">(self, state, _)</span>
+<span class="ansi-green-intense-fg ansi-bold">    400</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">invoke</span>(<span style="color: rgb(0,135,0)">self</span>, state, _<span style="color: rgb(98,98,98)">=</span><span class="ansi-bold" style="color: rgb(0,135,0)">None</span>):
+<span class="ansi-green-fg">--&gt; 401</span>     update <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">update</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">state</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    402</span>     sync <span style="color: rgb(98,98,98)">=</span> SyncUpdate(update)
+<span class="ansi-green-intense-fg ansi-bold">    403</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> sync
+
+File <span class="ansi-green-fg">~/code/process-bigraph/process_bigraph/experiments/minimal_gillespie.py:79</span>, in <span class="ansi-cyan-fg">GillespieInterval.update</span><span class="ansi-blue-fg">(self, input)</span>
+<span class="ansi-green-intense-fg ansi-bold">     76</span> prop_sum <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">sum</span>(propensities)
+<span class="ansi-green-intense-fg ansi-bold">     78</span> <span style="color: rgb(95,135,135)"># The wait time is distributed exponentially</span>
+<span class="ansi-green-fg">---&gt; 79</span> interval <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">np</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">random</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">exponential</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">scale</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">prop_sum</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     81</span> output <span style="color: rgb(98,98,98)">=</span> {
+<span class="ansi-green-intense-fg ansi-bold">     82</span>     <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">interval</span><span style="color: rgb(175,0,0)">'</span>: interval}
+<span class="ansi-green-intense-fg ansi-bold">     84</span> <span style="color: rgb(0,135,0)">print</span>(<span style="color: rgb(175,0,0)">f</span><span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">produced interval: </span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span>output<span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span style="color: rgb(175,0,0)">'</span>)
+
+File <span class="ansi-green-fg">numpy/random/mtrand.pyx:570</span>, in <span class="ansi-cyan-fg">numpy.random.mtrand.RandomState.exponential</span><span class="ansi-blue-fg">()</span>
+
+File <span class="ansi-green-fg">_common.pyx:612</span>, in <span class="ansi-cyan-fg">numpy.random._common.cont</span><span class="ansi-blue-fg">()</span>
+
+File <span class="ansi-green-fg">_common.pyx:422</span>, in <span class="ansi-cyan-fg">numpy.random._common.check_constraint</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-red-fg">ValueError</span>: scale &lt; 0</pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6e00749f-03b8-496e-9a10-106dbac3713f">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=578492a9-027d-4c5b-b90a-7d63e3f46bc0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8029,21 +8277,7 @@ Cell <span class="ansi-green-fg">In[16], line 1</span>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">builder_tree</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e9a69f36-154c-416e-b00c-5df0726be49e">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">composite</span>
 </pre></div>
 </div>
 </div>
