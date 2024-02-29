@@ -7632,7 +7632,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>['console-emitter', 'ram-emitter']</pre>
+<pre>['ram-emitter', 'console-emitter']</pre>
 </div>
 </div>
 </div>
@@ -7771,11 +7771,11 @@ a.anchor-link {
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>['console-emitter',
- 'toy',
+<pre>['ram-emitter',
+ 'GillespieEvent',
  'GillespieInterval',
- 'ram-emitter',
- 'GillespieEvent']</pre>
+ 'toy',
+ 'console-emitter']</pre>
 </div>
 </div>
 </div>
@@ -7866,14 +7866,11 @@ a.anchor-link {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[11], line 1</span>
-<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-yellow-bg">b</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">event_process</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">interface</span>(<span class="ansi-bold" style="color: rgb(0,135,0)">True</span>)
-
-<span class="ansi-red-fg">AttributeError</span>: 'BuilderNode' object has no attribute 'interface'</pre>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>{ '_inputs': { 'DNA': {'A gene': 'float', 'B gene': 'float'},
+               'mRNA': 'map[float]'},
+  '_outputs': {'mRNA': 'map[float]'}}
+</pre>
 </div>
 </div>
 </div>
@@ -7889,12 +7886,12 @@ Cell <span class="ansi-green-fg">In[11], line 1</span>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=c9f462bb-5316-4724-aa8e-b3b71eb379b2">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c9f462bb-5316-4724-aa8e-b3b71eb379b2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">[</span><span class="s1">'event_process'</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="s1">'mRNA'</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="p">[</span><span class="s1">'mRNA_store'</span><span class="p">])</span>
@@ -7905,16 +7902,46 @@ Cell <span class="ansi-green-fg">In[11], line 1</span>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=79809baf-1d87-475a-b85f-3729f4716cb4">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>Builder({ 'event_process': { '_type': 'process',
+                     'address': 'local:GillespieEvent',
+                     'config': {'kdeg': 1.0, 'ktsc': 5.0},
+                     'inputs': {'DNA': ['DNA_store'], 'mRNA': ['mRNA_store']},
+                     'instance': &lt;process_bigraph.experiments.minimal_gillespie.GillespieEvent object at 0x11552c400&gt;,
+                     'interval': 1.0,
+                     'outputs': {'mRNA': ['mRNA_store']}}})</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=79809baf-1d87-475a-b85f-3729f4716cb4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
+<div class="jp-RenderedSVG jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="image/svg+xml" tabindex="0">
+<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8IS0tIEdlbmVyYXRlZCBieSBncmFwaHZpeiB2ZXJzaW9uIDkuMC4wICgwKQogLS0+CjwhLS0gVGl0bGU6IGJpZ3JhcGggUGFnZXM6IDEgLS0+Cjxzdmcgd2lkdGg9IjI1MnB0IiBoZWlnaHQ9IjI2OHB0Igogdmlld0JveD0iMC4wMCAwLjAwIDI1OS4yMyAyNzUuMzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgo8ZyBpZD0iZ3JhcGgwIiBjbGFzcz0iZ3JhcGgiIHRyYW5zZm9ybT0ic2NhbGUoMC45NzIyMjIgMC45NzIyMjIpIHJvdGF0ZSgwKSB0cmFuc2xhdGUoNCAyNzEuMzEpIj4KPHRpdGxlPmJpZ3JhcGg8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJub25lIiBwb2ludHM9Ii00LDQgLTQsLTI3MS4zMSAyNTUuMjMsLTI3MS4zMSAyNTUuMjMsNCAtNCw0Ii8+CjwhLS0gKCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTEiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTtpbnRlcnZhbCYjMzk7KTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjcyLjA4IiBjeT0iLTI1LjkyIiByeD0iMjUuOTIiIHJ5PSIyNS45MiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjUzLjc2IiB5PSItMjIuMzIiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+aW50ZXJ2YWw8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssKSAtLT4KPGcgaWQ9Im5vZGUyIiBjbGFzcz0ibm9kZSI+Cjx0aXRsZT4oJiMzOTttUk5BX3N0b3JlJiMzOTssKTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjQyLjA4IiBjeT0iLTIyNS4yMyIgcng9IjQyLjA4IiByeT0iNDIuMDgiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMC4wOCIgeT0iLTIyMS42MyIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5tUk5BX3N0b3JlPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJub2RlNiIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIHBvaW50cz0iMTA5LjY3LC0xMzAuOTkgMzQuNSwtMTMwLjk5IDM0LjUsLTk0Ljk5IDEwOS42NywtOTQuOTkgMTA5LjY3LC0xMzAuOTkiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIzOC4xIiB5PSItMTA5LjM5IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPmV2ZW50X3Byb2Nlc3M8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpIC0tPgo8ZyBpZD0iZWRnZTQiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik0yMS4xMSwtMTg3Ljk1QzE3LjUsLTE3Ny4xNCAxNi4yOCwtMTY1LjQzIDIxLjE5LC0xNTUuMTQgMjQuMDEsLTE0OS4yMyAyOC4xNSwtMTQzLjkgMzIuODYsLTEzOS4xOCIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSIzNC44OCwtMTQyLjA2IDQwLjA2LC0xMzIuODIgMzAuMjUsLTEzNi44MSAzNC44OCwtMTQyLjA2Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMjIuMDgiIHk9Ii0xNTcuMTQiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMC4wMCI+bVJOQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlNiIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS1kYXNoYXJyYXk9IjUsMiIgZD0iTTU2LjA5LC0xNzIuNzRDNjAuMDgsLTE1OC4xIDY0LjE2LC0xNDMuMTEgNjcuMiwtMTMxLjkzIi8+Cjxwb2x5Z29uIGZpbGw9ImJsYWNrIiBzdHJva2U9ImJsYWNrIiBwb2ludHM9IjUyLjczLC0xNzEuNzggNTMuNDgsLTE4Mi4zNCA1OS40OCwtMTczLjYxIDUyLjczLC0xNzEuNzgiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSI2MS4wOCIgeT0iLTE1Ny4xNCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEwLjAwIj5tUk5BPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssKSAtLT4KPGcgaWQ9Im5vZGUzIiBjbGFzcz0ibm9kZSI+Cjx0aXRsZT4oJiMzOTtETkFfc3RvcmUmIzM5OywpPC90aXRsZT4KPGVsbGlwc2UgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBjeD0iMTYxLjA4IiBjeT0iLTIyNS4yMyIgcng9IjM2Ljk2IiByeT0iMzYuOTYiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMzMuNDIiIHk9Ii0yMjEuNjMiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+RE5BX3N0b3JlPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QSBnZW5lJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTQiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0EgZ2VuZSYjMzk7KTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjE2MS4wOCIgY3k9Ii0xMTIuOTkiIHJ4PSIyNC4xNSIgcnk9IjI0LjE1Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTQ0LjI1IiB5PSItMTA5LjM5IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPkEgZ2VuZTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O0ROQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtBIGdlbmUmIzM5OykgLS0+CjxnIGlkPSJlZGdlMiIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0EgZ2VuZSYjMzk7KTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZD0iTTE2MS4wOCwtMTg3LjUyQzE2MS4wOCwtMTcxLjI0IDE2MS4wOCwtMTUyLjUzIDE2MS4wOCwtMTM4LjA2Ii8+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtCIGdlbmUmIzM5OykgLS0+CjxnIGlkPSJub2RlNSIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QiBnZW5lJiMzOTspPC90aXRsZT4KPGVsbGlwc2UgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBjeD0iMjI3LjA4IiBjeT0iLTExMi45OSIgcng9IjI0LjE1IiByeT0iMjQuMTUiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIyMTAuMjUiIHk9Ii0xMDkuMzkiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+QiBnZW5lPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0IgZ2VuZSYjMzk7KSAtLT4KPGcgaWQ9ImVkZ2UzIiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QiBnZW5lJiMzOTspPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBkPSJNMTgwLC0xOTIuNjRDMTkxLjEyLC0xNzQuMDYgMjA0Ljg3LC0xNTEuMDkgMjE0LjYzLC0xMzQuNzgiLz4KPC9nPgo8IS0tICgmIzM5O0ROQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9ImVkZ2U1IiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik0xMzcuOTMsLTE5NS41NUMxMjQuMiwtMTc4LjU0IDEwNi45MSwtMTU3LjEzIDkzLjUsLTE0MC41MSIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSI5Ni40NCwtMTM4LjU5IDg3LjQ0LC0xMzMuMDEgOTEsLTE0Mi45OSA5Ni40NCwtMTM4LjU5Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMTEyLjA4IiB5PSItMTU3LjE0IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPkROQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspIC0tPgo8ZyBpZD0iZWRnZTEiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBkPSJNNzIuMDgsLTk0LjM2QzcyLjA4LC04Mi4yOSA3Mi4wOCwtNjYuMDkgNzIuMDgsLTUyLjYiLz4KPC9nPgo8L2c+Cjwvc3ZnPgo="/>
 </div>
 </div>
 </div>
@@ -7924,7 +7951,7 @@ Cell <span class="ansi-green-fg">In[11], line 1</span>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="p">[</span><span class="s1">'interval_process'</span><span class="p">]</span><span class="o">.</span><span class="n">add_process</span><span class="p">(</span>
@@ -7936,12 +7963,12 @@ Cell <span class="ansi-green-fg">In[11], line 1</span>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=aeb344bcd6a120ae">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=aeb344bcd6a120ae">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
@@ -7950,16 +7977,46 @@ Cell <span class="ansi-green-fg">In[11], line 1</span>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a5a1f48a-41aa-4768-b931-ad268495d836">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
+<div class="jp-RenderedSVG jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="image/svg+xml" tabindex="0">
+<img alt="No description has been provided for this image" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8IS0tIEdlbmVyYXRlZCBieSBncmFwaHZpeiB2ZXJzaW9uIDkuMC4wICgwKQogLS0+CjwhLS0gVGl0bGU6IGJpZ3JhcGggUGFnZXM6IDEgLS0+Cjxzdmcgd2lkdGg9IjMzNnB0IiBoZWlnaHQ9IjI3MXB0Igogdmlld0JveD0iMC4wMCAwLjAwIDM0Ni4wMCAyNzguODQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgo8ZyBpZD0iZ3JhcGgwIiBjbGFzcz0iZ3JhcGgiIHRyYW5zZm9ybT0ic2NhbGUoMC45NzIyMjIgMC45NzIyMjIpIHJvdGF0ZSgwKSB0cmFuc2xhdGUoNCAyNzQuODQpIj4KPHRpdGxlPmJpZ3JhcGg8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJub25lIiBwb2ludHM9Ii00LDQgLTQsLTI3NC44NCAzNDIsLTI3NC44NCAzNDIsNCAtNCw0Ii8+CjwhLS0gKCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTEiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTtpbnRlcnZhbCYjMzk7KTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjcyLjA4IiBjeT0iLTI1LjkyIiByeD0iMjUuOTIiIHJ5PSIyNS45MiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjUzLjc2IiB5PSItMjIuMzIiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+aW50ZXJ2YWw8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssICYjMzk7aW50ZXJ2YWwmIzM5OykgLS0+CjxnIGlkPSJub2RlMiIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCAmIzM5O2ludGVydmFsJiMzOTspPC90aXRsZT4KPGVsbGlwc2UgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBjeD0iMjk1LjA4IiBjeT0iLTExNC43NiIgcng9IjI1LjkyIiByeT0iMjUuOTIiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIyNzYuNzYiIHk9Ii0xMTEuMTYiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+aW50ZXJ2YWw8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssKSAtLT4KPGcgaWQ9Im5vZGUzIiBjbGFzcz0ibm9kZSI+Cjx0aXRsZT4oJiMzOTttUk5BX3N0b3JlJiMzOTssKTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjQyLjA4IiBjeT0iLTIyOC43NiIgcng9IjQyLjA4IiByeT0iNDIuMDgiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxMC4wOCIgeT0iLTIyNS4xNiIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5tUk5BX3N0b3JlPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJub2RlNyIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cG9seWdvbiBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIHBvaW50cz0iMTA5LjY3LC0xMzIuNzYgMzQuNSwtMTMyLjc2IDM0LjUsLTk2Ljc2IDEwOS42NywtOTYuNzYgMTA5LjY3LC0xMzIuNzYiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIzOC4xIiB5PSItMTExLjE2IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPmV2ZW50X3Byb2Nlc3M8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTttUk5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpIC0tPgo8ZyBpZD0iZWRnZTUiIGNsYXNzPSJlZGdlIj4KPHRpdGxlPigmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSI1LDIiIGQ9Ik0yMS4xMywtMTkxLjE5QzE3LjYxLC0xODAuNDggMTYuNDQsLTE2OC45IDIxLjE5LC0xNTguNjggMjQuMiwtMTUyLjIxIDI4LjcxLC0xNDYuMzcgMzMuODMsLTE0MS4yMyIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSIzNS45NywtMTQ0IDQxLjExLC0xMzQuNzQgMzEuMzEsLTEzOC43OCAzNS45NywtMTQ0Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMjIuMDgiIHk9Ii0xNjAuNjgiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMC4wMCI+bVJOQTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O21STkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlNyIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7bVJOQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS1kYXNoYXJyYXk9IjUsMiIgZD0iTTU1Ljg2LC0xNzYuMzJDNTkuOTYsLTE2MSA2NC4xOSwtMTQ1LjIyIDY3LjMsLTEzMy42MSIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSI1Mi41MSwtMTc1LjMgNTMuMzEsLTE4NS44NiA1OS4yNywtMTc3LjExIDUyLjUxLC0xNzUuMyIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjYwLjA4IiB5PSItMTYwLjY4IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTAuMDAiPm1STkE8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywpIC0tPgo8ZyBpZD0ibm9kZTQiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O0ROQV9zdG9yZSYjMzk7LCk8L3RpdGxlPgo8ZWxsaXBzZSBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGN4PSIxNjEuMDgiIGN5PSItMjI4Ljc2IiByeD0iMzYuOTYiIHJ5PSIzNi45NiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjEzMy40MiIgeT0iLTIyNS4xNiIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5ETkFfc3RvcmU8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtBIGdlbmUmIzM5OykgLS0+CjxnIGlkPSJub2RlNSIgY2xhc3M9Im5vZGUiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QSBnZW5lJiMzOTspPC90aXRsZT4KPGVsbGlwc2UgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBjeD0iMTYxLjA4IiBjeT0iLTExNC43NiIgcng9IjI0LjE1IiByeT0iMjQuMTUiLz4KPHRleHQgdGV4dC1hbmNob3I9InN0YXJ0IiB4PSIxNDQuMjUiIHk9Ii0xMTEuMTYiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxMi4wMCI+QSBnZW5lPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0EgZ2VuZSYjMzk7KSAtLT4KPGcgaWQ9ImVkZ2UzIiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QSBnZW5lJiMzOTspPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBkPSJNMTYxLjA4LC0xOTEuMDlDMTYxLjA4LC0xNzQuMjQgMTYxLjA4LC0xNTQuNzQgMTYxLjA4LC0xMzkuOCIvPgo8L2c+CjwhLS0gKCYjMzk7RE5BX3N0b3JlJiMzOTssICYjMzk7QiBnZW5lJiMzOTspIC0tPgo8ZyBpZD0ibm9kZTYiIGNsYXNzPSJub2RlIj4KPHRpdGxlPigmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0IgZ2VuZSYjMzk7KTwvdGl0bGU+CjxlbGxpcHNlIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgY3g9IjIyNy4wOCIgY3k9Ii0xMTQuNzYiIHJ4PSIyNC4xNSIgcnk9IjI0LjE1Ii8+Cjx0ZXh0IHRleHQtYW5jaG9yPSJzdGFydCIgeD0iMjEwLjI1IiB5PSItMTExLjE2IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTIuMDAiPkIgZ2VuZTwvdGV4dD4KPC9nPgo8IS0tICgmIzM5O0ROQV9zdG9yZSYjMzk7LCkmIzQ1OyZndDsoJiMzOTtETkFfc3RvcmUmIzM5OywgJiMzOTtCIGdlbmUmIzM5OykgLS0+CjxnIGlkPSJlZGdlNCIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O0ROQV9zdG9yZSYjMzk7LCAmIzM5O0IgZ2VuZSYjMzk7KTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZD0iTTE3OS44MiwtMTk1Ljk2QzE5MS4wMiwtMTc2Ljk1IDIwNC45NCwtMTUzLjMzIDIxNC43NywtMTM2LjY2Ii8+CjwvZz4KPCEtLSAoJiMzOTtETkFfc3RvcmUmIzM5OywpJiM0NTsmZ3Q7KCYjMzk7ZXZlbnRfcHJvY2VzcyYjMzk7LCkgLS0+CjxnIGlkPSJlZGdlNiIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7RE5BX3N0b3JlJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywpPC90aXRsZT4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWRhc2hhcnJheT0iNSwyIiBkPSJNMTM4LjE2LC0xOTguOTJDMTI0LjM0LC0xODEuNTMgMTA2Ljg2LC0xNTkuNTIgOTMuMzUsLTE0Mi41MiIvPgo8cG9seWdvbiBmaWxsPSJibGFjayIgc3Ryb2tlPSJibGFjayIgcG9pbnRzPSI5Ni4yLC0xNDAuNDkgODcuMjQsLTEzNC44MyA5MC43MiwtMTQ0Ljg0IDk2LjIsLTE0MC40OSIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjExNC4wOCIgeT0iLTE2MC42OCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEwLjAwIj5ETkE8L3RleHQ+CjwvZz4KPCEtLSAoJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTtpbnRlcnZhbCYjMzk7KSAtLT4KPGcgaWQ9ImVkZ2UxIiBjbGFzcz0iZWRnZSI+Cjx0aXRsZT4oJiMzOTtldmVudF9wcm9jZXNzJiMzOTssKSYjNDU7Jmd0OygmIzM5O2V2ZW50X3Byb2Nlc3MmIzM5OywgJiMzOTtpbnRlcnZhbCYjMzk7KTwvdGl0bGU+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgZD0iTTcyLjA4LC05NS43NkM3Mi4wOCwtODMuMzQgNzIuMDgsLTY2LjY0IDcyLjA4LC01Mi44Ii8+CjwvZz4KPCEtLSAoJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssKSAtLT4KPGcgaWQ9Im5vZGU4IiBjbGFzcz0ibm9kZSI+Cjx0aXRsZT4oJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssKTwvdGl0bGU+Cjxwb2x5Z29uIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMiIgcG9pbnRzPSIzMzgsLTI0Ni43NiAyNTIuMTYsLTI0Ni43NiAyNTIuMTYsLTIxMC43NiAzMzgsLTIxMC43NiAzMzgsLTI0Ni43NiIvPgo8dGV4dCB0ZXh0LWFuY2hvcj0ic3RhcnQiIHg9IjI1NS43NiIgeT0iLTIyNS4xNiIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjEyLjAwIj5pbnRlcnZhbF9wcm9jZXNzPC90ZXh0Pgo8L2c+CjwhLS0gKCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCkmIzQ1OyZndDsoJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssICYjMzk7aW50ZXJ2YWwmIzM5OykgLS0+CjxnIGlkPSJlZGdlMiIgY2xhc3M9ImVkZ2UiPgo8dGl0bGU+KCYjMzk7aW50ZXJ2YWxfcHJvY2VzcyYjMzk7LCkmIzQ1OyZndDsoJiMzOTtpbnRlcnZhbF9wcm9jZXNzJiMzOTssICYjMzk7aW50ZXJ2YWwmIzM5Oyk8L3RpdGxlPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIGQ9Ik0yOTUuMDgsLTIwOS43NkMyOTUuMDgsLTE5MS4zNCAyOTUuMDgsLTE2Mi41MSAyOTUuMDgsLTE0MS42NCIvPgo8L2c+CjwvZz4KPC9zdmc+Cg=="/>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a5a1f48a-41aa-4768-b931-ad268495d836">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">connect_all</span><span class="p">()</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[16], line 1</span>
+<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-yellow-bg">b</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">connect_all</span>()
+
+<span class="ansi-red-fg">AttributeError</span>: 'Builder' object has no attribute 'connect_all'</pre>
 </div>
 </div>
 </div>
