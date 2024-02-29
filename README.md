@@ -13,3 +13,9 @@ documents efficiently.
 ## Installation
 ```bash
 pip install bigraph-builder
+```
+
+## Tutorials
+
+To get started with Bigraph-viz, explore our resources: 
+* [Bigraph Builder Tutorial](https://vivarium-collective.github.io/bigraph-builder/notebooks/basics.html).
