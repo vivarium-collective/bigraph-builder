@@ -196,9 +196,15 @@ class Builder:
             schema=None,
             tree=None,
             core=None,
+            file_path=None,
     ):
         schema = schema or {}
         tree = tree or {}
+
+        if file_path:
+            with open(file_path, 'r') as file:
+                graph_data = json.load(file)
+                tree = deep_merge(tree, graph_data)
 
         self.core = core or ProcessTypes()
         self.schema, self.tree = self.core.complete(schema, tree)
@@ -392,6 +398,12 @@ def test_builder():
 
     # save document
     builder.write(filename='builder_test_doc')
+
+    # load builder from document
+    builder2 = Builder(core=core, file_path='out/builder_test_doc.json')
+    builder.visualize(filename='builder_test4',
+                      show_values=True,
+                      show_types=True)
 
 
 if __name__ == '__main__':
