@@ -1,7 +1,7 @@
 import os
 import json
 import pprint
-from bigraph_schema.registry import get_path, set_path
+from bigraph_schema.registry import get_path, set_path, deep_merge
 from bigraph_schema import Edge
 from bigraph_schema.protocols import local_lookup_module
 from process_bigraph import Process, Step, Composite, ProcessTypes
@@ -61,7 +61,6 @@ class BuilderNode:
         else:
             return self.branches[head]
 
-
     def __setitem__(self, keys, value):
         # Convert single key to tuple
         keys = (keys,) if isinstance(keys, (str, int)) else keys
@@ -103,6 +102,10 @@ class BuilderNode:
             # set the value
             set_path(tree=self.builder.tree, path=path_here, value=value)
 
+    def update(self, state):
+        self.builder.tree = deep_merge(self.builder.tree, state)
+        self.builder.complete()
+
     def value(self):
         return get_path(self.builder.tree, self.path)
 
@@ -118,16 +121,19 @@ class BuilderNode:
             config=None,
             inputs=None,
             outputs=None,
-            edge_type='process',
             **kwargs
     ):
         """ Add a process to the tree """
         # TODO -- assert this process is in the process_registry
-
         assert name, 'add_process requires a name as input'
+        process_class = self.builder.core.process_registry.access(name)
         config = config or {}
         config.update(kwargs)
-        # edge_type = edge_type or 'process'  # TODO -- don't hardcode as process
+
+        # what edge type is this? process or step
+        edge_type = 'process'
+        if issubclass(process_class, Step):
+            edge_type = 'step'
 
         # make the process spec
         state = {
@@ -207,6 +213,9 @@ class Builder:
     def __setitem__(self, keys, value):
         self.node.__setitem__(keys, value)
         self.complete()
+
+    def update(self, state):
+        self.node.update(state)
 
     def list_types(self):
         return self.core.type_registry.list()
@@ -326,7 +335,8 @@ def test_builder():
         'GillespieEvent', GillespieEvent)
     builder.register_process(
         'GillespieInterval',
-        address='process_bigraph.experiments.minimal_gillespie.GillespieInterval')
+        address='process_bigraph.experiments.minimal_gillespie.GillespieInterval',
+    )
 
     ## add processes
     builder['event_process'].add_process(
@@ -335,7 +345,6 @@ def test_builder():
     )
     builder['interval_process'].add_process(
         name='GillespieInterval',
-        edge_type='step',  # TODO -- it should know this automatically
         # inputs={'port_id': ['store']}  # we should be able to set the wires directly like this
     )
 
@@ -354,12 +363,26 @@ def test_builder():
     # builder['interval_process'].connect(port='DNA', target=['DNA_store'])
     # builder['interval_process'].connect(port='mRNA', target=['mRNA_store'])
     builder['interval_process'].connect(port='interval', target=['event_process', 'interval'])  # TODO -- viz  needs to show interval in process
-    # builder['interval_process'].connect_all(append_to_store_name='_store')
-    # builder['event_process'].connect_all(append_to_store_name='_store')
-    builder.connect_all(append_to_store_name='_store')
+    builder['interval_process'].connect_all(append_to_store_name='_store')
+    builder['event_process'].connect_all(append_to_store_name='_store')
+    # builder.connect_all(append_to_store_name='_store')
 
     # make bigraph-viz diagram after connect
     builder.visualize(filename='builder_test2',
+                      show_values=True,
+                      show_types=True)
+
+    # update state
+    update_state = {
+        'DNA_store': {
+            'A gene': 3.0,
+            # 'B gene': 1.0
+        },
+    }
+    builder.update(update_state)
+
+    # make bigraph-viz diagram after updated state
+    builder.visualize(filename='builder_test3',
                       show_values=True,
                       show_types=True)
 
