@@ -151,17 +151,22 @@ class BuilderNode:
         if port in schema['_outputs']:
             value['outputs'][port] = target
 
-    def connect_all(self, append_to_store_name=''):
+    def connect_all(self, append_to_store_name='_store'):
+        # Check if the current node is an edge and perform connections if it is
         value = self.value()
-        schema = self.schema()
-        assert self.builder.core.check('edge', value), "connect_all only works on edges"
+        if self.builder.core.check('edge', value):
+            schema = self.schema()
+            for port in schema.get('_inputs', {}).keys():
+                if port not in value.get('inputs', {}):
+                    value['inputs'][port] = [port + append_to_store_name]
+            for port in schema.get('_outputs', {}).keys():
+                if port not in value.get('outputs', {}):
+                    value['outputs'][port] = [port + append_to_store_name]
+            # Optionally, update the current node value here if necessary
 
-        for port, port_schema in schema['_inputs'].items():
-            if port not in value['inputs']:
-                value['inputs'][port] = [port + append_to_store_name]
-        for port, port_schema in schema['_outputs'].items():
-            if port not in value['outputs']:
-                value['outputs'][port] = [port + append_to_store_name]
+        # Recursively apply connect_all to all child nodes
+        for child in self.branches.values():
+            child.connect_all(append_to_store_name=append_to_store_name)
 
     def interface(self, print_ports=False):
         value = self.value()
@@ -211,6 +216,9 @@ class Builder:
 
     def complete(self):
         self.schema, self.tree = self.core.complete(self.schema, self.tree)
+
+    def connect_all(self, append_to_store_name='_store'):
+        self.node.connect_all(append_to_store_name=append_to_store_name)
 
     def visualize(self, filename=None, out_dir=None, **kwargs):
         return plot_bigraph(
@@ -291,10 +299,10 @@ def test_builder():
             '_type': 'map[float]',
             'A gene': 2.0,
             'B gene': 1.0},
-        'RNA_store': {
+        'mRNA_store': {
             '_type': 'map[float]',
-            'A rna': 0.0,
-            'B rna': 0.0},
+            'A mRNA': 0.0,
+            'B mRNA': 0.0},
     }
 
     builder = Builder(core=core, tree=initial_tree)
@@ -331,6 +339,10 @@ def test_builder():
         # inputs={'port_id': ['store']}  # we should be able to set the wires directly like this
     )
 
+    ## print the ports
+    print(f"EVENT PROCESS PORTS: {pf(builder['event_process'].interface())}")
+    print(f"INTERVAL PROCESS PORTS: {pf(builder['interval_process'].interface())}")
+
     # make bigraph-viz diagram before connect
     builder.visualize(filename='builder_test1',
                       show_values=True,
@@ -342,8 +354,9 @@ def test_builder():
     # builder['interval_process'].connect(port='DNA', target=['DNA_store'])
     # builder['interval_process'].connect(port='mRNA', target=['mRNA_store'])
     builder['interval_process'].connect(port='interval', target=['event_process', 'interval'])  # TODO -- viz  needs to show interval in process
-    builder['interval_process'].connect_all(append_to_store_name='_store')
-    builder['event_process'].connect_all(append_to_store_name='_store')
+    # builder['interval_process'].connect_all(append_to_store_name='_store')
+    # builder['event_process'].connect_all(append_to_store_name='_store')
+    builder.connect_all(append_to_store_name='_store')
 
     # make bigraph-viz diagram after connect
     builder.visualize(filename='builder_test2',
