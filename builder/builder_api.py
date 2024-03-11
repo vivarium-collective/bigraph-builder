@@ -6,7 +6,7 @@ from bigraph_schema import Edge
 from bigraph_schema.protocols import local_lookup_module
 from process_bigraph import Process, Step, Composite, ProcessTypes
 from bigraph_viz.diagram import plot_bigraph
-from pydantic import create_model
+from pydantic import create_model, BaseModel
 
 
 pretty = pprint.PrettyPrinter(indent=2)
@@ -128,7 +128,12 @@ class BuilderNode:
         # TODO -- assert this process is in the process_registry
         assert name, 'add_process requires a name as input'
         process_class = self.builder.core.process_registry.access(name)
-        config = config or {}
+
+        # Check if config is a Pydantic model and convert to dict if so
+        if isinstance(config, BaseModel):
+            config = config.model_dump()
+        else:
+            config = config or {}
         config.update(kwargs)
 
         # what edge type is this? process or step
@@ -248,6 +253,7 @@ class Builder:
         self.node = node_from_tree(self, self.schema, self.tree)
         self.add_emitter(emitter=emitter)
 
+
     def __repr__(self):
         return f"Builder({pf(self.tree)})"
 
@@ -257,6 +263,23 @@ class Builder:
     def __setitem__(self, keys, value):
         self.node.__setitem__(keys, value)
         self.complete()
+
+
+    def get_pydantic_model(self, process_name):
+        """
+        Fetches the Pydantic model for the given process name from the process_registry.
+
+        Args:
+            process_name (str): The name of the process whose Pydantic model is requested.
+
+        Returns:
+            Pydantic model class for the requested process configuration schema.
+        """
+        if hasattr(self.core.process_registry, 'get_pydantic_model'):
+            return self.core.process_registry.get_pydantic_model(process_name)
+        else:
+            raise NotImplementedError("Process registry does not support Pydantic model retrieval.")
+
 
     def add_emitter(self, emitter='ram-emitter'):
         """
@@ -483,9 +506,9 @@ def test_pydantic():
         'GillespieInterval', GillespieEvent)
 
     # get a pydantic model
-    model = builder.get_pydantic_model('GillespieEvent')  # TODO -- make this
+    model = builder.get_pydantic_model('GillespieEvent')
     config = model(kdeg=1.0)
-    builder['event_process'].add_process(**config)
+    builder['event_process'].add_process(name='GillespieEvent', config=config)
 
 
 
