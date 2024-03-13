@@ -374,6 +374,12 @@ class Builder:
             else:
                 raise TypeError(f"Unsupported address type for {process_name}: {type(address)}. Registration failed.")
 
+    def add_process(self, process_id, name, config, path=None):
+        path = path or []
+        assert isinstance(process_id, str), f'Process id must be a string: {process_id}'
+        path.append(process_id)
+        self.node[path].add_process(name, config)
+
 
 
 def test_builder():
@@ -508,8 +514,10 @@ def test_pydantic():
     # get a pydantic model
     model = builder.get_pydantic_model('GillespieEvent')
     config = model(kdeg=1.0)
-    builder['event_process'].add_process(name='GillespieEvent', config=config)
+    # builder['event_process'].add_process(name='GillespieEvent', config=config)
+    builder.add_process(process_id='event_process', name='GillespieEvent', config=config, path=['down', 'here'])
 
+    builder
 
 
 if __name__ == '__main__':
