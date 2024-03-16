@@ -1,4 +1,4 @@
-from process_bigraph import Process, Composite, process_registry, types
+from process_bigraph import Process, Composite, ProcessTypes
 
 
 class IncreaseProcess(Process):
@@ -23,5 +23,7 @@ class IncreaseProcess(Process):
             'level': state['level'] * self.config['rate']}
 
 
+core = ProcessTypes()
+
 # register the processes
-process_registry.register('increase', IncreaseProcess)
+core.process_registry.register('increase', IncreaseProcess)
