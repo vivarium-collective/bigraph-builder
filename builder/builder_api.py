@@ -1,6 +1,8 @@
 import os
 import json
 import pprint
+from dataclasses import is_dataclass, asdict
+
 from bigraph_schema.registry import get_path, set_path, deep_merge
 from bigraph_schema import Edge
 from bigraph_schema.protocols import local_lookup_module
@@ -127,7 +129,12 @@ class BuilderNode:
         # TODO -- assert this process is in the process_registry
         assert name, 'add_process requires a name as input'
         process_class = self.builder.core.process_registry.access(name)
-        config = config or {}
+
+        # Check if config is a dataclass and convert to dict if so
+        if is_dataclass(config):
+            config = asdict(config)
+        else:
+            config = config or {}
         config.update(kwargs)
 
         # what edge type is this? process or step
@@ -188,6 +195,41 @@ class BuilderNode:
             else:
                 print(pf(process_ports))
 
+    def emit(self, key=None, port=None):
+        if key is None:
+            key =  port
+        value = self.value()
+        schema = self.schema()
+        if self.builder.core.check('edge', value):
+            inputs = value.get('inputs', {})
+            outputs = value.get('outputs', {})
+            inputs_schema = schema.get('_inputs', {})
+            outputs_schema = schema.get('_outputs', {})
+
+            if not port:
+                # connect to all ports
+                for prt, val in inputs_schema.items():
+                    self.builder.node['emitter', 'config', 'emit', prt] = val
+                for prt, val in outputs_schema.items():
+                    self.builder.node['emitter', 'config', 'emit', prt] = val
+            elif port in inputs_schema:
+                # update the emitter config
+                self.builder.node['emitter', 'config', 'emit'].value().update({key: inputs_schema[port]})
+                self.builder.node['emitter', 'inputs', key] = list(self.path[:-1]) + list(inputs[port])
+                self.builder.node['emitter'].schema()['_inputs'].update({key: inputs_schema[port]})
+
+            elif port in outputs_schema:
+                self.builder.node['emitter', 'config', 'emit'].update({key: outputs_schema[port]})
+                self.builder.node['emitter', 'inputs', key] = list(self.path[:-1]) + list(outputs[port])
+                self.builder.node['emitter'].schema()['_inputs'].update({key: outputs_schema[port]})
+
+            else:
+                raise Exception(f"can not connect port {port}. available ports for this edge include {inputs_schema.keys()} {outputs_schema.keys()}")
+        else:
+            # emit the path
+            self.builder.node['emitter', 'config', 'emit', key] = schema
+            self.builder.node['emitter', 'inputs', key] = self.path
+
 
 class Builder:
 
@@ -196,6 +238,7 @@ class Builder:
             schema=None,
             tree=None,
             core=None,
+            emitter='ram-emitter',
             file_path=None,
     ):
         schema = schema or {}
@@ -209,6 +252,8 @@ class Builder:
         self.core = core or ProcessTypes()
         self.schema, self.tree = self.core.complete(schema, tree)
         self.node = node_from_tree(self, self.schema, self.tree)
+        self.add_emitter(emitter=emitter)
+
 
     def __repr__(self):
         return f"Builder({pf(self.tree)})"
@@ -219,6 +264,35 @@ class Builder:
     def __setitem__(self, keys, value):
         self.node.__setitem__(keys, value)
         self.complete()
+
+
+    def get_dataclass(self, process_name):
+        """
+        Fetches the dataclass for the given process name from the process_registry.
+
+        Args:
+            process_name (str): The name of the process whose dataclass is requested.
+
+        Returns:
+            dataclass for the requested process configuration schema.
+        """
+        if hasattr(self.core.process_registry, 'get_dataclass'):
+            return self.core.process_registry.get_dataclass(process_name)
+        else:
+            raise NotImplementedError("Process registry does not support dataclass retrieval.")
+
+
+    def add_emitter(self, emitter='ram-emitter'):
+        """
+        key is the node id for the emitter, at the top level
+        name is the emitter type
+        """
+        # hardcode that emitter is called "emitter"
+        self.node['emitter'].add_process(
+            name=emitter,
+            config={'emit': {}},
+            inputs={},
+        )
 
     def update(self, state):
         self.node.update(state)
@@ -247,10 +321,10 @@ class Builder:
     def generate(self):
         composite = Composite({
             'state': self.tree,
-            'composition': self.schema
-        },
+            'composition': self.schema},
             core=self.core)
-
+        self.tree = composite.state
+        self.schema =composite.composition
         return composite
 
     def document(self):
@@ -300,6 +374,12 @@ class Builder:
                 self.core.process_registry.register(process_name, address)
             else:
                 raise TypeError(f"Unsupported address type for {process_name}: {type(address)}. Registration failed.")
+
+    def add_process(self, process_id, name, config, path=None):
+        path = path or []
+        assert isinstance(process_id, str), f'Process id must be a string: {process_id}'
+        path.append(process_id)
+        self.node[path].add_process(name, config)
 
 
 
@@ -378,6 +458,13 @@ def test_builder():
                       show_values=True,
                       show_types=True)
 
+    # we can turn on the emits through a port
+    # builder.add_emitter()
+    builder['interval_process'].emit(port='DNA')
+    builder['interval_process'].emit(port='mRNA')
+
+
+
     # update state
     update_state = {
         'DNA_store': {
@@ -396,15 +483,44 @@ def test_builder():
     composite = builder.generate()
     composite.run(10)
 
+    results = composite.gather_results()
+
+    print(f"RESULTS: {results}")
+
     # save document
     builder.write(filename='builder_test_doc')
 
     # load builder from document
     builder2 = Builder(core=core, file_path='out/builder_test_doc.json')
-    builder.visualize(filename='builder_test4',
+    builder2.visualize(filename='builder_test4',
                       show_values=True,
                       show_types=True)
 
 
+def test_get_dataclass():
+    from process_bigraph.experiments.minimal_gillespie import GillespieEvent, GillespieInterval, EXPORT  #
+
+    core = ProcessTypes()
+    core.import_types(EXPORT)  # TODO -- make this better
+
+    # make the builder
+    builder = Builder(core=core)
+
+    ## register processes by name: what processes do we want and where do they come from
+    builder.register_process(
+        'GillespieEvent', GillespieEvent)
+    builder.register_process(
+        'GillespieInterval', GillespieEvent)
+
+    # get a dataclass
+    model = builder.get_dataclass('GillespieEvent')
+    config = model(kdeg=2.0)
+    # builder['event_process'].add_process(name='GillespieEvent', config=config)
+    builder.add_process(process_id='event_process', name='GillespieEvent', config=config, path=['down', 'here'])
+
+    builder
+
+
 if __name__ == '__main__':
-    test_builder()
+    # test_builder()
+    test_get_dataclass()
