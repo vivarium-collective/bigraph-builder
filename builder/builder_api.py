@@ -1,12 +1,13 @@
 import os
 import json
 import pprint
+from dataclasses import is_dataclass, asdict
+
 from bigraph_schema.registry import get_path, set_path, deep_merge
 from bigraph_schema import Edge
 from bigraph_schema.protocols import local_lookup_module
 from process_bigraph import Process, Step, Composite, ProcessTypes
 from bigraph_viz.diagram import plot_bigraph
-from pydantic import create_model, BaseModel
 
 
 pretty = pprint.PrettyPrinter(indent=2)
@@ -129,9 +130,9 @@ class BuilderNode:
         assert name, 'add_process requires a name as input'
         process_class = self.builder.core.process_registry.access(name)
 
-        # Check if config is a Pydantic model and convert to dict if so
-        if isinstance(config, BaseModel):
-            config = config.model_dump()
+        # Check if config is a dataclass and convert to dict if so
+        if is_dataclass(config):
+            config = asdict(config)
         else:
             config = config or {}
         config.update(kwargs)
@@ -265,20 +266,20 @@ class Builder:
         self.complete()
 
 
-    def get_pydantic_model(self, process_name):
+    def get_dataclass(self, process_name):
         """
-        Fetches the Pydantic model for the given process name from the process_registry.
+        Fetches the dataclass for the given process name from the process_registry.
 
         Args:
-            process_name (str): The name of the process whose Pydantic model is requested.
+            process_name (str): The name of the process whose dataclass is requested.
 
         Returns:
-            Pydantic model class for the requested process configuration schema.
+            dataclass for the requested process configuration schema.
         """
-        if hasattr(self.core.process_registry, 'get_pydantic_model'):
-            return self.core.process_registry.get_pydantic_model(process_name)
+        if hasattr(self.core.process_registry, 'get_dataclass'):
+            return self.core.process_registry.get_dataclass(process_name)
         else:
-            raise NotImplementedError("Process registry does not support Pydantic model retrieval.")
+            raise NotImplementedError("Process registry does not support dataclass retrieval.")
 
 
     def add_emitter(self, emitter='ram-emitter'):
@@ -496,7 +497,7 @@ def test_builder():
                       show_types=True)
 
 
-def test_pydantic():
+def test_get_dataclass():
     from process_bigraph.experiments.minimal_gillespie import GillespieEvent, GillespieInterval, EXPORT  #
 
     core = ProcessTypes()
@@ -511,9 +512,9 @@ def test_pydantic():
     builder.register_process(
         'GillespieInterval', GillespieEvent)
 
-    # get a pydantic model
-    model = builder.get_pydantic_model('GillespieEvent')
-    config = model(kdeg=1.0)
+    # get a dataclass
+    model = builder.get_dataclass('GillespieEvent')
+    config = model(kdeg=2.0)
     # builder['event_process'].add_process(name='GillespieEvent', config=config)
     builder.add_process(process_id='event_process', name='GillespieEvent', config=config, path=['down', 'here'])
 
@@ -522,4 +523,4 @@ def test_pydantic():
 
 if __name__ == '__main__':
     # test_builder()
-    test_pydantic()
+    test_get_dataclass()
